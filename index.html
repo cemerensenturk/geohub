@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SatelCity</title>
+  <meta name="description" content="Dünyanın şehirlerini uzaydan çekilmiş etiketsiz fotoğraflarla tanıyabilir misiniz?">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/jpeg" href="satelcity.jpeg">
+
+  <!-- OpenGraph / WhatsApp / Twitter Paylaşım Meta Etiketleri -->
+  <meta property="og:site_name" content="SatelCity">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://cemeren.dev/satelcity">
+  <meta property="og:title" content="SatelCity">
+  <meta property="og:description" content="Dünyanın şehirlerini uzaydan çekilmiş etiketsiz fotoğraflarla tanıyabilir misiniz?">
+  <meta property="og:image" content="https://cemeren.dev/satelcity/satelcity.jpeg">
+  <meta property="og:image:type" content="image/jpeg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="SatelCity">
+  <meta name="twitter:description" content="Dünyanın şehirlerini uzaydan çekilmiş etiketsiz fotoğraflarla tanıyabilir misiniz?">
+  <meta name="twitter:image" content="https://cemeren.dev/satelcity/satelcity.jpeg">
+
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+
+  <!-- Ana Stil Dosyası (Deep Forest Green Explorer Tema) -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ====================================================================
+       ÜST MARKA & DİL ÇUBUĞU (Oyun başlayınca dil seçici gizlenir)
+       ==================================================================== -->
+  <header class="top-nav-bar">
+    <div class="brand-badge">
+      <img src="satelcity.jpeg" alt="SatelCity Logo" class="brand-logo-img">
+      <span>SatelCity</span>
+    </div>
+
+    <!-- 6 Dilli Seçici (TR, EN, ES, FR, DE, IT) -->
+    <div id="top-lang-selector" class="lang-switch-group" role="group" aria-label="Language Selector">
+      <button class="lang-btn active" data-lang="tr">🇹🇷 TR</button>
+      <button class="lang-btn" data-lang="en">🇬🇧 EN</button>
+      <button class="lang-btn" data-lang="es">🇪🇸 ES</button>
+      <button class="lang-btn" data-lang="fr">🇫🇷 FR</button>
+      <button class="lang-btn" data-lang="de">🇩🇪 DE</button>
+      <button class="lang-btn" data-lang="it">🇮🇹 IT</button>
+    </div>
+  </header>
+
+  <div class="app-viewport">
+
+    <!-- ====================================================================
+         1. GİRİŞ EKRANI (Ana Menü, Zorluk & Mod Seçimi)
+         ==================================================================== -->
+    <main id="screen-home" class="screen active">
+      <div class="hero-header">
+        <div class="hero-pill">
+          <span>🛰️</span>
+          <span id="txt-hero-pill">Gerçek ESRI Uydu Fotoğrafları</span>
+        </div>
+        <h1 class="hero-title">
+          <img src="satelcity.jpeg" alt="SatelCity" class="hero-logo-img">
+          <span>SatelCity</span>
+        </h1>
+        <p class="hero-subtitle" id="txt-hero-subtitle">
+          Dünyanın şehirlerini uzaydan çekilmiş etiketsiz fotoğraflarla tanıyabilir misiniz?
+        </p>
+      </div>
+
+      <!-- Zorluk Seviyesi Seçici (Kolay / Orta / Zor) -->
+      <section class="difficulty-wrapper">
+        <div class="diff-header-label" id="txt-diff-label">Zorluk Seviyesi:</div>
+        <div class="difficulty-pill-group">
+          <button class="btn-diff-pill active" data-difficulty="easy" id="diff-pill-easy">
+            <span class="diff-title" id="txt-diff-easy">Kolay</span>
+            <span class="diff-desc" id="txt-diff-easy-desc">İkonik Metropoller</span>
+          </button>
+          <button class="btn-diff-pill" data-difficulty="medium" id="diff-pill-medium">
+            <span class="diff-title" id="txt-diff-medium">Orta</span>
+            <span class="diff-desc" id="txt-diff-medium-desc">Büyük Başkentler</span>
+          </button>
+          <button class="btn-diff-pill" data-difficulty="hard" id="diff-pill-hard">
+            <span class="diff-title" id="txt-diff-hard">Zor</span>
+            <span class="diff-desc" id="txt-diff-hard-desc">Niş & Zorlu Şehirler</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- Oyun Modu Seçim Kartları (Ayrı İstatistikler ile) -->
+      <div class="modes-grid">
+        <!-- Mod 1: 4 Seçenekli -->
+        <div id="btn-mode-mc" class="mode-card" role="button" tabindex="0">
+          <div class="mode-top-row">
+            <div class="mode-icon mode-icon-svg" aria-hidden="true">
+              <svg width="40" height="40" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="5" y="5" width="17" height="17" rx="5" fill="#22c55e" fill-opacity="0.22" stroke="#22c55e" stroke-width="1.8"/>
+                <text x="13.5" y="17.5" font-family="Plus Jakarta Sans, sans-serif" font-size="11" font-weight="800" fill="#86efac" text-anchor="middle">A</text>
+                <rect x="26" y="5" width="17" height="17" rx="5" fill="#142217" stroke="#4ade80" stroke-opacity="0.4" stroke-width="1.5"/>
+                <text x="34.5" y="17.5" font-family="Plus Jakarta Sans, sans-serif" font-size="11" font-weight="700" fill="#a7f3d0" text-anchor="middle">B</text>
+                <rect x="5" y="26" width="17" height="17" rx="5" fill="#142217" stroke="#4ade80" stroke-opacity="0.4" stroke-width="1.5"/>
+                <text x="13.5" y="38.5" font-family="Plus Jakarta Sans, sans-serif" font-size="11" font-weight="700" fill="#a7f3d0" text-anchor="middle">C</text>
+                <rect x="26" y="26" width="17" height="17" rx="5" fill="#142217" stroke="#4ade80" stroke-opacity="0.4" stroke-width="1.5"/>
+                <text x="34.5" y="38.5" font-family="Plus Jakarta Sans, sans-serif" font-size="11" font-weight="700" fill="#a7f3d0" text-anchor="middle">D</text>
+              </svg>
+            </div>
+            <div class="mode-stats-badge" title="4 Seçenekli Mod İsabeti">
+              <span id="home-mc-stat-accuracy" class="badge-pct">%0</span>
+              <span id="home-mc-stat-ratio" class="badge-ratio">0 / 0 Doğru</span>
+            </div>
+          </div>
+          <h3 id="txt-mode-mc-title">4 Seçenekli Mod</h3>
+          <p id="txt-mode-mc-desc">4 akıllı seçenek arasından doğru şehri bulun.</p>
+          <div class="mode-bottom-row">
+            <div class="mode-action-link">
+              <span id="txt-btn-play-mc">Oyuna Başla</span>
+              <span>→</span>
+            </div>
+            <button id="btn-reset-mc-stats" class="btn-reset-mode" title="Bu modun istatistiğini sıfırla">
+              Sıfırla
+            </button>
+          </div>
+        </div>
+
+        <!-- Mod 2: Yazarak Tahmin -->
+        <div id="btn-mode-text" class="mode-card" role="button" tabindex="0">
+          <div class="mode-top-row">
+            <div class="mode-icon mode-icon-svg" aria-hidden="true">
+              <svg width="40" height="40" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Keyboard Base -->
+                <rect x="4" y="22" width="40" height="22" rx="5" fill="#0e1b12" stroke="#22c55e" stroke-width="1.6"/>
+                <!-- Keycaps Top Row -->
+                <rect x="7" y="25" width="5" height="4.5" rx="1.5" fill="#1b3021" stroke="#4ade80" stroke-opacity="0.3" stroke-width="0.8"/>
+                <rect x="14" y="25" width="5" height="4.5" rx="1.5" fill="#1b3021" stroke="#4ade80" stroke-opacity="0.3" stroke-width="0.8"/>
+                <rect x="21" y="25" width="6" height="4.5" rx="1.5" fill="#22c55e" fill-opacity="0.35" stroke="#86efac" stroke-width="1.2"/>
+                <rect x="29" y="25" width="5" height="4.5" rx="1.5" fill="#1b3021" stroke="#4ade80" stroke-opacity="0.3" stroke-width="0.8"/>
+                <rect x="36" y="25" width="5" height="4.5" rx="1.5" fill="#1b3021" stroke="#4ade80" stroke-opacity="0.3" stroke-width="0.8"/>
+                <!-- Keycaps Middle Row -->
+                <rect x="8" y="31" width="6" height="4.5" rx="1.5" fill="#1b3021" stroke="#4ade80" stroke-opacity="0.3" stroke-width="0.8"/>
+                <rect x="16" y="31" width="6" height="4.5" rx="1.5" fill="#1b3021" stroke="#4ade80" stroke-opacity="0.3" stroke-width="0.8"/>
+                <rect x="24" y="31" width="6" height="4.5" rx="1.5" fill="#1b3021" stroke="#4ade80" stroke-opacity="0.3" stroke-width="0.8"/>
+                <rect x="32" y="31" width="8" height="4.5" rx="1.5" fill="#1b3021" stroke="#4ade80" stroke-opacity="0.3" stroke-width="0.8"/>
+                <!-- Spacebar Row -->
+                <rect x="14" y="37.5" width="20" height="3.5" rx="1.5" fill="#1b3021" stroke="#4ade80" stroke-opacity="0.3" stroke-width="0.8"/>
+                <!-- Stylized Typing Hand -->
+                <path d="M14 5 C14 5, 18 10, 20 14 L24 23.5 C24.2 24, 23.8 24.5, 23.2 24.5 L21.5 24.5 C21 24.5, 20.6 24, 20.4 23.5 L17.5 17 L15.5 19 C15 19.5, 14.2 19.5, 13.8 19 L11 16" 
+                      stroke="#86efac" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                <!-- Tap Contact Dot -->
+                <circle cx="24" cy="27" r="2" fill="#22c55e"/>
+              </svg>
+            </div>
+            <div class="mode-stats-badge" title="Yazarak Tahmin Modu İsabeti">
+              <span id="home-text-stat-accuracy" class="badge-pct">%0</span>
+              <span id="home-text-stat-ratio" class="badge-ratio">0 / 0 Doğru</span>
+            </div>
+          </div>
+          <h3 id="txt-mode-text-title">Yazarak Tahmin Modu</h3>
+          <p id="txt-mode-text-desc">Şehir adını yazın; mesafe (km) ve yön oku ipuçlarıyla tahmin edin.</p>
+          <div class="mode-bottom-row">
+            <div class="mode-action-link">
+              <span id="txt-btn-play-text">Oyuna Başla</span>
+              <span>→</span>
+            </div>
+            <button id="btn-reset-text-stats" class="btn-reset-mode" title="Bu modun istatistiğini sıfırla">
+              Sıfırla
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- ====================================================================
+         2. OYUN EKRANI
+         ==================================================================== -->
+    <main id="screen-game" class="screen">
+      <!-- Üst HUD Barı -->
+      <header class="game-top-bar glass-panel">
+        <div class="bar-left">
+          <button id="btn-game-home" class="btn-nav-home" title="Ana Menüye Dön">
+            <span>←</span>
+            <span id="txt-btn-menu">Menü</span>
+          </button>
+          <span id="game-mode-badge" class="game-mode-badge">4 Seçenekli Mod</span>
+          <span id="game-diff-badge" class="game-diff-badge">Kolay</span>
+        </div>
+
+        <div class="bar-right">
+          <div class="hud-accuracy-box" title="Bu Modun İsabet Oranı">
+            <span id="game-stat-accuracy" class="hud-pct">%0</span>
+            <span id="game-stat-ratio" class="hud-ratio">İsabet: 0 / 0</span>
+          </div>
+          <button id="btn-reset-stats-game" class="btn-reset-mode" title="Bu Modu Sıfırla">
+            Sıfırla
+          </button>
+        </div>
+      </header>
+
+      <!-- Ana Oyun Çalışma Alanı -->
+      <div class="game-workspace">
+        
+        <!-- Sol Kolon: Uydu Fotoğrafı Çerçevesi (SABİT, YÖN VE ZOOM KORUMALI) -->
+        <section class="photo-frame-card">
+          <div class="photo-overlay-top">
+            <div class="photo-badge-compass" title="Harita açısı tam coğrafi kuzeye sabitlenmiştir">
+              <span>🧭</span>
+              <span id="txt-compass-north">KUZEY YUKARI</span>
+            </div>
+            <button id="btn-expand-photo" class="photo-btn-expand" title="Fotoğrafı büyük boyutta incele">
+              <span>🔍</span>
+              <span id="txt-btn-expand">Büyüt</span>
+            </button>
+          </div>
+
+          <!-- Sabit Harita Viewport -->
+          <div id="satellite-map-container" class="satellite-viewport"></div>
+        </section>
+
+        <!-- Sağ Kolon: İpuçları & Mod Etkileşim Alanı -->
+        <section class="game-controls-card glass-panel">
+          
+          <!-- Kademeli İpuçları Bölümü -->
+          <div class="hints-section">
+            <div class="hints-title" id="txt-hints-header">İpuçları</div>
+            <div class="hints-grid">
+              <!-- İpucu 1: Kıta -->
+              <div id="btn-hint-continent" class="hint-item">
+                <span class="hint-label" id="txt-hint-continent-lbl">🌍 Kıta</span>
+                <span id="hint-val-continent" class="hint-value">Görmek için tıkla</span>
+              </div>
+              <!-- İpucu 2: Ülke -->
+              <div id="btn-hint-country" class="hint-item">
+                <span class="hint-label" id="txt-hint-country-lbl">🚩 Ülke & Bayrak</span>
+                <span id="hint-val-country" class="hint-value">Görmek için tıkla</span>
+              </div>
+              <!-- İpucu 3: Bilgi -->
+              <div id="btn-hint-detail" class="hint-item">
+                <span class="hint-label" id="txt-hint-detail-lbl">ℹ️ Bilgi</span>
+                <span id="hint-val-detail" class="hint-value">Görmek için tıkla</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Dinamik Mod İçerik Alanı -->
+          <div id="mode-content-area"></div>
+
+          <!-- Seviye Tamamlama Kartı (Zorluktaki tüm şehirler görüldüğünde açılır) -->
+          <div id="completed-card" class="completed-card">
+            <div class="completed-icon">🏆</div>
+            <div class="completed-title" id="txt-completed-title">Tebrikler, Seviyeyi Tamamladınız!</div>
+            <div class="completed-desc" id="txt-completed-desc">Bu zorluk seviyesindeki tüm şehirleri gördünüz.</div>
+            <div class="completed-btn-group">
+              <button id="btn-replay-tier" class="btn-primary-action">
+                <span id="txt-btn-replay">Sıfırla ve Baştan Oyna</span>
+              </button>
+              <button id="btn-change-diff" class="btn-nav-home">
+                <span id="txt-btn-diff-change">Farklı Zorluk Seç</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Sonuç Kartı / Bildirimi (Tur bitiminde açılır) -->
+          <div id="result-overlay-card" class="result-overlay-card">
+            <div class="result-header">
+              <span id="result-title" class="result-title">Tebrikler!</span>
+              <span id="result-accuracy-badge" class="result-accuracy-badge">%100</span>
+            </div>
+            <div class="result-city-info">
+              <div id="result-city-name" class="result-city-name">İstanbul</div>
+              <div id="result-city-country" class="result-city-country">Türkiye • Avrupa / Asya</div>
+              <div id="result-city-detail" class="result-city-detail">İki kıtayı birleştiren tarihi boğaz şehri.</div>
+            </div>
+            <div class="result-btn-group">
+              <button id="btn-next-city" class="btn-primary-action">
+                <span id="txt-btn-next-city">Sonraki Şehir</span>
+                <span>→</span>
+              </button>
+              <button id="btn-share-result" class="btn-share-action" title="Skoru Paylaş">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+                <span id="txt-btn-share">Paylaş</span>
+              </button>
+            </div>
+          </div>
+
+        </section>
+
+      </div>
+    </main>
+
+  </div>
+
+  <!-- ====================================================================
+       3. BÜYÜTÜLMÜŞ FOTOĞRAF MODALI (SABİT, KAYDIRMA & ZOOM YASAKLI)
+       ==================================================================== -->
+  <div id="photo-modal" class="photo-modal-backdrop">
+    <div class="photo-modal-container">
+      <button id="btn-close-photo-modal" class="btn-close-modal">Kapat (✕)</button>
+      <div id="modal-map-container" class="modal-map-viewport"></div>
+    </div>
+  </div>
+
+  <!-- Leaflet JS Kütüphanesi -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+  <!-- Uygulama Giriş Scripti -->
+  <script type="module" src="js/app.js"></script>
+
+  <!-- Global Toast Bildirim Kutusu -->
+  <div id="app-toast" class="app-toast" role="status" aria-live="polite"></div>
+</body>
+</html>
