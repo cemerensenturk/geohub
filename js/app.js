@@ -68,7 +68,6 @@ class App {
 
       // Difficulty Pills
       diffPillEasy: document.getElementById('diff-pill-easy'),
-      diffPillMedium: document.getElementById('diff-pill-medium'),
       diffPillHard: document.getElementById('diff-pill-hard'),
 
       // Mod Butonları
@@ -111,9 +110,6 @@ class App {
       resultCityDetail: document.getElementById('result-city-detail'),
       resultAccuracyBadge: document.getElementById('result-accuracy-badge'),
       btnNextCity: document.getElementById('btn-next-city'),
-      btnShareResult: document.getElementById('btn-share-result'),
-      txtBtnShare: document.getElementById('txt-btn-share'),
-      appToast: document.getElementById('app-toast'),
 
       // Seviye Tamamlama Kartı
       completedCard: document.getElementById('completed-card'),
@@ -141,7 +137,6 @@ class App {
     // Difficulty Selection
     const diffPills = [
       { el: this.elements.diffPillEasy, diff: 'easy' },
-      { el: this.elements.diffPillMedium, diff: 'medium' },
       { el: this.elements.diffPillHard, diff: 'hard' }
     ];
 
@@ -217,13 +212,6 @@ class App {
       this.nextRound();
     });
 
-    // Skoru Paylaş
-    if (this.elements.btnShareResult) {
-      this.elements.btnShareResult.addEventListener('click', () => {
-        this.shareResult();
-      });
-    }
-
     // Seviye Tamamlama Butonları
     this.elements.btnReplayTier.addEventListener('click', () => {
       statsManager.resetMode(this.activeMode);
@@ -266,8 +254,6 @@ class App {
     document.getElementById('txt-diff-label').textContent = i18n.t('difficultyLabel');
     document.getElementById('txt-diff-easy').textContent = i18n.t('diffEasy');
     document.getElementById('txt-diff-easy-desc').textContent = i18n.t('diffEasyDesc');
-    document.getElementById('txt-diff-medium').textContent = i18n.t('diffMedium');
-    document.getElementById('txt-diff-medium-desc').textContent = i18n.t('diffMediumDesc');
     document.getElementById('txt-diff-hard').textContent = i18n.t('diffHard');
     document.getElementById('txt-diff-hard-desc').textContent = i18n.t('diffHardDesc');
 
@@ -297,9 +283,6 @@ class App {
 
     // Sonuç & Tamamlama
     document.getElementById('txt-btn-next-city').textContent = i18n.t('btnNextCity');
-    if (this.elements.txtBtnShare) {
-      this.elements.txtBtnShare.textContent = i18n.t('btnShare');
-    }
     document.getElementById('txt-completed-title').textContent = i18n.t('completedTitle');
     document.getElementById('txt-completed-desc').textContent = i18n.t('completedDesc');
     document.getElementById('txt-btn-replay').textContent = i18n.t('btnPlayAgain');
@@ -343,7 +326,7 @@ class App {
 
   updateHudBadges() {
     this.elements.gameModeBadge.textContent = this.activeMode === 'mc' ? i18n.t('modeMC') : i18n.t('modeText');
-    const diffKey = this.currentDifficulty === 'easy' ? 'diffEasy' : (this.currentDifficulty === 'medium' ? 'diffMedium' : 'diffHard');
+    const diffKey = this.currentDifficulty === 'easy' ? 'diffEasy' : 'diffHard';
     this.elements.gameDiffBadge.textContent = i18n.t(diffKey);
   }
 
@@ -468,54 +451,6 @@ class App {
     setTimeout(() => {
       this.elements.resultCard.classList.add('active');
     }, 350);
-  }
-
-  shareResult() {
-    if (!this.currentCity) return;
-    const modeName = this.activeMode === 'mc' ? i18n.t('modeMC') : i18n.t('modeText');
-    const diffKey = this.currentDifficulty === 'easy' ? 'diffEasy' : (this.currentDifficulty === 'medium' ? 'diffMedium' : 'diffHard');
-    const diffName = i18n.t(diffKey);
-    const stats = statsManager.getModeStats(this.activeMode);
-    const cityName = i18n.getCityName(this.currentCity);
-    const pct = i18n.formatPercentage(stats.accuracy);
-
-    const shareText = `🛰️ SatelCity (${diffName} • ${modeName})\n🎯 ${cityName}: ${stats.formattedText} (${pct})\n🌐 https://cemeren.dev/satelcity`;
-
-    if (navigator.share) {
-      navigator.share({
-        title: 'SatelCity',
-        text: shareText,
-        url: 'https://cemeren.dev/satelcity'
-      }).catch(() => {
-        this.copyToClipboard(shareText);
-      });
-    } else {
-      this.copyToClipboard(shareText);
-    }
-  }
-
-  copyToClipboard(text) {
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).then(() => {
-        this.showToast(i18n.t('shareCopied'));
-      }).catch(() => {
-        this.showToast(i18n.t('shareCopied'));
-      });
-    } else {
-      this.showToast(i18n.t('shareCopied'));
-    }
-  }
-
-  showToast(msg) {
-    if (!this.elements.appToast) return;
-    this.elements.appToast.textContent = msg;
-    this.elements.appToast.classList.add('active');
-    clearTimeout(this.toastTimer);
-    this.toastTimer = setTimeout(() => {
-      if (this.elements.appToast) {
-        this.elements.appToast.classList.remove('active');
-      }
-    }, 2800);
   }
 
   openPhotoModal() {

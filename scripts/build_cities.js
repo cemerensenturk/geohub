@@ -129,17 +129,25 @@ for (const line of countryLines) {
   countryMap[p[0]] = { name: p[4], capital: p[5], continent: p[8] };
 }
 
-// Kültürel & Dünya Çapında Ünlü Yerler
+// Kültürel & Dünya Çapında En Tanınan Süperstar Şehirler (Top 100 Kolay Havuzu)
 const ICONIC_FAME_SET = new Set([
+  // Kuzey & Güney Amerika
   "New York City", "New York", "Los Angeles", "Chicago", "San Francisco", "Miami", "Las Vegas",
-  "Venice", "Milan", "Florence", "Naples", "Barcelona", "Seville", "Valencia", "Dubrovnik",
-  "Cannes", "Nice", "Marseille", "Geneva", "Zurich", "Salzburg", "Innsbruck", "Oxford",
-  "Cambridge", "Edinburgh", "Bruges", "Antwerp", "Krakow", "Saint Petersburg", "Cusco",
-  "Rio de Janeiro", "Sao Paulo", "Sydney", "Melbourne", "Auckland", "Vancouver", "Montreal",
-  "Dubai", "Abu Dhabi", "Kyoto", "Osaka", "Mumbai", "Shanghai", "Hong Kong", "Macao",
-  "Phuket", "Marrakesh", "Casablanca", "Cape Town", "Johannesburg", "Antalya", "Izmir",
-  "Toronto", "Munich", "Frankfurt", "Hamburg", "Rotterdam", "Monaco", "Reykjavík", "Reykjavik",
-  "Valletta", "Vatican City", "San Marino", "Bora Bora", "Honolulu", "New Orleans", "Boston"
+  "Washington", "Boston", "Toronto", "Vancouver", "Montreal", "Mexico City", "Havana",
+  "Rio de Janeiro", "Sao Paulo", "Buenos Aires", "Santiago", "Lima", "Bogota", "Cusco",
+  // Avrupa
+  "London", "Paris", "Rome", "Berlin", "Madrid", "Barcelona", "Amsterdam", "Venice", "Florence",
+  "Milan", "Vienna", "Prague", "Budapest", "Dublin", "Lisbon", "Edinburgh", "Athens", "Istanbul",
+  "Moscow", "Saint Petersburg", "Warsaw", "Brussels", "Stockholm", "Oslo", "Copenhagen", "Helsinki",
+  "Reykjavik", "Reykjavík", "Zurich", "Geneva", "Munich", "Frankfurt", "Hamburg", "Monaco", "Vatican City",
+  "Dubrovnik", "Salzburg", "Krakow", "Nice", "Marseille", "Seville", "Valencia", "Antwerp", "Bruges",
+  // Asya & Orta Doğu
+  "Tokyo", "Kyoto", "Osaka", "Seoul", "Beijing", "Shanghai", "Hong Kong", "Singapore", "Bangkok",
+  "Taipei", "Kuala Lumpur", "Jakarta", "Manila", "Hanoi", "Mumbai", "Delhi", "New Delhi",
+  "Dubai", "Abu Dhabi", "Doha", "Riyadh", "Jerusalem", "Tel Aviv", "Beirut", "Baku", "Tbilisi", "Macao", "Phuket",
+  // Afrika & Okyanusya
+  "Cairo", "Cape Town", "Johannesburg", "Marrakesh", "Casablanca", "Nairobi",
+  "Sydney", "Melbourne", "Auckland", "Honolulu"
 ]);
 
 // 4. Mevcut 61 Küratörlü Şehri Temel Olarak Yükle
@@ -189,10 +197,11 @@ rl.on("line", line => {
   const isIconic = ICONIC_FAME_SET.has(nameUtf8) || ICONIC_FAME_SET.has(asciiname);
 
   let score = 0;
-  if (isCapital) score += 20000;
-  if (isIconic) score += 25000;
-  score += alt.length * 80;
-  if (pop > 0) score += Math.log10(pop) * 1000;
+  if (isIconic) score += 60000;
+  if (isCapital && (pop > 250000 || isIconic)) score += 20000;
+  else if (isCapital) score += 2000;
+  score += alt.length * 100;
+  if (pop > 0) score += Math.log10(pop) * 1500;
 
   if (!isCapital && !isIconic && pop < 90000) return;
 
@@ -255,8 +264,32 @@ rl.on("close", () => {
 
   console.log(`Total final selected cities: ${selectedCities.length}`);
 
-  // Şehirleri puanına ve orijinal durumuna göre sırala
-  selectedCities.sort((a, b) => (b.score || 99999) - (a.score || 99999));
+  // Şehirleri puanına göre sırala: Önce mutlak süperstarlar, sonra diğerleri
+  const TOP_100_EASY_MEGASTARS = new Set([
+    "New York City", "Los Angeles", "Chicago", "San Francisco", "Miami", "Las Vegas",
+    "Washington", "Boston", "Seattle", "New Orleans", "Honolulu", "Toronto", "Vancouver",
+    "Montreal", "Montréal", "Mexico City", "Havana", "Rio de Janeiro", "São Paulo",
+    "Buenos Aires", "Santiago", "Lima", "Bogota", "London", "Paris", "Rome", "Berlin",
+    "Madrid", "Barcelona", "Amsterdam", "Venice", "Florence", "Milan", "Vienna", "Prague",
+    "Budapest", "Dublin", "Lisbon", "Edinburgh", "Athens", "Monaco", "Dubrovnik", "Salzburg",
+    "Nice", "Marseille", "Seville", "Valencia", "Naples", "Brussels", "Antwerp", "Rotterdam",
+    "Stockholm", "Copenhagen", "Oslo", "Helsinki", "Reykjavik", "Reykjavík", "Zurich", "Geneva",
+    "Munich", "Frankfurt", "Hamburg", "Warsaw", "Kraków", "Moscow", "Saint Petersburg", "Kyiv",
+    "Istanbul", "Ankara", "Izmir", "İzmir", "Antalya", "Dubai", "Abu Dhabi", "Doha", "Riyadh",
+    "Jerusalem", "Tel Aviv", "Cairo", "Alexandria", "Casablanca", "Marrakech", "Beirut",
+    "Tokyo", "Kyoto", "Osaka", "Seoul", "Beijing", "Shanghai", "Hong Kong", "Singapore",
+    "Bangkok", "Taipei", "Kuala Lumpur", "Jakarta", "Manila", "Hanoi", "Macao", "Mumbai",
+    "Delhi", "New Delhi", "Cape Town", "Johannesburg", "Sydney", "Melbourne", "Auckland"
+  ]);
+
+  selectedCities.sort((a, b) => {
+    const aMegastar = TOP_100_EASY_MEGASTARS.has(a.nameEn) || TOP_100_EASY_MEGASTARS.has(a.name) || TOP_100_EASY_MEGASTARS.has(a.nameUtf8);
+    const bMegastar = TOP_100_EASY_MEGASTARS.has(b.nameEn) || TOP_100_EASY_MEGASTARS.has(b.name) || TOP_100_EASY_MEGASTARS.has(b.nameUtf8);
+
+    if (aMegastar && !bMegastar) return -1;
+    if (!aMegastar && bMegastar) return 1;
+    return (b.score || 99999) - (a.score || 99999);
+  });
 
   // Son formatlama & Benzersiz ID ve Alanları Oluştur
   const finalCities = [];
@@ -266,12 +299,9 @@ rl.on("close", () => {
     const c = selectedCities[index];
 
     // Zorluk Seviyesi Dağılımı:
-    // İlk 100: Kolay
-    // 101 - 300: Orta
-    // 301 - 500: Zor
-    let difficulty = 'hard';
-    if (index < 100) difficulty = 'easy';
-    else if (index < 300) difficulty = 'medium';
+    // İlk 100: Kolay (Dünyanın en bilindik süperstarları)
+    // Kalan 400: Zor (Diğer başkentler ve dünya şehirleri)
+    let difficulty = index < 100 ? 'easy' : 'hard';
 
     if (c.isOriginal) {
       // Orijinal küratörlü şehrin verilerini aynen koru

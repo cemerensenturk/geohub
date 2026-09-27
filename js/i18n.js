@@ -11,11 +11,9 @@ export const translations = {
   // Difficulty Levels
   difficultyLabel: "Difficulty Level:",
   diffEasy: "Easy",
-  diffMedium: "Medium",
   diffHard: "Hard",
-  diffEasyDesc: "Iconic Metropolises",
-  diffMediumDesc: "Major Capitals & Cities",
-  diffHardDesc: "Niche & Challenging Gems",
+  diffEasyDesc: "Top 100 Famous Cities",
+  diffHardDesc: "All World Cities & Capitals",
 
   // Modes
   modeMC: "Multiple Choice",
@@ -80,9 +78,7 @@ export const translations = {
   completedTitle: "🏆 Congratulations, Level Completed!",
   completedDesc: "You have completed all cities in this difficulty level.",
   btnPlayAgain: "Reset and Replay",
-  btnChangeDiff: "Choose Another Difficulty",
-  btnShare: "Share Score",
-  shareCopied: "Score copied! Share with friends 🚀"
+  btnChangeDiff: "Choose Another Difficulty"
 };
 
 class I18nManager {
