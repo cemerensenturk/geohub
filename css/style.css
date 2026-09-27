@@ -1,14 +1,14 @@
 /* ==========================================================================
-   SatelCity - Ana Stil Sayfası
-   Tema: Koyu Orman Yeşili & Toprak / Bronz Kaşif (Deep Forest & Earth Explorer)
+   SatelCity - Main Stylesheet
+   Theme: Deep Forest Green & Earth / Bronze Explorer
    ========================================================================== */
 
 :root {
-  /* Arka Plan: Derin Çam Ormanı & Gece Yosun Tonları */
+  /* Background: Deep Pine Forest & Night Moss Tones */
   --bg-main: #060a07;
   --bg-gradient: radial-gradient(circle at 50% 0%, #112215 0%, #060a07 75%);
   
-  /* Buzlu Cam Paneller: Koyu Orman Dokusu */
+  /* Frosted Glass Panels: Dark Forest Texture */
   --glass-bg: rgba(14, 24, 17, 0.76);
   --glass-bg-hover: rgba(20, 34, 24, 0.88);
   --glass-border: rgba(134, 239, 172, 0.12);
@@ -16,7 +16,7 @@
   --glass-glow: 0 12px 36px 0 rgba(0, 0, 0, 0.6);
   --glass-blur: blur(18px);
   
-  /* Canlı & Doğal Vurgular */
+  /* Vibrant & Natural Accents */
   --accent-forest: #22c55e;
   --accent-sage: #86efac;
   --accent-earth: #d97706;
@@ -24,7 +24,7 @@
   --accent-warm: #ca8a04;
   --accent-rose: #f43f5e;
 
-  /* Tipografi */
+  /* Typography */
   --text-primary: #f0fdf4;
   --text-secondary: #a7f3d0;
   --text-muted: #6ee7b7;
@@ -59,7 +59,7 @@ body {
 }
 
 /* --------------------------------------------------------------------------
-   Görsel Üst Navigasyon & Dil Değiştirici
+   Top Navigation Bar
    -------------------------------------------------------------------------- */
 .top-nav-bar {
   display: flex;
@@ -102,46 +102,8 @@ body {
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6);
 }
 
-.lang-switch-group {
-  display: inline-flex;
-  background: rgba(14, 24, 17, 0.85);
-  border: 1px solid var(--glass-border);
-  border-radius: 999px;
-  padding: 3px;
-  backdrop-filter: blur(8px);
-  gap: 2px;
-  transition: opacity 0.2s ease, transform 0.2s ease;
-}
-
-.lang-switch-group.hidden {
-  display: none !important;
-}
-
-.lang-btn {
-  background: transparent;
-  border: none;
-  color: #86efac;
-  padding: 0.35rem 0.65rem;
-  border-radius: 999px;
-  font-size: 0.78rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: var(--transition-smooth);
-}
-
-.lang-btn:hover {
-  color: #ffffff;
-  background: rgba(255, 255, 255, 0.06);
-}
-
-.lang-btn.active {
-  background: var(--accent-forest);
-  color: #052e16;
-  box-shadow: 0 2px 8px rgba(34, 197, 94, 0.4);
-}
-
 /* --------------------------------------------------------------------------
-   Ana Konteyner ve Ekran Yönetimi
+   Main Container and Screen Management
    -------------------------------------------------------------------------- */
 .app-viewport {
   width: 100%;
@@ -168,7 +130,7 @@ body {
 }
 
 /* --------------------------------------------------------------------------
-   Glassmorphism Kart / Panel
+   Glassmorphism Card / Panel
    -------------------------------------------------------------------------- */
 .glass-panel {
   background: var(--glass-bg);
@@ -180,7 +142,7 @@ body {
 }
 
 /* --------------------------------------------------------------------------
-   GİRİŞ EKRANI (Screen Home)
+   Home Screen (Screen Home)
    -------------------------------------------------------------------------- */
 #screen-home {
   align-items: center;
@@ -229,7 +191,7 @@ body {
 }
 
 /* --------------------------------------------------------------------------
-   Zorluk Seçici (Kolay / Orta / Zor)
+   Difficulty Selector (Easy / Hard)
    -------------------------------------------------------------------------- */
 .difficulty-wrapper {
   display: flex;
@@ -300,7 +262,9 @@ body {
   color: #86efac;
 }
 
-/* Mod Kartları Seçimi (Ayrı İstatistikli) */
+/* --------------------------------------------------------------------------
+   Mode Selection Cards (Independent Stats)
+   -------------------------------------------------------------------------- */
 .modes-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(290px, 350px));
@@ -442,13 +406,13 @@ body {
 }
 
 /* --------------------------------------------------------------------------
-   OYUN EKRANI (Screen Game)
+   Game Screen (Screen Game)
    -------------------------------------------------------------------------- */
 #screen-game {
   gap: 1.25rem;
 }
 
-/* Üst Bar (HUD) */
+/* Heads-Up Display (HUD) */
 .game-top-bar {
   display: flex;
   align-items: center;
@@ -524,7 +488,7 @@ body {
   font-weight: 500;
 }
 
-/* Ana Oyun Izgarası */
+/* Main Game Grid */
 .game-workspace {
   display: grid;
   grid-template-columns: 1.15fr 0.85fr;
@@ -533,7 +497,7 @@ body {
 }
 
 /* --------------------------------------------------------------------------
-   Uydu Fotoğraf Çerçevesi (Sol Kolon)
+   Satellite Photo Viewport (Left Column)
    -------------------------------------------------------------------------- */
 .photo-frame-card {
   position: relative;
@@ -554,7 +518,7 @@ body {
   cursor: default;
 }
 
-/* Leaflet Sabit Fotoğraf Temizliği */
+/* Leaflet Clean Static Styling */
 .leaflet-container {
   background: #040805 !important;
   font-family: inherit !important;
@@ -573,7 +537,7 @@ body {
   color: #86efac !important;
 }
 
-/* Fotoğrafın Üzerindeki Rozetler (Pusula & Büyüt) */
+/* Overlay Badges on Satellite Photo (Compass & Expand) */
 .photo-overlay-top {
   position: absolute;
   top: 1rem;
@@ -626,7 +590,7 @@ body {
 }
 
 /* --------------------------------------------------------------------------
-   Sağ Kolon: Oyun Etkileşimi & İpuçları
+   Right Column: Game Interaction & Hints
    -------------------------------------------------------------------------- */
 .game-controls-card {
   display: flex;
@@ -635,7 +599,7 @@ body {
   gap: 1.25rem;
 }
 
-/* İpuçları Bölümü */
+/* Hints Section */
 .hints-section {
   display: flex;
   flex-direction: column;
@@ -702,7 +666,7 @@ body {
 }
 
 /* --------------------------------------------------------------------------
-   MOD A: 4 Seçenekli Mod Stilleri
+   Multiple Choice Mode Styles
    -------------------------------------------------------------------------- */
 .mc-container {
   display: flex;
@@ -785,7 +749,7 @@ body {
 }
 
 /* --------------------------------------------------------------------------
-   MOD B: Yazarak Tahmin Modu Stilleri
+   Text Guess Mode Styles
    -------------------------------------------------------------------------- */
 .tg-container {
   display: flex;
@@ -865,7 +829,7 @@ body {
   cursor: not-allowed;
 }
 
-/* Dropdown */
+/* Autocomplete Dropdown */
 .tg-autocomplete-dropdown {
   display: none;
   position: absolute;
@@ -875,7 +839,7 @@ body {
   background: #0b140e;
   border: 1px solid var(--glass-border-light);
   border-radius: var(--radius-md);
-  box-shadow: 0 16px 36px rgba(0,0,0,0.8);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.8);
   z-index: 1000;
   max-height: 240px;
   overflow-y: auto;
@@ -925,7 +889,7 @@ body {
   text-align: center;
 }
 
-/* Tahmin Geçmişi Listesi */
+/* Guess History List */
 .tg-guesses-list {
   display: flex;
   flex-direction: column;
@@ -992,7 +956,7 @@ body {
   border-radius: 4px;
 }
 
-/* Yakınlık Renkleri */
+/* Proximity Distance Indicator Colors */
 .tg-guess-row.prox-exact {
   border-left-color: var(--accent-forest);
   background: rgba(34, 197, 94, 0.15);
@@ -1039,8 +1003,22 @@ body {
   border-color: rgba(244, 63, 94, 0.4);
 }
 
+/* Inline Warning Message for Text Guess */
+.tg-warning-msg {
+  background: rgba(239, 68, 68, 0.18);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  color: #fca5a5;
+  padding: 0.65rem 1rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.88rem;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 0.75rem;
+  display: none;
+}
+
 /* --------------------------------------------------------------------------
-   Sonuç Kartı / Overlay
+   Result Card / Overlay
    -------------------------------------------------------------------------- */
 .result-overlay-card {
   display: none;
@@ -1115,6 +1093,16 @@ body {
   line-height: 1.45;
 }
 
+.result-btn-group {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+.result-btn-group .btn-primary-action {
+  flex: 1;
+}
+
 .btn-primary-action {
   background: linear-gradient(135deg, #16a34a, #15803d);
   border: 1px solid rgba(134, 239, 172, 0.3);
@@ -1140,7 +1128,7 @@ body {
 }
 
 /* --------------------------------------------------------------------------
-   Seviye Tamamlama Ekranı (Level Completed State)
+   Level Completed State
    -------------------------------------------------------------------------- */
 .completed-card {
   display: none;
@@ -1183,7 +1171,7 @@ body {
 }
 
 /* --------------------------------------------------------------------------
-   Fotoğrafı Büyütme Modalı (SABİT, KAYDIRMA & ZOOM KİLİTLİ)
+   Locked Satellite Photo Modal (Static & Pan/Zoom Locked)
    -------------------------------------------------------------------------- */
 .photo-modal-backdrop {
   display: none;
@@ -1242,7 +1230,7 @@ body {
 }
 
 /* --------------------------------------------------------------------------
-   Animasyonlar & Duyarlılık (Responsive)
+   Animations & Responsive Breakpoints
    -------------------------------------------------------------------------- */
 @keyframes slideUp {
   from {
@@ -1275,80 +1263,6 @@ body {
   .hero-title {
     font-size: 2.3rem;
   }
-/* Sonuç Buton Grubu (Sonraki Şehir & Paylaş) */
-.result-btn-group {
-  display: flex;
-  gap: 0.75rem;
-  margin-top: 0.25rem;
-}
-
-.result-btn-group .btn-primary-action {
-  flex: 1;
-}
-
-.btn-share-action {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid var(--glass-border-light);
-  color: var(--accent-sage);
-  padding: 0.95rem 1.25rem;
-  border-radius: var(--radius-md);
-  font-family: inherit;
-  font-size: 0.95rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: var(--transition-smooth);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-}
-
-.btn-share-action:hover {
-  background: rgba(34, 197, 94, 0.15);
-  border-color: rgba(34, 197, 94, 0.4);
-  color: #ffffff;
-  transform: translateY(-2px);
-}
-
-/* Yazarak Tahmin İnline Uyarı Mesajı */
-.tg-warning-msg {
-  background: rgba(239, 68, 68, 0.18);
-  border: 1px solid rgba(239, 68, 68, 0.35);
-  color: #fca5a5;
-  padding: 0.65rem 1rem;
-  border-radius: var(--radius-sm);
-  font-size: 0.88rem;
-  font-weight: 600;
-  text-align: center;
-  margin-bottom: 0.75rem;
-  display: none;
-}
-
-/* Global Floating Toast */
-.app-toast {
-  position: fixed;
-  bottom: 2rem;
-  left: 50%;
-  transform: translateX(-50%) translateY(100px);
-  background: rgba(6, 10, 7, 0.95);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid var(--accent-forest);
-  color: #f0fdf4;
-  padding: 0.75rem 1.5rem;
-  border-radius: 999px;
-  font-size: 0.92rem;
-  font-weight: 700;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
-  z-index: 9999;
-  opacity: 0;
-  pointer-events: none;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.app-toast.active {
-  transform: translateX(-50%) translateY(0);
-  opacity: 1;
 }
 
 @media (max-width: 600px) {
@@ -1373,10 +1287,5 @@ body {
   .completed-btn-group {
     flex-direction: column;
     width: 100%;
-  }
-
-  .lang-switch-group {
-    max-width: 180px;
-    overflow-x: auto;
   }
 }

@@ -1,66 +1,23 @@
 /**
- * SatelCity - 500 Şehirli Hibrit Veri Üretim Motoru (v2 - Tamamen Benzersiz Şehirler)
- * GeoNames cities15000 + Natural Earth 50m Coastlines + Hybrid Fame Index
+ * SatelCity - 500 Unique Cities Data Pipeline (English-Only)
+ * Sources: GeoNames cities15000 + Natural Earth 50m Coastlines + Hybrid Fame Index
  */
 
 import fs from 'fs';
 import readline from 'readline';
 
-// 1. Ülke Bilgisi ve Türkçe Çeviri Sözlüğü
-const COUNTRY_TR = {
-  TR: "Türkiye", US: "Amerika Birleşik Devletleri", GB: "Birleşik Krallık", FR: "Fransa",
-  DE: "Almanya", IT: "İtalya", ES: "İspanya", JP: "Japonya", CN: "Çin", RU: "Rusya",
-  CA: "Kanada", AU: "Avustralya", BR: "Brezilya", IN: "Hindistan", MX: "Meksika",
-  NL: "Hollanda", BE: "Belçika", CH: "İsviçre", AT: "Avusturya", SE: "İsveç",
-  NO: "Norveç", DK: "Danimarka", FI: "Finlandiya", PL: "Polonya", PT: "Portekiz",
-  GR: "Yunanistan", IE: "İrlanda", CZ: "Çekya", HU: "Macaristan", RO: "Romanya",
-  UA: "Ukrayna", EG: "Mısır", ZA: "Güney Afrika", AR: "Arjantin", CL: "Şili",
-  CO: "Kolombiya", PE: "Peru", KR: "Güney Kore", TH: "Tayland", VN: "Vietnam",
-  ID: "Endonezya", MY: "Malezya", PH: "Filipinler", SA: "Suudi Arabistan", AE: "Birleşik Arap Emirlikleri",
-  QA: "Katar", IL: "İsrail", IR: "İran", IQ: "Irak", MA: "Fas", DZ: "Cezayir",
-  TN: "Tunus", KE: "Kenya", NG: "Nijerya", ET: "Etiyopya", GH: "Gana", TZ: "Tanzanya",
-  NZ: "Yeni Zelanda", IS: "İzlanda", HR: "Hırvatistan", RS: "Sırbistan", BA: "Bosna-Hersek",
-  ME: "Karadağ", MK: "Kuzey Makedonya", AL: "Arnavutluk", BG: "Bulgaristan", SK: "Slovakya",
-  SI: "Slovenya", EE: "Estonya", LV: "Letonya", LT: "Litvanya", BY: "Belarus",
-  GE: "Gürcistan", AZ: "Azerbaycan", AM: "Ermenistan", KZ: "Kazakistan", UZ: "Özbekistan",
-  PK: "Pakistan", BD: "Bangladeş", LK: "Sri Lanka", NP: "Nepal", SG: "Singapur",
-  CU: "Küba", JM: "Jamaika", PA: "Panama", CR: "Kosta Rika", UY: "Uruguay",
-  PY: "Paraguay", BO: "Bolivya", EC: "Ekvador", VE: "Venezuela", MC: "Monako",
-  VA: "Vatikan", SM: "San Marino", AD: "Andorra", LI: "Lihtenştayn", LU: "Lüksemburg",
-  MT: "Malta", CY: "Kıbrıs", MD: "Moldova", JO: "Ürdün", LB: "Lübnan",
-  OM: "Umman", KW: "Kuveyt", BH: "Bahreyn", MN: "Moğolistan", KH: "Kamboçya",
-  LA: "Laos", MM: "Myanmar", SN: "Senegal", CI: "Fildişi Sahili", CM: "Kamerun",
-  UG: "Uganda", RW: "Ruanda", ZW: "Zimbabve", NA: "Namibya", BW: "Botsvana",
-  MU: "Mauritius", TW: "Tayvan"
-};
-
+// 1. Continent Name Mapping (English)
 const CONTINENT_MAP = {
-  EU: { tr: "Avrupa", en: "Europe" },
-  AS: { tr: "Asya", en: "Asia" },
-  AF: { tr: "Afrika", en: "Africa" },
-  NA: { tr: "Kuzey Amerika", en: "North America" },
-  SA: { tr: "Güney Amerika", en: "South America" },
-  OC: { tr: "Okyanusya", en: "Oceania" },
-  AN: { tr: "Antarktika", en: "Antarctica" }
+  EU: "Europe",
+  AS: "Asia",
+  AF: "Africa",
+  NA: "North America",
+  SA: "South America",
+  OC: "Oceania",
+  AN: "Antarctica"
 };
 
-// Şehirlerin yaygın Türkçe isimleri
-const CITY_TR_EXONYMS = {
-  "Rome": "Roma", "Athens": "Atina", "Vienna": "Viyana", "Cairo": "Kahire",
-  "Moscow": "Moskova", "Munich": "Münih", "Prague": "Prag", "Warsaw": "Varşova",
-  "Copenhagen": "Kopenhag", "Brussels": "Brüksel", "London": "Londra", "Paris": "Paris",
-  "Lisbon": "Lizbon", "Venice": "Venedik", "Geneva": "Cenevre", "Bucharest": "Bükreş",
-  "Belgrade": "Belgrad", "Budapest": "Budapeşte", "Florence": "Floransa",
-  "Naples": "Napoli", "Cologne": "Köln", "Aleppo": "Halep", "Damascus": "Şam",
-  "Baghdad": "Bağdat", "Jerusalem": "Kudüs", "Beirut": "Beyrut", "Tehran": "Tahran",
-  "Algiers": "Cezayir", "Tunis": "Tunus", "Tripoli": "Trablus", "Kiev": "Kiev",
-  "Tbilisi": "Tiflis", "Baku": "Bakü", "Yerevan": "Erivan", "Ashgabat": "Aşkabat",
-  "Tashkent": "Taşkent", "Nicosia": "Lefkoşa", "Zurich": "Zürih", "Thessaloniki": "Selanik",
-  "Skopje": "Üsküp", "Sarajevo": "Saraybosna", "Podgorica": "Podgoritsa", "Pristina": "Priştine",
-  "Milan": "Milano", "Turin": "Torino", "Genoa": "Cenova", "Seville": "Sevilla",
-  "Dubrovnik": "Dubrovnik", "Monaco": "Monako", "Vatican City": "Vatikan"
-};
-
+// Unicode Flag Emoji Generator (ISO-2 Alpha Code -> Flag)
 function getFlagEmoji(countryCode) {
   if (!countryCode || countryCode.length !== 2) return "🌐";
   const codePoints = countryCode
@@ -70,7 +27,7 @@ function getFlagEmoji(countryCode) {
   return String.fromCodePoint(...codePoints);
 }
 
-// 2. Natural Earth 50m Coastline Yükleme
+// 2. Load Natural Earth 50m Coastline Geometry
 console.log("Loading 50m coastline geometry...");
 const coastData = JSON.parse(fs.readFileSync("/tmp/ne_50m_coastline.geojson", "utf-8"));
 const coastLines = [];
@@ -119,7 +76,7 @@ function getDistanceToCoastKm(lat, lng) {
   return minDist;
 }
 
-// 3. Ülke Bilgilerini Yükleme
+// 3. Load Country Metadata
 console.log("Loading country metadata...");
 const countryLines = fs.readFileSync("/tmp/countryInfo.txt", "utf-8").split("\n");
 const countryMap = {};
@@ -129,29 +86,29 @@ for (const line of countryLines) {
   countryMap[p[0]] = { name: p[4], capital: p[5], continent: p[8] };
 }
 
-// Kültürel & Dünya Çapında En Tanınan Süperstar Şehirler (Top 100 Kolay Havuzu)
+// Cultural & Globally Renowned Megastars
 const ICONIC_FAME_SET = new Set([
-  // Kuzey & Güney Amerika
+  // North & South America
   "New York City", "New York", "Los Angeles", "Chicago", "San Francisco", "Miami", "Las Vegas",
   "Washington", "Boston", "Toronto", "Vancouver", "Montreal", "Mexico City", "Havana",
   "Rio de Janeiro", "Sao Paulo", "Buenos Aires", "Santiago", "Lima", "Bogota", "Cusco",
-  // Avrupa
+  // Europe
   "London", "Paris", "Rome", "Berlin", "Madrid", "Barcelona", "Amsterdam", "Venice", "Florence",
   "Milan", "Vienna", "Prague", "Budapest", "Dublin", "Lisbon", "Edinburgh", "Athens", "Istanbul",
   "Moscow", "Saint Petersburg", "Warsaw", "Brussels", "Stockholm", "Oslo", "Copenhagen", "Helsinki",
   "Reykjavik", "Reykjavík", "Zurich", "Geneva", "Munich", "Frankfurt", "Hamburg", "Monaco", "Vatican City",
   "Dubrovnik", "Salzburg", "Krakow", "Nice", "Marseille", "Seville", "Valencia", "Antwerp", "Bruges",
-  // Asya & Orta Doğu
+  // Asia & Middle East
   "Tokyo", "Kyoto", "Osaka", "Seoul", "Beijing", "Shanghai", "Hong Kong", "Singapore", "Bangkok",
   "Taipei", "Kuala Lumpur", "Jakarta", "Manila", "Hanoi", "Mumbai", "Delhi", "New Delhi",
   "Dubai", "Abu Dhabi", "Doha", "Riyadh", "Jerusalem", "Tel Aviv", "Beirut", "Baku", "Tbilisi", "Macao", "Phuket",
-  // Afrika & Okyanusya
+  // Africa & Oceania
   "Cairo", "Cape Town", "Johannesburg", "Marrakesh", "Casablanca", "Nairobi",
   "Sydney", "Melbourne", "Auckland", "Honolulu"
 ]);
 
-// 4. Mevcut 61 Küratörlü Şehri Temel Olarak Yükle
-console.log("Loading original 61 curated cities...");
+// 4. Load Original Curated Cities
+console.log("Loading original curated cities...");
 const existingCode = fs.readFileSync("js/cities.js", "utf-8");
 const existingMatch = existingCode.match(/export const CITIES = (\[[\s\S]*?\]);/);
 const originalCities = existingMatch ? eval(existingMatch[1]) : [];
@@ -162,19 +119,17 @@ const seenCityNames = new Set();
 const seenIds = new Set();
 const countryCounts = {};
 
-// Orijinal şehirleri ilk sıraya ekle
+// Register original cities
 for (const c of originalCities) {
   selectedCities.push({ ...c, isOriginal: true });
-  seenCityNames.add(c.nameEn.toLowerCase());
-  seenCityNames.add(c.name.toLowerCase());
+  seenCityNames.add((c.nameEn || c.name).toLowerCase());
   seenIds.add(c.id);
-  // Ülke kodu tespiti
-  const cEntry = Object.entries(countryMap).find(([code, val]) => val.name === c.countryEn);
+  const cEntry = Object.entries(countryMap).find(([code, val]) => val.name === (c.countryEn || c.country));
   const code = cEntry ? cEntry[0] : "XX";
   countryCounts[code] = (countryCounts[code] || 0) + 1;
 }
 
-// 5. GeoNames Verilerini Oku ve Puanla
+// 5. Parse and Score GeoNames Candidates
 console.log("Parsing GeoNames candidates...");
 const stream = fs.createReadStream("/tmp/cities15000.txt");
 const rl = readline.createInterface({ input: stream });
@@ -226,7 +181,7 @@ rl.on("close", () => {
   console.log(`Total qualified candidates: ${candidates.length}`);
   candidates.sort((a, b) => b.score - a.score);
 
-  // 1. Tur: Kalan Başkentler ve İkonik Yerler
+  // Round 1: Capitals & Iconic gems
   for (const c of candidates) {
     if (selectedCities.length >= 500) break;
     const nameKey = c.name.toLowerCase();
@@ -244,7 +199,7 @@ rl.on("close", () => {
 
   console.log(`Selected count after capitals/iconic: ${selectedCities.length}`);
 
-  // 2. Tur: Kalan Kontenjanı En Yüksek Ünlü Metropollerle Doldur
+  // Round 2: Fill remaining quota with highest fame global metropolises
   for (const c of candidates) {
     if (selectedCities.length >= 500) break;
     const nameKey = c.name.toLowerCase();
@@ -264,7 +219,7 @@ rl.on("close", () => {
 
   console.log(`Total final selected cities: ${selectedCities.length}`);
 
-  // Şehirleri puanına göre sırala: Önce mutlak süperstarlar, sonra diğerleri
+  // Define the exact Top 100 World Superstars for Easy Tier
   const TOP_100_EASY_MEGASTARS = new Set([
     "New York City", "Los Angeles", "Chicago", "San Francisco", "Miami", "Las Vegas",
     "Washington", "Boston", "Seattle", "New Orleans", "Honolulu", "Toronto", "Vancouver",
@@ -283,61 +238,64 @@ rl.on("close", () => {
   ]);
 
   selectedCities.sort((a, b) => {
-    const aMegastar = TOP_100_EASY_MEGASTARS.has(a.nameEn) || TOP_100_EASY_MEGASTARS.has(a.name) || TOP_100_EASY_MEGASTARS.has(a.nameUtf8);
-    const bMegastar = TOP_100_EASY_MEGASTARS.has(b.nameEn) || TOP_100_EASY_MEGASTARS.has(b.name) || TOP_100_EASY_MEGASTARS.has(b.nameUtf8);
+    const aName = a.nameEn || a.name || a.nameUtf8;
+    const bName = b.nameEn || b.name || b.nameUtf8;
+    const aMegastar = TOP_100_EASY_MEGASTARS.has(aName);
+    const bMegastar = TOP_100_EASY_MEGASTARS.has(bName);
 
     if (aMegastar && !bMegastar) return -1;
     if (!aMegastar && bMegastar) return 1;
     return (b.score || 99999) - (a.score || 99999);
   });
 
-  // Son formatlama & Benzersiz ID ve Alanları Oluştur
+  // Final Assembly & Unique IDs
   const finalCities = [];
   const finalSeenIds = new Set();
 
   for (let index = 0; index < selectedCities.length; index++) {
     const c = selectedCities[index];
 
-    // Zorluk Seviyesi Dağılımı:
-    // İlk 100: Kolay (Dünyanın en bilindik süperstarları)
-    // Kalan 400: Zor (Diğer başkentler ve dünya şehirleri)
-    let difficulty = index < 100 ? 'easy' : 'hard';
+    // Difficulty assignment: Top 100 -> Easy, Remaining 400 -> Hard
+    const difficulty = index < 100 ? 'easy' : 'hard';
 
     if (c.isOriginal) {
-      // Orijinal küratörlü şehrin verilerini aynen koru
       let finalId = c.id;
       if (finalSeenIds.has(finalId)) {
         finalId = `${c.id}_orig`;
       }
       finalSeenIds.add(finalId);
 
+      const englishName = c.nameEn || c.name;
+      const englishCountry = c.countryEn || c.country;
+      const englishContinent = c.continentEn || c.continent;
+      const englishPop = String(c.population).replace('Milyon', 'Million').replace('Bin', 'Thousand');
+      const englishHint = c.hintEn || c.hint;
+
       finalCities.push({
         id: finalId,
         difficulty,
         geo: c.geo,
-        name: c.name,
-        nameEn: c.nameEn,
-        country: c.country,
-        countryEn: c.countryEn,
+        name: englishName,
+        nameEn: englishName,
+        country: englishCountry,
+        countryEn: englishCountry,
         flag: c.flag,
-        continent: c.continent,
-        continentEn: c.continentEn,
+        continent: englishContinent,
+        continentEn: englishContinent,
         lat: c.lat,
         lng: c.lng,
         zoom: c.zoom,
-        population: c.population,
-        hint: c.hint,
-        hintEn: c.hintEn
+        population: englishPop,
+        hint: englishHint,
+        hintEn: englishHint
       });
       continue;
     }
 
-    // Yeni Eklenen GeoNames Şehri
-    // Kıyı / Kara Tespiti (50m Coastline)
+    // Newly added GeoNames City
     const distToCoast = getDistanceToCoastKm(c.lat, c.lng);
     const geo = distToCoast < 35 ? 'coastal' : 'inland';
 
-    // Zoom Seviyesi
     let zoom = 12;
     if (c.pop >= 6000000) zoom = 11;
     else if (c.pop >= 1500000) zoom = 12;
@@ -345,27 +303,23 @@ rl.on("close", () => {
     else zoom = 14;
 
     const nameEn = c.nameUtf8 || c.name;
-    const nameTr = CITY_TR_EXONYMS[nameEn] || CITY_TR_EXONYMS[c.name] || nameEn;
-    const countryTr = COUNTRY_TR[c.countryCode] || c.countryEn;
     const countryEn = c.countryEn;
     const flag = getFlagEmoji(c.countryCode);
-    const contInfo = CONTINENT_MAP[c.continentCode] || { tr: "Dünya", en: "World" };
+    const continentEn = CONTINENT_MAP[c.continentCode] || "World";
 
     let popText = "";
     if (c.pop >= 1000000) {
-      popText = `~${(c.pop / 1000000).toFixed(1).replace('.0', '')} Milyon`;
+      popText = `~${(c.pop / 1000000).toFixed(1).replace('.0', '')} Million`;
     } else if (c.pop >= 1000) {
-      popText = `~${Math.round(c.pop / 1000)} Bin`;
+      popText = `~${Math.round(c.pop / 1000)} Thousand`;
     } else if (c.pop > 0) {
       popText = `~${c.pop}`;
     } else {
-      popText = "~100 Bin";
+      popText = "~100 Thousand";
     }
 
-    let hint = c.isCapital ? `${countryTr} ülkesinin başkenti.` : `${countryTr} ülkesinin önemli bir şehri.`;
-    let hintEn = c.isCapital ? `Capital city of ${countryEn}.` : `Major city in ${countryEn}.`;
+    const hintEn = c.isCapital ? `Capital city of ${countryEn}.` : `Major city in ${countryEn}.`;
 
-    // Benzersiz ID oluşturucu
     let baseId = (c.name.toLowerCase().replace(/[^a-z0-9]/g, '_') + '_' + c.countryCode.toLowerCase()).replace(/_+/g, '_');
     let finalId = baseId;
     let suffix = 1;
@@ -378,26 +332,25 @@ rl.on("close", () => {
       id: finalId,
       difficulty,
       geo,
-      name: nameTr,
-      nameEn,
-      country: countryTr,
-      countryEn,
+      name: nameEn,
+      nameEn: nameEn,
+      country: countryEn,
+      countryEn: countryEn,
       flag,
-      continent: contInfo.tr,
-      continentEn: contInfo.en,
+      continent: continentEn,
+      continentEn: continentEn,
       lat: Math.round(c.lat * 10000) / 10000,
       lng: Math.round(c.lng * 10000) / 10000,
       zoom,
       population: popText,
-      hint,
-      hintEn
+      hint: hintEn,
+      hintEn: hintEn
     });
   }
 
-  // İstatistik Raporu
+  // Tier Statistics Report
   const tierStats = {
     easy: { coastal: 0, inland: 0 },
-    medium: { coastal: 0, inland: 0 },
     hard: { coastal: 0, inland: 0 }
   };
   for (const fc of finalCities) {
@@ -407,9 +360,9 @@ rl.on("close", () => {
   console.log("Tier Statistics:", tierStats);
 
   const header = `/**
- * SatelCity - 500 Şehirli Hibrit Veri Tabanı
- * Küresel Ün İndeksi + Başkent Garantisi + Doğal Kıyı Şeridi Geometrisi
- * Kolay (100 Şehir), Orta (200 Şehir), Zor (200 Şehir)
+ * SatelCity - 500 Unique Cities Dataset (English Standard)
+ * Hybrid Fame Index + National Capital Guarantee + 50m Coastline Geometry
+ * 100 Easy (Global Superstars) + 400 Hard (World Capitals & Metropolises)
  */
 
 export const CITIES = ${JSON.stringify(finalCities, null, 2)};
@@ -418,5 +371,5 @@ export default CITIES;
 `;
 
   fs.writeFileSync("js/cities.js", header, "utf-8");
-  console.log(`SUCCESS! Generated js/cities.js with ${finalCities.length} unique cities.`);
+  console.log(`SUCCESS! Generated js/cities.js with ${finalCities.length} unique cities in pure English.`);
 });

@@ -1,7 +1,7 @@
 /**
- * SatelCity - Ana Uygulama Kontrolcüsü (v2.1)
- * Otomatik ipucu açma, menüden çıkışta cevapsız soruyu yanlış sayma,
- * 6 dilli sistem ve oyun sırasında dil seçicisini gizleme.
+ * SatelCity - Main Application Controller
+ * Handles round transitions, hints auto-reveal, abandonment penalty on unload/exit,
+ * locked satellite imagery modal, and stats updates.
  */
 
 import CITIES from './cities.js';
@@ -14,10 +14,10 @@ import i18n from './i18n.js';
 class App {
   constructor() {
     this.cities = [...CITIES];
-    this.currentDifficulty = 'easy'; // 'easy' | 'medium' | 'hard'
+    this.currentDifficulty = 'easy'; // 'easy' | 'hard'
     this.activeMode = null; // 'mc' | 'text'
     this.currentCity = null;
-    this.isRoundFinished = true; // Tur bitiş bayrağı
+    this.isRoundFinished = true; // Round completion flag
     this.satelliteMap = null;
     this.modalMap = null;
 
@@ -50,7 +50,7 @@ class App {
       if (pendingStr) {
         const pending = JSON.parse(pendingStr);
         if (pending && pending.mode && pending.cityId) {
-          // Sayfa yenilendiğinde veya kapatıldığında cevaplanmamış soru YANLIŞ sayılır
+          // Unanswered round when refreshing or closing tab is counted as incorrect
           statsManager.recordResult(pending.mode, pending.cityId, false);
         }
         localStorage.removeItem('satelcity_pending_round');
@@ -70,7 +70,7 @@ class App {
       diffPillEasy: document.getElementById('diff-pill-easy'),
       diffPillHard: document.getElementById('diff-pill-hard'),
 
-      // Mod Butonları
+      // Mode Buttons
       btnStartMC: document.getElementById('btn-mode-mc'),
       btnStartText: document.getElementById('btn-mode-text'),
       btnResetMC: document.getElementById('btn-reset-mc-stats'),
@@ -78,23 +78,23 @@ class App {
       btnResetGame: document.getElementById('btn-reset-stats-game'),
       btnHome: document.getElementById('btn-game-home'),
 
-      // Ana Menü İstatistikleri
+      // Home Menu Stats
       homeMCStatAccuracy: document.getElementById('home-mc-stat-accuracy'),
       homeMCStatRatio: document.getElementById('home-mc-stat-ratio'),
       homeTextStatAccuracy: document.getElementById('home-text-stat-accuracy'),
       homeTextStatRatio: document.getElementById('home-text-stat-ratio'),
 
-      // Oyun HUD
+      // Game HUD
       gameModeBadge: document.getElementById('game-mode-badge'),
       gameDiffBadge: document.getElementById('game-diff-badge'),
       gameStatAccuracy: document.getElementById('game-stat-accuracy'),
       gameStatRatio: document.getElementById('game-stat-ratio'),
 
-      // Oyun & Harita Alanı
+      // Game & Map Containers
       modeContentArea: document.getElementById('mode-content-area'),
       mapContainer: document.getElementById('satellite-map-container'),
       
-      // İpuçları
+      // Hints
       btnHintContinent: document.getElementById('btn-hint-continent'),
       btnHintCountry: document.getElementById('btn-hint-country'),
       btnHintDetail: document.getElementById('btn-hint-detail'),
@@ -102,7 +102,7 @@ class App {
       hintValCountry: document.getElementById('hint-val-country'),
       hintValDetail: document.getElementById('hint-val-detail'),
 
-      // Sonuç Kartı
+      // Result Card
       resultCard: document.getElementById('result-overlay-card'),
       resultTitle: document.getElementById('result-title'),
       resultCityName: document.getElementById('result-city-name'),
@@ -111,12 +111,12 @@ class App {
       resultAccuracyBadge: document.getElementById('result-accuracy-badge'),
       btnNextCity: document.getElementById('btn-next-city'),
 
-      // Seviye Tamamlama Kartı
+      // Tier Completed Card
       completedCard: document.getElementById('completed-card'),
       btnReplayTier: document.getElementById('btn-replay-tier'),
       btnChangeDiff: document.getElementById('btn-change-diff'),
 
-      // Fotoğraf Büyütme Modal
+      // Photo Modal
       btnExpandPhoto: document.getElementById('btn-expand-photo'),
       photoModal: document.getElementById('photo-modal'),
       btnClosePhotoModal: document.getElementById('btn-close-photo-modal'),
@@ -148,7 +148,7 @@ class App {
       });
     });
 
-    // Mod Başlatma
+    // Start Mode
     this.elements.btnStartMC.addEventListener('click', (e) => {
       if (e.target.id === 'btn-reset-mc-stats') return;
       this.startGame('mc');
@@ -159,7 +159,7 @@ class App {
       this.startGame('text');
     });
 
-    // İstatistik Sıfırlama Butonları
+    // Reset Stats Buttons
     this.elements.btnResetMC.addEventListener('click', (e) => {
       e.stopPropagation();
       if (confirm(i18n.t('resetConfirm'))) {
@@ -184,7 +184,7 @@ class App {
       }
     });
 
-    // Ana Menüye Dön: Eğer soru henüz cevaplanmadıysa YANLIŞ say!
+    // Return to Menu: If current question was unanswered, record as incorrect
     this.elements.btnHome.addEventListener('click', () => {
       if (!this.isRoundFinished && this.currentCity) {
         statsManager.recordResult(this.activeMode, this.currentCity.id, false);
@@ -195,7 +195,7 @@ class App {
       this.updateStatsUI();
     });
 
-    // Sayfa Yenilendiğinde (F5 / Cmd+R) veya Sekme Kapatıldığında cevapsız soruyu YANLIŞ say!
+    // Abandonment penalty: Count as incorrect if user refreshes or closes the page during an active round
     const handleUnloadPenalty = () => {
       if (!this.isRoundFinished && this.currentCity) {
         statsManager.recordResult(this.activeMode, this.currentCity.id, false);
@@ -206,13 +206,13 @@ class App {
     window.addEventListener('beforeunload', handleUnloadPenalty);
     window.addEventListener('pagehide', handleUnloadPenalty);
 
-    // Sonraki Soru
+    // Next Question
     this.elements.btnNextCity.addEventListener('click', () => {
       this.elements.resultCard.classList.remove('active');
       this.nextRound();
     });
 
-    // Seviye Tamamlama Butonları
+    // Tier Completed Actions
     this.elements.btnReplayTier.addEventListener('click', () => {
       statsManager.resetMode(this.activeMode);
       this.updateStatsUI();
@@ -225,16 +225,16 @@ class App {
       this.showScreen('screen-home');
     });
 
-    // İpucu Butonları
+    // Hint Buttons
     this.elements.btnHintContinent.addEventListener('click', () => this.revealHint('continent'));
     this.elements.btnHintCountry.addEventListener('click', () => this.revealHint('country'));
     this.elements.btnHintDetail.addEventListener('click', () => this.revealHint('detail'));
 
-    // Fotoğrafı Büyütme Modalı (SABİT & KİLİTLİ)
+    // Locked Satellite Photo Modal
     this.elements.btnExpandPhoto.addEventListener('click', () => this.openPhotoModal());
     this.elements.btnClosePhotoModal.addEventListener('click', () => this.closePhotoModal());
 
-    // Genel Klavye Kısayolları (Esc ile modalı kapat, Enter ile sonraki soruya geç)
+    // Keyboard Shortcuts (Esc closes modal, Enter advances to next round)
     window.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
         this.closePhotoModal();
@@ -257,7 +257,7 @@ class App {
     document.getElementById('txt-diff-hard').textContent = i18n.t('diffHard');
     document.getElementById('txt-diff-hard-desc').textContent = i18n.t('diffHardDesc');
 
-    // Mod Kartları
+    // Mode Cards
     document.getElementById('txt-mode-mc-title').textContent = i18n.t('modeMC');
     document.getElementById('txt-mode-mc-desc').textContent = i18n.t('modeMCDesc');
     document.getElementById('txt-btn-play-mc').textContent = i18n.t('btnPlay');
@@ -268,20 +268,20 @@ class App {
     document.getElementById('txt-btn-play-text').textContent = i18n.t('btnPlay');
     document.getElementById('btn-reset-text-stats').textContent = i18n.t('btnResetStats');
 
-    // Oyun HUD & Fotoğraf
+    // Game HUD & Photo
     document.getElementById('txt-btn-menu').textContent = i18n.t('btnMenu');
     document.getElementById('txt-compass-north').textContent = i18n.t('compassNorth');
     document.getElementById('txt-btn-expand').textContent = i18n.t('btnExpand');
     document.getElementById('btn-reset-stats-game').textContent = i18n.t('btnResetStats');
     this.elements.btnClosePhotoModal.textContent = i18n.t('btnCloseModal');
 
-    // İpuçları
+    // Hints
     document.getElementById('txt-hints-header').textContent = i18n.t('hintsHeader');
     document.getElementById('txt-hint-continent-lbl').textContent = i18n.t('hintContinent');
     document.getElementById('txt-hint-country-lbl').textContent = i18n.t('hintCountry');
     document.getElementById('txt-hint-detail-lbl').textContent = i18n.t('hintDetail');
 
-    // Sonuç & Tamamlama
+    // Result & Completion
     document.getElementById('txt-btn-next-city').textContent = i18n.t('btnNextCity');
     document.getElementById('txt-completed-title').textContent = i18n.t('completedTitle');
     document.getElementById('txt-completed-desc').textContent = i18n.t('completedDesc');
@@ -308,15 +308,15 @@ class App {
     const mcStats = statsManager.getModeStats('mc');
     const textStats = statsManager.getModeStats('text');
     
-    // Ana Menü MC Stats
+    // Home Menu MC Stats
     this.elements.homeMCStatAccuracy.textContent = i18n.formatPercentage(mcStats.accuracy);
     this.elements.homeMCStatRatio.textContent = `${mcStats.correct} / ${mcStats.played} ${i18n.t('statCorrectRatio')}`;
 
-    // Ana Menü Text Stats
+    // Home Menu Text Stats
     this.elements.homeTextStatAccuracy.textContent = i18n.formatPercentage(textStats.accuracy);
     this.elements.homeTextStatRatio.textContent = `${textStats.correct} / ${textStats.played} ${i18n.t('statCorrectRatio')}`;
 
-    // Aktif Oyun HUD Stats
+    // Active Game HUD Stats
     if (this.activeMode) {
       const activeStats = statsManager.getModeStats(this.activeMode);
       this.elements.gameStatAccuracy.textContent = i18n.formatPercentage(activeStats.accuracy);
@@ -349,13 +349,13 @@ class App {
       return;
     }
 
-    this.isRoundFinished = false; // Yeni soru başladı
+    this.isRoundFinished = false; // New round started
     this.elements.completedCard.classList.remove('active');
 
     const randIdx = Math.floor(Math.random() * available.length);
     this.currentCity = available[randIdx];
 
-    // Sayfa yenileme/kapatma kaçış koruması için bekleyen soruyu kaydet
+    // Persist pending round for refresh/leave penalty protection
     try {
       localStorage.setItem('satelcity_pending_round', JSON.stringify({
         mode: this.activeMode,
@@ -395,19 +395,6 @@ class App {
     this.revealHint('detail');
   }
 
-  refreshHintsUI() {
-    if (!this.currentCity) return;
-    if (this.unlockedHints.continent) {
-      this.elements.hintValContinent.textContent = i18n.getContinentName(this.currentCity);
-    }
-    if (this.unlockedHints.country) {
-      this.elements.hintValCountry.textContent = `${this.currentCity.flag} ${i18n.getCountryName(this.currentCity)}`;
-    }
-    if (this.unlockedHints.detail) {
-      this.elements.hintValDetail.textContent = `${i18n.getCityHint(this.currentCity)} (${i18n.t('populationLabel')} ${i18n.formatPopulation(this.currentCity)})`;
-    }
-  }
-
   revealHint(type) {
     if (!this.currentCity) return;
 
@@ -427,17 +414,17 @@ class App {
   }
 
   handleRoundEnd({ isCorrect, targetCity }) {
-    this.isRoundFinished = true; // Soru cevaplandı
+    this.isRoundFinished = true; // Round ended
     try { localStorage.removeItem('satelcity_pending_round'); } catch (e) {}
 
-    // İpucu sistemi: Cevap verildiğinde tüm ipuçlarını otomatik aç!
+    // Auto-reveal all hints upon round completion
     this.revealAllHints();
 
-    // İstatistik ve görülen şehir kaydı
+    // Record stats and seen city
     const stats = statsManager.recordResult(this.activeMode, targetCity.id, isCorrect);
     this.updateStatsUI();
 
-    // Sonuç kartı
+    // Result card display
     this.elements.resultTitle.className = isCorrect ? 'result-title correct' : 'result-title wrong';
     this.elements.resultTitle.textContent = isCorrect ? i18n.t('resultCorrect') : i18n.t('resultWrong');
     

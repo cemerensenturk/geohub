@@ -1,8 +1,8 @@
 /**
- * SatelCity - Harita ve Uydu Fotoğrafı Yöneticisi
- * ESRI World Imagery kullanarak sıfır etiketli, tam Kuzey-Yukarı (North-Up)
- * ve sabit "fotoğraf çerçevesi" sunar.
- * Hem ana ekranda hem de büyük ekranda kaydırma ve zoom tamamen yasaktır.
+ * SatelCity - Map & Satellite Imagery Controller
+ * Uses ESRI World Imagery with zero labels, strict North-Up geographic alignment,
+ * and a locked "photo frame" viewport.
+ * Pan and zoom are strictly disabled in both main view and expanded modal.
  */
 
 export class SatelliteMap {
@@ -15,8 +15,8 @@ export class SatelliteMap {
   }
 
   initMap() {
-    // Leaflet haritasını kesin foto modunda başlat:
-    // Kaydırma, sürükleme, zoom in/out kesinlikle yasaktır!
+    // Initialize Leaflet in strict photo mode:
+    // Panning, dragging, zooming are completely disabled
     this.map = L.map(this.containerId, {
       zoomControl: false,
       attributionControl: false,
@@ -28,7 +28,7 @@ export class SatelliteMap {
       keyboard: false
     });
 
-    // ESRI World Imagery - Tamamen etiketsiz, yüksek çözünürlüklü uydu görüntüsü
+    // ESRI World Imagery - High-resolution label-free satellite tiles
     const esriUrl = "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}";
     
     this.tileLayer = L.tileLayer(esriUrl, {
@@ -44,7 +44,7 @@ export class SatelliteMap {
   }
 
   /**
-   * Yeni bir şehre odaklanır ve fotoğraf karesini ayarlar
+   * Focuses on a target city and sets the locked viewport frame
    */
   setCity(city) {
     this.currentCity = city;

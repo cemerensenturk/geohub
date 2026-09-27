@@ -1,7 +1,7 @@
 /**
- * SatelCity - Ayrı Mod İstatistikleri & Görülen Şehir Takibi
- * Seçenekli Mod (mc) ve Yazarak Tahmin Modu (text) istatistikleri ve oynanan şehirleri
- * tamamen bağımsız şekilde localStorage'da tutar.
+ * SatelCity - Independent Mode Statistics & Seen City Tracker
+ * Tracks statistics and encountered cities separately in localStorage
+ * for Multiple Choice ('mc') and Text Guess ('text') modes.
  */
 
 const STORAGE_KEY_PREFIX = "satelcity_stats_v2_";
@@ -63,7 +63,7 @@ export class StatsManager {
       correct: data.correct,
       accuracy,
       formattedText: `${data.correct} / ${data.played}`,
-      formattedPct: `%${accuracy}`,
+      formattedPct: `${accuracy}%`,
       seenCount: data.seenCityIds.length
     };
   }
@@ -74,7 +74,7 @@ export class StatsManager {
   }
 
   /**
-   * Belirli bir zorluk seviyesinde henüz görülmemiş şehirleri döner
+   * Returns cities of a specific difficulty level that haven't been seen yet
    */
   getAvailableCities(mode, difficulty, allCities) {
     const tierCities = allCities.filter(c => c.difficulty === difficulty);

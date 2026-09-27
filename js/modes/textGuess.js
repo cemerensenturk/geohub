@@ -1,6 +1,6 @@
 /**
- * SatelCity - Yazarak Tahmin Modu
- * Arama, otomatik tamamlama, Haversine mesafe ve i18n pusula yönü hesaplama
+ * SatelCity - Text Guess Mode
+ * Search, autocomplete, Haversine distance and compass bearing calculation
  */
 
 import i18n from '../i18n.js';
@@ -42,7 +42,7 @@ export class TextGuessMode {
   }
 
   calculateDistance(lat1, lon1, lat2, lon2) {
-    const R = 6371; // Dünya yarıçapı (km)
+    const R = 6371; // Earth's mean radius in km
     const dLat = this.deg2rad(lat2 - lat1);
     const dLon = this.deg2rad(lon2 - lon1);
     const a =
@@ -165,7 +165,7 @@ export class TextGuessMode {
 
     if (!input || this.isFinished) return;
 
-    // Arama girdisi
+    // Search input
     input.addEventListener('input', () => {
       const val = normalizeText(input.value.trim());
       if (val.length < 1) {

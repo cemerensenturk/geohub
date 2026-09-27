@@ -1,121 +1,91 @@
 # SatelCity 🛰️🌲
 
-> **Dünyanın şehirlerini uzaydan çekilmiş etiketsiz uydu fotoğraflarıyla tanıyabilir misiniz?**  
-> *Can you identify world cities from high-resolution, label-free satellite imagery?*
+> **Can you identify world cities from high-resolution, label-free satellite imagery?**  
 
 [![Live Demo](https://img.shields.io/badge/Demo-cemeren.dev%2Fsatelcity-22c55e?style=for-the-badge&logo=googlechrome&logoColor=white)](https://cemeren.dev/satelcity)
 [![License: MIT](https://img.shields.io/badge/License-MIT-amber.svg?style=for-the-badge)](LICENSE)
 [![Vanilla JS](https://img.shields.io/badge/Vanilla-JS_ES6+-yellow.svg?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 [![Zero Dependency](https://img.shields.io/badge/Zero-Build_Steps-brightgreen.svg?style=for-the-badge)](https://leafletjs.com/)
 
-**SatelCity**, oyuncuların dünya şehirlerini gerçek ve etiketsiz uydu fotoğraflarına bakarak tahmin ettiği, tamamen ücretsiz, sıfır API anahtarı gerektiren ve modern web teknolojileriyle geliştirilmiş coğrafya tahmin oyunudur.
+**SatelCity** is a geography guessing game where players identify cities around the globe using authentic, label-free satellite imagery. Developed with modern vanilla web standards, it requires zero API keys and zero build steps.
 
 ---
 
-## ✨ Temel Özellikler
+## ✨ Features
 
-### 🛰️ 1. Etiketsiz Gerçek Uydu Görüntüleri (ESRI World Imagery)
-- **Sıfır Etiket (No Labels):** Şehir, cadde veya sınır isimleri fotoğrafta yer almaz; saf hava ve uydu fotoğrafı gösterilir.
-- **Gerçek Coğrafi Yönelim (North-Up):** Standart Web Mercator açısı ile tam **Kuzey Yukarısı** kilitlidir. Şehrin güneydoğusunda deniz varsa fotoğrafta da tam güneydoğuda görünür. Köşede `🧭 KUZEY YUKARI` pusula rozeti mevcuttur.
-- **Sabit Fotoğraf Deneyimi & Hile Koruması:** Haritada sürükleme (pan) veya kontrolsüz zoom yapılamaz. **🔍 Büyüt** modalı açıldığında da aynı sabit kadraj büyük ekranda net şekilde incelenir.
+### 🛰️ 1. Authentic Satellite Photography (ESRI World Imagery)
+- **Label-Free (No Labels):** No street names, borders, or text overlays; only pure aerial satellite photography is shown.
+- **Strict Geographic Orientation (North-Up):** Standard Web Mercator locked with North pointing straight up. A corner `🧭 NORTH UP` badge reminds the player of the geographic frame.
+- **Locked Frame Experience & Anti-Cheat Protection:** Map dragging (pan) and free zooming are strictly locked. The **🔍 Expand Photo** modal opens the exact high-definition crop in a larger theater view.
 
-### 🎮 2. İki Farklı Oyun Modu
-- **🔠 4 Seçenekli Mod (Multiple Choice):**
-  - Akıllı çeldirici algoritması: Şıklar sadece aynı zorluk seviyesinden ve benzer coğrafi karakterden (kıyı ise kıyı, dağ/vadi ise dağ/vadi) seçilir.
-  - Klavye kısayolları: `1, 2, 3, 4` veya `A, B, C, D` ile hızlı cevaplama; `Enter` ile bir sonraki soruya geçiş.
-- **✍️ Yazarak Tahmin Modu (Search & Distance Clues):**
-  - Türkçe ve yabancı karakterlere duyarlı (diacritic-insensitive) akıllı otomatik tamamlama.
-  - 5 tahmin hakkı; her yanlış tahminde Haversine formülüyle kuş uçuşu **mesafe (km)** ve **8 yönlü pusula oku (⬆️, ↗️, ➡️, ↘️ vb.)** ipucu olarak verilir.
+### 🎮 2. Two Distinct Game Modes
+- **🔠 Multiple Choice Mode (4 Options):**
+  - Smart distractor algorithm: Distractors are chosen strictly from the same difficulty tier and prioritize similar geographic character (coastal vs inland).
+  - Keyboard shortcuts: Instant answering with `1, 2, 3, 4` or `A, B, C, D`; advance to next question with `Enter`.
+- **✍️ Type & Guess Mode (Search & Distance Clues):**
+  - Diacritic-insensitive intelligent autocomplete search.
+  - 5 guess attempts: each incorrect attempt provides the great-circle **distance (km)** via the Haversine formula and an **8-point compass arrow (⬆️, ↗️, ➡️, ↘️, etc.)** directing you toward the target city.
 
-### 🎯 3. 500 Unique World Cities Across 3 Disjoint Tiers
-- **GeoNames + Natural Earth + Hybrid Fame Index** ile üretilmiş 500 benzersiz dünya şehri.
-- **🟢 Easy (100 Cities):** World superstars *(Paris, Tokyo, New York, Istanbul, London, Rome, Venice, Monaco, Dubai, Sydney...)*
-- **🟡 Medium (200 Cities):** Major capitals and famous destinations *(Prague, Vienna, Dublin, Lisbon, Reykjavik, Bern, Warsaw, Seoul, Buenos Aires...)*
-- **🔴 Hard (200 Cities):** Niche capitals and challenging geographies *(Dubrovnik, Ulaanbaatar, Kigali, Tbilisi, Baku, Sarajevo, Valletta, Ushuaia, Tromsø...)*
+### 🎯 3. 500 Unique World Cities Across 2 Disjoint Tiers
+- Generated using **GeoNames + Natural Earth + Hybrid Global Fame Index**:
+- **🟢 Easy (100 Cities):** Globally recognized iconic superstars *(Paris, London, Tokyo, New York, Rome, Istanbul, Venice, Monaco, Dubai, Sydney, Rio de Janeiro, Los Angeles, Singapore...)*
+- **🔴 Hard (400 Cities):** National capitals, historic trading ports, and distinctive world cities *(Kigali, Ulaanbaatar, Tbilisi, Baku, Reykjavik, Bern, Sarajevo, Valletta, Ushuaia, Tromsø...)*
 
-### 🛡️ 4. Full Anti-Cheat Escape Protection
-- Leaving to Menu, refreshing (F5/Cmd+R), or closing tab during an unanswered question automatically counts as a WRONG answer.
+### 🛡️ 4. Anti-Cheat Escape Protection
+- Leaving to the main menu, refreshing the browser (F5 / Cmd+R), or closing the tab during an active round automatically records an incorrect answer, preserving genuine stats.
 
-### 🌐 5. Global English Standard
-- Clean, minimal, distraction-free UI standardized in English for international accessibility and global competition.
-
-### 🌲 6. Deep Forest & Earth Explorer Design
-- Dark pine forest green (`#060a07`), fresh sage (`#86efac`), and warm earth accents with glassmorphism.
-- Custom handcrafted SVG vector mode icons (no emojis).
-
-### 📤 7. Web Share API & Clipboard Score Sharing
-- Single-click native mobile share sheet (WhatsApp, X, Instagram, Telegram) and desktop clipboard copy.
+### 🌲 5. Deep Forest Explorer Aesthetics
+- Deep pine forest palette (`#060a07`), vibrant sage (`#86efac`), warm amber/earth accents, and glassmorphic panels.
+- Handcrafted vector SVG mode icons with responsive typography powered by Google Fonts (Plus Jakarta Sans).
 
 ---
 
-## 📁 Proje Mimarisi
+## 📁 Project Architecture
 
 ```
 satelcity/
-├── index.html              # Semantik HTML5, meta etiketleri ve SVG mod ikonları
-├── satelcity.jpeg          # Logo, favicon ve OpenGraph paylaşım görseli
-├── LICENSE                 # MIT Açık Kaynak Lisansı
-├── .gitignore              # Git yoksayma dosyası
-├── README.md               # Proje dökümantasyonu
+├── index.html              # Semantic HTML5, meta tags, and SVG mode icons
+├── satelcity.jpeg          # Brand logo, favicon, and social media banner
+├── LICENSE                 # MIT Open Source License
+├── .gitignore              # Git ignore rules
+├── README.md               # Project documentation
 ├── css/
-│   └── style.css           # Deep Forest Green Explorer glassmorphism tasarım sistemi
+│   └── style.css           # Deep Forest Explorer glassmorphism design system
 └── js/
-    ├── app.js              # Oyun ana kontrolcüsü, kaçış koruması, klavye kısayolları, paylaşım
-    ├── cities.js           # 60+ dünya şehri (koordinat, zoom, kıta, zorluk, geo tipi)
-    ├── i18n.js             # 6 dilli çeviri motoru ve dinamik nüfus/yüzde formatlayıcı
-    ├── map.js              # Leaflet + ESRI World Imagery kilitli fotoğraf motoru
-    ├── stats.js            # Bağımsız mod istatistikleri ve görülen şehir takibi
+    ├── app.js              # Core application controller, round lifecycle, keyboard shortcuts
+    ├── cities.js           # 500 curated world cities (coords, zoom, continent, difficulty, geo type)
+    ├── i18n.js             # English string dictionary and number/population formatters
+    ├── map.js              # Leaflet + ESRI World Imagery locked camera engine
+    ├── stats.js            # Independent mode statistics and seen city tracker
     └── modes/
-        ├── multipleChoice.js # 4 seçenekli akıllı çeldirici modu
-        └── textGuess.js     # Otomatik tamamlama, Haversine mesafe ve yön hesaplama
+        ├── multipleChoice.js # 4-option smart distractor mode
+        └── textGuess.js      # Autocomplete, Haversine distance, and bearing calculation
 ```
 
 ---
 
-## 🚀 Yerel Olarak Çalıştırma
+## 🚀 Running Locally
 
-Projede Node.js veya webpack/vite gibi derleme (build) adımlarına gerek yoktur. Modern ES modülleri kullandığı için herhangi bir statik HTTP sunucusuyla anında çalışır:
+No Node.js, Webpack, or Vite build steps are required. As pure modern ES modules, it runs instantly with any static HTTP server:
 
-### Python 3 ile:
+### Using Python 3:
 ```bash
 python3 -m http.server 8080
 ```
-Tarayıcınızda açın: **`http://localhost:8080`**
+Open in your browser: **`http://localhost:8080`**
 
-### Node / npx ile:
+### Using Node / npx:
 ```bash
 npx serve .
 ```
 
 ---
 
-## 🐙 GitHub'a Gönderme (Push to GitHub)
+## 🌐 Production Deployment (Subpath & Root Friendly)
 
-Projeyi GitHub'a göndermek için terminalde sırasıyla:
+All asset links and scripts use relative paths (`./`), ensuring zero-configuration deployment to either a root domain (`example.com`) or a subfolder (`cemeren.dev/satelcity/`).
 
-```bash
-# 1. Git deposunu başlat
-git init -b main
-
-# 2. Tüm dosyaları sahneye al ve ilk sürüm commit'ini at
-git add .
-git commit -m "feat: SatelCity v1.0.0 initial release 🛰️"
-
-# 3. GitHub üzerinde oluşturduğunuz depoyu uzak sunucu (remote) olarak bağlayın:
-# (Kullanıcı adınızı ve repo adınızı girin)
-git remote add origin https://github.com/cemerensenturk/satelcity.git
-
-# 4. GitHub'a push edin
-git push -u origin main
-```
-
----
-
-## 🌐 Canlıya Alma (cemeren.dev/satelcity)
-
-Projedeki tüm dosya yolları göreceli (`./`) tasarlandığından hem ana kök dizinde (`domain.com`) hem de alt dizinde (`cemeren.dev/satelcity/`) sıfır konfigürasyonla çalışır.
-
-### Nginx Alt Dizin Örneği:
+### Nginx Subdirectory Configuration Example:
 ```nginx
 location /satelcity/ {
     alias /var/www/satelcity/;
@@ -124,15 +94,14 @@ location /satelcity/ {
 }
 ```
 
-### Sunucuya Dosya Aktarımı (rsync / scp):
+### Direct Server Upload (rsync / scp):
 ```bash
-# Projeyi cemeren.dev sunucusuna tek komutla aktarmak için:
 rsync -avz --exclude '.git' ./ user@cemeren.dev:/var/www/satelcity/
 ```
 
 ---
 
-## 📄 Lisans
+## 📄 License
 
-Bu proje [MIT Lisansı](LICENSE) altında açık kaynak olarak sunulmaktadır.
-İstediğiniz gibi geliştirebilir, yeni şehirler ekleyebilir ve paylaşabilirsiniz.
+This project is licensed under the [MIT License](LICENSE).
+Feel free to fork, expand, and create your own geography games!

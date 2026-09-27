@@ -1,5 +1,5 @@
 /**
- * SatelCity - 4 Seçenekli Mod (Multiple Choice)
+ * SatelCity - Multiple Choice Mode (4 Options)
  */
 
 import i18n from '../i18n.js';
@@ -24,23 +24,23 @@ export class MultipleChoiceMode {
   }
 
   /**
-   * Doğru şehre ek olarak mantıklı 3 çeldirici şık seçer.
-   * Kural 1: Şıklar İSTİSNASIZ SADECE aynı zorluk seviyesinden seçilir!
-   * Kural 2: Coğrafi karakter (kıyı ise kıyı, kara/dağ ise kara/dağ) önceliklendirilir.
+   * Selects 3 intelligent distractors alongside the correct city.
+   * Rule 1: Distractors must strictly come from the same difficulty tier.
+   * Rule 2: Geographic character (coastal vs inland) is prioritized for believable options.
    */
   generateOptions() {
-    // 1. KATI KURAL: Sadece aynı zorluk seviyesindeki şehirler aday olabilir
+    // 1. STRICT RULE: Only cities from the exact same difficulty tier are eligible
     const tierPool = this.allCities.filter(c => 
       c.id !== this.currentCity.id && 
       c.difficulty === this.currentCity.difficulty
     );
 
-    // 2. Coğrafi benzerlik (kıyı ise diğer kıyı şehirleri, kara ise diğer kara şehirleri)
+    // 2. Geographic similarity (coastal with coastal, inland with inland)
     const sameGeo = tierPool.filter(c => c.geo && c.geo === this.currentCity.geo);
 
-    // 3. Öncelik sırası:
-    //    A) Aynı zorlukta ve aynı coğrafi tipte en az 3 şehir varsa onları kullan
-    //    B) Yoksa aynı zorluk havuzundan tamamla
+    // 3. Priority order:
+    //    A) If at least 3 same-tier cities share the geographic type, use them
+    //    B) Otherwise fall back to the general same-tier pool
     let candidates = [];
     if (sameGeo.length >= 3) {
       candidates = sameGeo;
@@ -51,7 +51,7 @@ export class MultipleChoiceMode {
     const shuffled = [...candidates].sort(() => 0.5 - Math.random());
     const selectedDistractors = shuffled.slice(0, 3);
 
-    // 4 şıkkı karıştır
+    // Shuffle the 4 final options
     const options = [this.currentCity, ...selectedDistractors].sort(() => 0.5 - Math.random());
     return options;
   }
@@ -75,7 +75,7 @@ export class MultipleChoiceMode {
       </div>
     `;
 
-    // Event listener'lar
+    // Event listeners
     const buttons = this.container.querySelectorAll('.mc-btn');
     buttons.forEach(btn => {
       btn.addEventListener('click', () => {
@@ -85,14 +85,14 @@ export class MultipleChoiceMode {
       });
     });
 
-    // Klavye kısayolları (1-4 veya A-D)
+    // Keyboard shortcuts (1-4 or A-D)
     if (this.keyHandler) {
       window.removeEventListener('keydown', this.keyHandler);
     }
 
     this.keyHandler = (e) => {
       if (this.isAnswered) return;
-      // Eğer input odaklıysa işlem yapma
+      // Do nothing if an input/textarea has focus
       if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
       const key = e.key.toLowerCase();
       const map = { '1': 0, 'a': 0, '2': 1, 'b': 1, '3': 2, 'c': 2, '4': 3, 'd': 3 };
