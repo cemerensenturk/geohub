@@ -1,25 +1,25 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SatelCity</title>
-  <meta name="description" content="Dünyanın şehirlerini uzaydan çekilmiş etiketsiz fotoğraflarla tanıyabilir misiniz?">
+  <meta name="description" content="Can you identify world cities from high-resolution, label-free satellite imagery?">
 
   <!-- Favicon -->
   <link rel="icon" type="image/jpeg" href="satelcity.jpeg">
 
-  <!-- OpenGraph / WhatsApp / Twitter Paylaşım Meta Etiketleri -->
+  <!-- OpenGraph / Social Meta Tags -->
   <meta property="og:site_name" content="SatelCity">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://cemeren.dev/satelcity">
   <meta property="og:title" content="SatelCity">
-  <meta property="og:description" content="Dünyanın şehirlerini uzaydan çekilmiş etiketsiz fotoğraflarla tanıyabilir misiniz?">
+  <meta property="og:description" content="Can you identify world cities from high-resolution, label-free satellite imagery?">
   <meta property="og:image" content="https://cemeren.dev/satelcity/satelcity.jpeg">
   <meta property="og:image:type" content="image/jpeg">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="SatelCity">
-  <meta name="twitter:description" content="Dünyanın şehirlerini uzaydan çekilmiş etiketsiz fotoğraflarla tanıyabilir misiniz?">
+  <meta name="twitter:description" content="Can you identify world cities from high-resolution, label-free satellite imagery?">
   <meta name="twitter:image" content="https://cemeren.dev/satelcity/satelcity.jpeg">
 
   <!-- Google Fonts: Plus Jakarta Sans -->
@@ -30,73 +30,63 @@
   <!-- Leaflet CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
 
-  <!-- Ana Stil Dosyası (Deep Forest Green Explorer Tema) -->
+  <!-- Main Stylesheet -->
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
   <!-- ====================================================================
-       ÜST MARKA & DİL ÇUBUĞU (Oyun başlayınca dil seçici gizlenir)
+       TOP BRAND BAR
        ==================================================================== -->
   <header class="top-nav-bar">
     <div class="brand-badge">
       <img src="satelcity.jpeg" alt="SatelCity Logo" class="brand-logo-img">
       <span>SatelCity</span>
     </div>
-
-    <!-- 6 Dilli Seçici (TR, EN, ES, FR, DE, IT) -->
-    <div id="top-lang-selector" class="lang-switch-group" role="group" aria-label="Language Selector">
-      <button class="lang-btn active" data-lang="tr">🇹🇷 TR</button>
-      <button class="lang-btn" data-lang="en">🇬🇧 EN</button>
-      <button class="lang-btn" data-lang="es">🇪🇸 ES</button>
-      <button class="lang-btn" data-lang="fr">🇫🇷 FR</button>
-      <button class="lang-btn" data-lang="de">🇩🇪 DE</button>
-      <button class="lang-btn" data-lang="it">🇮🇹 IT</button>
-    </div>
   </header>
 
   <div class="app-viewport">
 
     <!-- ====================================================================
-         1. GİRİŞ EKRANI (Ana Menü, Zorluk & Mod Seçimi)
+         1. HOME SCREEN (Menu, Difficulty & Mode Selection)
          ==================================================================== -->
     <main id="screen-home" class="screen active">
       <div class="hero-header">
         <div class="hero-pill">
           <span>🛰️</span>
-          <span id="txt-hero-pill">Gerçek ESRI Uydu Fotoğrafları</span>
+          <span id="txt-hero-pill">Real ESRI Satellite Imagery</span>
         </div>
         <h1 class="hero-title">
           <img src="satelcity.jpeg" alt="SatelCity" class="hero-logo-img">
           <span>SatelCity</span>
         </h1>
         <p class="hero-subtitle" id="txt-hero-subtitle">
-          Dünyanın şehirlerini uzaydan çekilmiş etiketsiz fotoğraflarla tanıyabilir misiniz?
+          Can you identify world cities from label-free satellite photos?
         </p>
       </div>
 
-      <!-- Zorluk Seviyesi Seçici (Kolay / Orta / Zor) -->
+      <!-- Difficulty Level Selector (Easy / Medium / Hard) -->
       <section class="difficulty-wrapper">
-        <div class="diff-header-label" id="txt-diff-label">Zorluk Seviyesi:</div>
+        <div class="diff-header-label" id="txt-diff-label">Difficulty Level:</div>
         <div class="difficulty-pill-group">
           <button class="btn-diff-pill active" data-difficulty="easy" id="diff-pill-easy">
-            <span class="diff-title" id="txt-diff-easy">Kolay</span>
-            <span class="diff-desc" id="txt-diff-easy-desc">İkonik Metropoller</span>
+            <span class="diff-title" id="txt-diff-easy">Easy</span>
+            <span class="diff-desc" id="txt-diff-easy-desc">Iconic Metropolises</span>
           </button>
           <button class="btn-diff-pill" data-difficulty="medium" id="diff-pill-medium">
-            <span class="diff-title" id="txt-diff-medium">Orta</span>
-            <span class="diff-desc" id="txt-diff-medium-desc">Büyük Başkentler</span>
+            <span class="diff-title" id="txt-diff-medium">Medium</span>
+            <span class="diff-desc" id="txt-diff-medium-desc">Major Capitals & Cities</span>
           </button>
           <button class="btn-diff-pill" data-difficulty="hard" id="diff-pill-hard">
-            <span class="diff-title" id="txt-diff-hard">Zor</span>
-            <span class="diff-desc" id="txt-diff-hard-desc">Niş & Zorlu Şehirler</span>
+            <span class="diff-title" id="txt-diff-hard">Hard</span>
+            <span class="diff-desc" id="txt-diff-hard-desc">Niche & Challenging Gems</span>
           </button>
         </div>
       </section>
 
-      <!-- Oyun Modu Seçim Kartları (Ayrı İstatistikler ile) -->
+      <!-- Game Mode Selection Cards -->
       <div class="modes-grid">
-        <!-- Mod 1: 4 Seçenekli -->
+        <!-- Mode 1: Multiple Choice -->
         <div id="btn-mode-mc" class="mode-card" role="button" tabindex="0">
           <div class="mode-top-row">
             <div class="mode-icon mode-icon-svg" aria-hidden="true">
@@ -111,25 +101,25 @@
                 <text x="34.5" y="38.5" font-family="Plus Jakarta Sans, sans-serif" font-size="11" font-weight="700" fill="#a7f3d0" text-anchor="middle">D</text>
               </svg>
             </div>
-            <div class="mode-stats-badge" title="4 Seçenekli Mod İsabeti">
-              <span id="home-mc-stat-accuracy" class="badge-pct">%0</span>
-              <span id="home-mc-stat-ratio" class="badge-ratio">0 / 0 Doğru</span>
+            <div class="mode-stats-badge" title="Multiple Choice Accuracy">
+              <span id="home-mc-stat-accuracy" class="badge-pct">0%</span>
+              <span id="home-mc-stat-ratio" class="badge-ratio">0 / 0 Correct</span>
             </div>
           </div>
-          <h3 id="txt-mode-mc-title">4 Seçenekli Mod</h3>
-          <p id="txt-mode-mc-desc">4 akıllı seçenek arasından doğru şehri bulun.</p>
+          <h3 id="txt-mode-mc-title">Multiple Choice</h3>
+          <p id="txt-mode-mc-desc">Identify the city from 4 smart options.</p>
           <div class="mode-bottom-row">
             <div class="mode-action-link">
-              <span id="txt-btn-play-mc">Oyuna Başla</span>
+              <span id="txt-btn-play-mc">Play</span>
               <span>→</span>
             </div>
-            <button id="btn-reset-mc-stats" class="btn-reset-mode" title="Bu modun istatistiğini sıfırla">
-              Sıfırla
+            <button id="btn-reset-mc-stats" class="btn-reset-mode" title="Reset stats for this mode">
+              Reset
             </button>
           </div>
         </div>
 
-        <!-- Mod 2: Yazarak Tahmin -->
+        <!-- Mode 2: Type & Guess -->
         <div id="btn-mode-text" class="mode-card" role="button" tabindex="0">
           <div class="mode-top-row">
             <div class="mode-icon mode-icon-svg" aria-hidden="true">
@@ -156,20 +146,20 @@
                 <circle cx="24" cy="27" r="2" fill="#22c55e"/>
               </svg>
             </div>
-            <div class="mode-stats-badge" title="Yazarak Tahmin Modu İsabeti">
-              <span id="home-text-stat-accuracy" class="badge-pct">%0</span>
-              <span id="home-text-stat-ratio" class="badge-ratio">0 / 0 Doğru</span>
+            <div class="mode-stats-badge" title="Type & Guess Accuracy">
+              <span id="home-text-stat-accuracy" class="badge-pct">0%</span>
+              <span id="home-text-stat-ratio" class="badge-ratio">0 / 0 Correct</span>
             </div>
           </div>
-          <h3 id="txt-mode-text-title">Yazarak Tahmin Modu</h3>
-          <p id="txt-mode-text-desc">Şehir adını yazın; mesafe (km) ve yön oku ipuçlarıyla tahmin edin.</p>
+          <h3 id="txt-mode-text-title">Type & Guess</h3>
+          <p id="txt-mode-text-desc">Type the city; get distance (km) and compass direction clues.</p>
           <div class="mode-bottom-row">
             <div class="mode-action-link">
-              <span id="txt-btn-play-text">Oyuna Başla</span>
+              <span id="txt-btn-play-text">Play</span>
               <span>→</span>
             </div>
-            <button id="btn-reset-text-stats" class="btn-reset-mode" title="Bu modun istatistiğini sıfırla">
-              Sıfırla
+            <button id="btn-reset-text-stats" class="btn-reset-mode" title="Reset stats for this mode">
+              Reset
             </button>
           </div>
         </div>
@@ -177,113 +167,113 @@
     </main>
 
     <!-- ====================================================================
-         2. OYUN EKRANI
+         2. GAMEPLAY SCREEN
          ==================================================================== -->
     <main id="screen-game" class="screen">
-      <!-- Üst HUD Barı -->
+      <!-- HUD Top Bar -->
       <header class="game-top-bar glass-panel">
         <div class="bar-left">
-          <button id="btn-game-home" class="btn-nav-home" title="Ana Menüye Dön">
+          <button id="btn-game-home" class="btn-nav-home" title="Return to Main Menu">
             <span>←</span>
-            <span id="txt-btn-menu">Menü</span>
+            <span id="txt-btn-menu">Menu</span>
           </button>
-          <span id="game-mode-badge" class="game-mode-badge">4 Seçenekli Mod</span>
-          <span id="game-diff-badge" class="game-diff-badge">Kolay</span>
+          <span id="game-mode-badge" class="game-mode-badge">Multiple Choice</span>
+          <span id="game-diff-badge" class="game-diff-badge">Easy</span>
         </div>
 
         <div class="bar-right">
-          <div class="hud-accuracy-box" title="Bu Modun İsabet Oranı">
-            <span id="game-stat-accuracy" class="hud-pct">%0</span>
-            <span id="game-stat-ratio" class="hud-ratio">İsabet: 0 / 0</span>
+          <div class="hud-accuracy-box" title="Accuracy for this mode">
+            <span id="game-stat-accuracy" class="hud-pct">0%</span>
+            <span id="game-stat-ratio" class="hud-ratio">Accuracy: 0 / 0</span>
           </div>
-          <button id="btn-reset-stats-game" class="btn-reset-mode" title="Bu Modu Sıfırla">
-            Sıfırla
+          <button id="btn-reset-stats-game" class="btn-reset-mode" title="Reset this mode">
+            Reset
           </button>
         </div>
       </header>
 
-      <!-- Ana Oyun Çalışma Alanı -->
+      <!-- Main Game Workspace -->
       <div class="game-workspace">
         
-        <!-- Sol Kolon: Uydu Fotoğrafı Çerçevesi (SABİT, YÖN VE ZOOM KORUMALI) -->
+        <!-- Left: Locked Satellite Photo Viewport -->
         <section class="photo-frame-card">
           <div class="photo-overlay-top">
-            <div class="photo-badge-compass" title="Harita açısı tam coğrafi kuzeye sabitlenmiştir">
+            <div class="photo-badge-compass" title="Strict North-Up Geographic Orientation">
               <span>🧭</span>
-              <span id="txt-compass-north">KUZEY YUKARI</span>
+              <span id="txt-compass-north">NORTH UP</span>
             </div>
-            <button id="btn-expand-photo" class="photo-btn-expand" title="Fotoğrafı büyük boyutta incele">
+            <button id="btn-expand-photo" class="photo-btn-expand" title="Expand photo to fullscreen">
               <span>🔍</span>
-              <span id="txt-btn-expand">Büyüt</span>
+              <span id="txt-btn-expand">Expand Photo</span>
             </button>
           </div>
 
-          <!-- Sabit Harita Viewport -->
+          <!-- Locked Map Viewport -->
           <div id="satellite-map-container" class="satellite-viewport"></div>
         </section>
 
-        <!-- Sağ Kolon: İpuçları & Mod Etkileşim Alanı -->
+        <!-- Right: Clues & Interactive Area -->
         <section class="game-controls-card glass-panel">
           
-          <!-- Kademeli İpuçları Bölümü -->
+          <!-- Clues Section -->
           <div class="hints-section">
-            <div class="hints-title" id="txt-hints-header">İpuçları</div>
+            <div class="hints-title" id="txt-hints-header">Clues</div>
             <div class="hints-grid">
-              <!-- İpucu 1: Kıta -->
+              <!-- Clue 1: Continent -->
               <div id="btn-hint-continent" class="hint-item">
-                <span class="hint-label" id="txt-hint-continent-lbl">🌍 Kıta</span>
-                <span id="hint-val-continent" class="hint-value">Görmek için tıkla</span>
+                <span class="hint-label" id="txt-hint-continent-lbl">🌍 Continent</span>
+                <span id="hint-val-continent" class="hint-value">Click to reveal</span>
               </div>
-              <!-- İpucu 2: Ülke -->
+              <!-- Clue 2: Country -->
               <div id="btn-hint-country" class="hint-item">
-                <span class="hint-label" id="txt-hint-country-lbl">🚩 Ülke & Bayrak</span>
-                <span id="hint-val-country" class="hint-value">Görmek için tıkla</span>
+                <span class="hint-label" id="txt-hint-country-lbl">🚩 Country & Flag</span>
+                <span id="hint-val-country" class="hint-value">Click to reveal</span>
               </div>
-              <!-- İpucu 3: Bilgi -->
+              <!-- Clue 3: Info -->
               <div id="btn-hint-detail" class="hint-item">
-                <span class="hint-label" id="txt-hint-detail-lbl">ℹ️ Bilgi</span>
-                <span id="hint-val-detail" class="hint-value">Görmek için tıkla</span>
+                <span class="hint-label" id="txt-hint-detail-lbl">ℹ️ Info</span>
+                <span id="hint-val-detail" class="hint-value">Click to reveal</span>
               </div>
             </div>
           </div>
 
-          <!-- Dinamik Mod İçerik Alanı -->
+          <!-- Dynamic Mode Content Area -->
           <div id="mode-content-area"></div>
 
-          <!-- Seviye Tamamlama Kartı (Zorluktaki tüm şehirler görüldüğünde açılır) -->
+          <!-- Level Completed Card -->
           <div id="completed-card" class="completed-card">
             <div class="completed-icon">🏆</div>
-            <div class="completed-title" id="txt-completed-title">Tebrikler, Seviyeyi Tamamladınız!</div>
-            <div class="completed-desc" id="txt-completed-desc">Bu zorluk seviyesindeki tüm şehirleri gördünüz.</div>
+            <div class="completed-title" id="txt-completed-title">Congratulations, Level Completed!</div>
+            <div class="completed-desc" id="txt-completed-desc">You have completed all cities in this difficulty level.</div>
             <div class="completed-btn-group">
               <button id="btn-replay-tier" class="btn-primary-action">
-                <span id="txt-btn-replay">Sıfırla ve Baştan Oyna</span>
+                <span id="txt-btn-replay">Reset and Replay</span>
               </button>
               <button id="btn-change-diff" class="btn-nav-home">
-                <span id="txt-btn-diff-change">Farklı Zorluk Seç</span>
+                <span id="txt-btn-diff-change">Choose Another Difficulty</span>
               </button>
             </div>
           </div>
 
-          <!-- Sonuç Kartı / Bildirimi (Tur bitiminde açılır) -->
+          <!-- Result Overlay Card -->
           <div id="result-overlay-card" class="result-overlay-card">
             <div class="result-header">
-              <span id="result-title" class="result-title">Tebrikler!</span>
-              <span id="result-accuracy-badge" class="result-accuracy-badge">%100</span>
+              <span id="result-title" class="result-title">Congratulations!</span>
+              <span id="result-accuracy-badge" class="result-accuracy-badge">100%</span>
             </div>
             <div class="result-city-info">
-              <div id="result-city-name" class="result-city-name">İstanbul</div>
-              <div id="result-city-country" class="result-city-country">Türkiye • Avrupa / Asya</div>
-              <div id="result-city-detail" class="result-city-detail">İki kıtayı birleştiren tarihi boğaz şehri.</div>
+              <div id="result-city-name" class="result-city-name">Istanbul</div>
+              <div id="result-city-country" class="result-city-country">Turkey • Europe / Asia</div>
+              <div id="result-city-detail" class="result-city-detail">Historic strait city connecting two continents.</div>
             </div>
             <div class="result-btn-group">
               <button id="btn-next-city" class="btn-primary-action">
-                <span id="txt-btn-next-city">Sonraki Şehir</span>
+                <span id="txt-btn-next-city">Next City</span>
                 <span>→</span>
               </button>
-              <button id="btn-share-result" class="btn-share-action" title="Skoru Paylaş">
+              <button id="btn-share-result" class="btn-share-action" title="Share Score">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-                <span id="txt-btn-share">Paylaş</span>
+                <span id="txt-btn-share">Share</span>
               </button>
             </div>
           </div>
@@ -296,22 +286,22 @@
   </div>
 
   <!-- ====================================================================
-       3. BÜYÜTÜLMÜŞ FOTOĞRAF MODALI (SABİT, KAYDIRMA & ZOOM YASAKLI)
+       3. EXPANDED PHOTO MODAL (LOCKED, PAN & ZOOM DISABLED)
        ==================================================================== -->
   <div id="photo-modal" class="photo-modal-backdrop">
     <div class="photo-modal-container">
-      <button id="btn-close-photo-modal" class="btn-close-modal">Kapat (✕)</button>
+      <button id="btn-close-photo-modal" class="btn-close-modal">Close (✕)</button>
       <div id="modal-map-container" class="modal-map-viewport"></div>
     </div>
   </div>
 
-  <!-- Leaflet JS Kütüphanesi -->
+  <!-- Leaflet JS Library -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
-  <!-- Uygulama Giriş Scripti -->
+  <!-- Application Entry Script -->
   <script type="module" src="js/app.js"></script>
 
-  <!-- Global Toast Bildirim Kutusu -->
+  <!-- Global Toast Notification Box -->
   <div id="app-toast" class="app-toast" role="status" aria-live="polite"></div>
 </body>
 </html>

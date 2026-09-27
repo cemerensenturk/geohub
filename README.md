@@ -27,35 +27,24 @@
   - Türkçe ve yabancı karakterlere duyarlı (diacritic-insensitive) akıllı otomatik tamamlama.
   - 5 tahmin hakkı; her yanlış tahminde Haversine formülüyle kuş uçuşu **mesafe (km)** ve **8 yönlü pusula oku (⬆️, ↗️, ➡️, ↘️ vb.)** ipucu olarak verilir.
 
-### 🎯 3. Üç Ayrık Zorluk Seviyesi
-Şehirler birbiriyle çakışmayan (disjoint) 3 seviyeye ayrılmıştır:
-- **🟢 Kolay (Easy):** Dünyanın en ikonik metropolleri *(İstanbul, Paris, Londra, New York, Tokyo, Roma, Venedik, Kahire, Sidney, Dubai...)*
-- **🟡 Orta (Medium):** Tanınan büyük başkentler ve popüler coğrafyalar *(Prag, Viyana, Budapeşte, Lizbon, Madrid, Seul, Buenos Aires, Atina, Dublin...)*
-- **🔴 Zor (Hard):** Niş, özel coğrafyalı veya zorlayıcı şehirler *(Reykjavik, Ulanbatur, Kigali, Tiflis, Bakü, Saraybosna, Dubrovnik, Valparaíso, Katmandu, Auckland...)*
+### 🎯 3. 500 Unique World Cities Across 3 Disjoint Tiers
+- **GeoNames + Natural Earth + Hybrid Fame Index** ile üretilmiş 500 benzersiz dünya şehri.
+- **🟢 Easy (100 Cities):** World superstars *(Paris, Tokyo, New York, Istanbul, London, Rome, Venice, Monaco, Dubai, Sydney...)*
+- **🟡 Medium (200 Cities):** Major capitals and famous destinations *(Prague, Vienna, Dublin, Lisbon, Reykjavik, Bern, Warsaw, Seoul, Buenos Aires...)*
+- **🔴 Hard (200 Cities):** Niche capitals and challenging geographies *(Dubrovnik, Ulaanbaatar, Kigali, Tbilisi, Baku, Sarajevo, Valletta, Ushuaia, Tromsø...)*
 
-### 🛡️ 4. Tam Kapsamlı Kaçış ve Hile Koruması
-- Soruyu bilmeden **"← Menü"** butonuna basılırsa,
-- Sayfa yenilenirse (**F5 / Cmd+R**),
-- Veya sekme/tarayıcı aniden kapatılırsa,
-soru **otomatik olarak YANLIŞ** sayılır ve istatistiklere işlenir. Zor sorulardan kaçarak isabet oranı koruma taktiği engellenmiştir.
+### 🛡️ 4. Full Anti-Cheat Escape Protection
+- Leaving to Menu, refreshing (F5/Cmd+R), or closing tab during an unanswered question automatically counts as a WRONG answer.
 
-### 🌐 5. 6 Dilli Uluslararası Destek (i18n)
-Hiçbir harici kütüphane olmadan, ultra hafif yerel sözlük mimarisiyle:
-- 🇹🇷 **Türkçe (TR)**
-- 🇬🇧 **English (EN)**
-- 🇪🇸 **Español (ES)**
-- 🇫🇷 **Français (FR)**
-- 🇩🇪 **Deutsch (DE)**
-- 🇮🇹 **Italiano (IT)**
+### 🌐 5. Global English Standard
+- Clean, minimal, distraction-free UI standardized in English for international accessibility and global competition.
 
-### 🌲 6. Deep Forest & Earth Explorer Tasarım
-- Koyu çam ormanı yeşili (`#060a07`), adaçayı (`#86efac`) ve ılık toprak/amber dokunuşları.
-- Buzlu cam (glassmorphism, `backdrop-filter: blur(18px)`).
-- Emojiler yerine özel el yapımı vektör SVG mod ikonları.
+### 🌲 6. Deep Forest & Earth Explorer Design
+- Dark pine forest green (`#060a07`), fresh sage (`#86efac`), and warm earth accents with glassmorphism.
+- Custom handcrafted SVG vector mode icons (no emojis).
 
-### 📤 7. Web Share API & Pano ile Skor Paylaşımı
-- Soruyu bildikten sonra tek tıkla mobil cihazlarda yerel paylaşım sayfası (WhatsApp, Twitter/X, Telegram vb.), masaüstünde ise panoya kopyalama çalışır.
-- Başarı yüzdesi, deneme sayısı ve `cemeren.dev/satelcity` bağlantısı içeren şık paylaşım metni oluşturur.
+### 📤 7. Web Share API & Clipboard Score Sharing
+- Single-click native mobile share sheet (WhatsApp, X, Instagram, Telegram) and desktop clipboard copy.
 
 ---
 

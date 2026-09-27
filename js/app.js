@@ -42,15 +42,6 @@ class App {
     this.applyTranslations();
     this.updateStatsUI();
     this.showScreen('screen-home');
-
-    // Dil değişimi dinleyicisi
-    i18n.subscribe(() => {
-      this.applyTranslations();
-      this.updateStatsUI();
-      if (this.currentCity) {
-        this.refreshHintsUI();
-      }
-    });
   }
 
   checkPendingRoundPenalty() {
@@ -71,15 +62,11 @@ class App {
 
   initElements() {
     this.elements = {
-      // Ekranlar
+      // Screens
       screenHome: document.getElementById('screen-home'),
       screenGame: document.getElementById('screen-game'),
 
-      // Dil Seçici Container ve Butonları
-      topLangSelector: document.getElementById('top-lang-selector'),
-      langButtons: document.querySelectorAll('.lang-btn'),
-
-      // Zorluk Butonları
+      // Difficulty Pills
       diffPillEasy: document.getElementById('diff-pill-easy'),
       diffPillMedium: document.getElementById('diff-pill-medium'),
       diffPillHard: document.getElementById('diff-pill-hard'),
@@ -151,15 +138,7 @@ class App {
   }
 
   bindEvents() {
-    // 6 Dilli Seçici Butonları
-    this.elements.langButtons.forEach(btn => {
-      btn.addEventListener('click', () => {
-        const lang = btn.getAttribute('data-lang');
-        i18n.setLang(lang);
-      });
-    });
-
-    // Zorluk Seçimi
+    // Difficulty Selection
     const diffPills = [
       { el: this.elements.diffPillEasy, diff: 'easy' },
       { el: this.elements.diffPillMedium, diff: 'medium' },
@@ -281,14 +260,7 @@ class App {
   }
 
   applyTranslations() {
-    const lang = i18n.getLang();
-
-    // Dil butonları aktifliği
-    this.elements.langButtons.forEach(btn => {
-      btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
-    });
-
-    // Ana Menü Metinleri
+    // Main Menu Strings
     document.getElementById('txt-hero-pill').textContent = i18n.t('heroPill');
     document.getElementById('txt-hero-subtitle').textContent = i18n.t('appSubtitle');
     document.getElementById('txt-diff-label').textContent = i18n.t('difficultyLabel');
@@ -342,17 +314,9 @@ class App {
     if (screenId === 'screen-home') {
       this.elements.screenHome.classList.add('active');
       this.elements.screenGame.classList.remove('active');
-      // Ana menüde dil seçici görünür
-      if (this.elements.topLangSelector) {
-        this.elements.topLangSelector.classList.remove('hidden');
-      }
     } else {
       this.elements.screenHome.classList.remove('active');
       this.elements.screenGame.classList.add('active');
-      // Oyun başladığında dil seçici gizlenir
-      if (this.elements.topLangSelector) {
-        this.elements.topLangSelector.classList.add('hidden');
-      }
       setTimeout(() => this.satelliteMap.invalidate(), 200);
     }
   }

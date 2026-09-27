@@ -149,7 +149,7 @@ export class TextGuessMode {
           ${g.distance === 0 ? `
             <strong class="tg-exact-badge">🎯 ${i18n.t('tgExact')}</strong>
           ` : `
-            <span class="tg-distance">${g.distance.toLocaleString(i18n.getLang() === 'tr' ? 'tr-TR' : 'en-US')} km</span>
+            <span class="tg-distance">${g.distance.toLocaleString('en-US')} km</span>
             <span class="tg-direction">${g.bearing.arrow} ${g.bearing.label}</span>
           `}
         </span>
