@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BorderLine — Country Outline Silhouette Guesser</title>
+  <meta name="description" content="Can you identify sovereign nations from their border outlines and geographic silhouette contours? 4 smart choices, instant clues, and streak tracking.">
+
+  <!-- OpenGraph / WhatsApp Meta Tags -->
+  <meta property="og:site_name" content="BorderLine — GeoHub">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://cemeren.dev/geohub/borderline/">
+  <meta property="og:title" content="BorderLine — Country Silhouette Guesser">
+  <meta property="og:description" content="Can you identify countries from pure vector border silhouettes? Play now!">
+  <meta property="og:image" content="../satelcity.jpeg">
+  <meta property="og:image:type" content="image/jpeg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="BorderLine — Country Silhouette Guesser">
+  <meta name="twitter:description" content="Can you identify countries from pure vector border silhouettes?">
+  <meta name="twitter:image" content="../satelcity.jpeg">
+
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Top Navigation Bar -->
+  <header class="top-nav-bar">
+    <a href="../" class="btn-geohub-back" title="Back to GeoHub Portal">
+      <span>← GeoHub</span>
+    </a>
+    <div class="brand-badge">
+      <div class="brand-icon-svg" aria-hidden="true">
+        <svg width="28" height="28" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 9 L23 7 L32 13 L35 22 L29 31 L20 33 L11 28 L6 20 L8 13 Z" fill="#1e102d" stroke="#c084fc" stroke-width="2" stroke-linejoin="round"/>
+          <path d="M14 15 L22 13 L28 17 L29 23 L25 27 L18 28 L12 24 L11 19 Z" stroke="#a855f7" stroke-width="1.2" stroke-opacity="0.6" stroke-dasharray="2 2" fill="none"/>
+          <circle cx="21" cy="20" r="3" fill="#c084fc"/>
+          <circle cx="21" cy="20" r="1.2" fill="#0f051d"/>
+        </svg>
+      </div>
+      <span>BorderLine</span>
+    </div>
+  </header>
+
+  <!-- Main Game Container -->
+  <main class="game-container">
+
+    <!-- HUD Stats Bar -->
+    <section class="game-hud glass-panel">
+      <div class="hud-streak-box">
+        <span class="hud-label">Streak:</span>
+        <span class="hud-streak-val" id="hud-streak">🔥 0</span>
+      </div>
+      <div class="hud-accuracy-box">
+        <span class="hud-label">Score:</span>
+        <span class="hud-stat-val" id="hud-score">0 / 0 (0%)</span>
+      </div>
+      <button id="btn-reset-stats" class="btn-reset-stats" title="Reset stats">
+        Reset
+      </button>
+    </section>
+
+    <!-- Main Game Workspace -->
+    <div class="game-workspace">
+      
+      <!-- Left: Country Outline Silhouette Stage -->
+      <section class="silhouette-card glass-panel">
+        <div class="silhouette-overlay-top">
+          <span class="badge-contour">📐 Vector Contour</span>
+          <button id="btn-toggle-clue" class="btn-clue-pill" title="Reveal hint">
+            <span>💡 Clue:</span>
+            <span id="clue-preview">Continent</span>
+          </button>
+        </div>
+
+        <!-- SVG Silhouette Viewport -->
+        <div class="svg-viewport" id="svg-viewport">
+          <svg id="country-svg" viewBox="0 0 400 400" preserveAspectRatio="xMidYMid meet">
+            <path id="silhouette-path" class="silhouette-path" d=""></path>
+          </svg>
+        </div>
+
+        <div class="clue-reveal-box" id="clue-reveal-box">
+          <!-- Revealed clues -->
+        </div>
+      </section>
+
+      <!-- Right: Multiple Choice Controls -->
+      <section class="controls-card glass-panel">
+        <h2 class="question-prompt">Which country has this border outline?</h2>
+        
+        <!-- 4 Options Grid -->
+        <div class="options-grid" id="options-grid">
+          <!-- Buttons generated dynamically in JS -->
+        </div>
+
+        <!-- Action / Next Button -->
+        <button id="btn-next-country" class="btn-next-action">
+          <span>Next Country</span>
+          <span>→</span>
+        </button>
+
+        <!-- Result Country Dossier (Revealed on Answer) -->
+        <div class="result-dossier" id="result-dossier">
+          <div class="dossier-header">
+            <img id="dossier-flag" class="dossier-flag" src="" alt="Flag">
+            <div>
+              <h3 id="dossier-name" class="dossier-name">Country</h3>
+              <p id="dossier-meta" class="dossier-meta">Continent • Capital</p>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+    </div>
+
+  </main>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
