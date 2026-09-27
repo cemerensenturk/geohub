@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SatelCity</title>
+  <meta name="description" content="Can you identify world cities from high-resolution, label-free satellite imagery?">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/jpeg" href="satelcity.jpeg">
+
+  <!-- OpenGraph / Social Meta Tags -->
+  <meta property="og:site_name" content="SatelCity">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://cemeren.dev/satelcity">
+  <meta property="og:title" content="SatelCity">
+  <meta property="og:description" content="Can you identify world cities from high-resolution, label-free satellite imagery?">
+  <meta property="og:image" content="https://cemeren.dev/satelcity/satelcity.jpeg">
+  <meta property="og:image:type" content="image/jpeg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="SatelCity">
+  <meta name="twitter:description" content="Can you identify world cities from high-resolution, label-free satellite imagery?">
+  <meta name="twitter:image" content="https://cemeren.dev/satelcity/satelcity.jpeg">
+
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ====================================================================
+       TOP BRAND BAR
+       ==================================================================== -->
+  <header class="top-nav-bar">
+    <a href="../" class="btn-geohub-back" title="Back to GeoHub Portal">
+      <span>← GeoHub</span>
+    </a>
+    <div class="brand-badge">
+      <img src="satelcity.jpeg" alt="SatelCity Logo" class="brand-logo-img">
+      <span>SatelCity</span>
+    </div>
+  </header>
+
+  <div class="app-viewport">
+
+    <!-- ====================================================================
+         1. HOME SCREEN (Menu, Difficulty & Mode Selection)
+         ==================================================================== -->
+    <main id="screen-home" class="screen active">
+      <div class="hero-header">
+        <div class="hero-pill">
+          <span>🛰️</span>
+          <span id="txt-hero-pill">Real ESRI Satellite Imagery</span>
+        </div>
+        <h1 class="hero-title">
+          <img src="satelcity.jpeg" alt="SatelCity" class="hero-logo-img">
+          <span>SatelCity</span>
+        </h1>
+        <p class="hero-subtitle" id="txt-hero-subtitle">
+          Can you identify world cities from label-free satellite photos?
+        </p>
+      </div>
+
+      <!-- Difficulty Level Selector (Easy / Hard) -->
+      <section class="difficulty-wrapper">
+        <div class="diff-header-label" id="txt-diff-label">Difficulty Level:</div>
+        <div class="difficulty-pill-group">
+          <button class="btn-diff-pill active" data-difficulty="easy" id="diff-pill-easy">
+            <span class="diff-title" id="txt-diff-easy">Easy</span>
+            <span class="diff-desc" id="txt-diff-easy-desc">Top 100 Famous Cities</span>
+          </button>
+          <button class="btn-diff-pill" data-difficulty="hard" id="diff-pill-hard">
+            <span class="diff-title" id="txt-diff-hard">Hard</span>
+            <span class="diff-desc" id="txt-diff-hard-desc">All World Cities & Capitals</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- Game Mode Selection Cards -->
+      <div class="modes-grid">
+        <!-- Mode 1: Multiple Choice -->
+        <div id="btn-mode-mc" class="mode-card" role="button" tabindex="0">
+          <div class="mode-top-row">
+            <div class="mode-icon mode-icon-svg" aria-hidden="true">
+              <svg width="40" height="40" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="5" y="5" width="17" height="17" rx="5" fill="#22c55e" fill-opacity="0.22" stroke="#22c55e" stroke-width="1.8"/>
+                <text x="13.5" y="17.5" font-family="Plus Jakarta Sans, sans-serif" font-size="11" font-weight="800" fill="#86efac" text-anchor="middle">A</text>
+                <rect x="26" y="5" width="17" height="17" rx="5" fill="#142217" stroke="#4ade80" stroke-opacity="0.4" stroke-width="1.5"/>
+                <text x="34.5" y="17.5" font-family="Plus Jakarta Sans, sans-serif" font-size="11" font-weight="700" fill="#a7f3d0" text-anchor="middle">B</text>
+                <rect x="5" y="26" width="17" height="17" rx="5" fill="#142217" stroke="#4ade80" stroke-opacity="0.4" stroke-width="1.5"/>
+                <text x="13.5" y="38.5" font-family="Plus Jakarta Sans, sans-serif" font-size="11" font-weight="700" fill="#a7f3d0" text-anchor="middle">C</text>
+                <rect x="26" y="26" width="17" height="17" rx="5" fill="#142217" stroke="#4ade80" stroke-opacity="0.4" stroke-width="1.5"/>
+                <text x="34.5" y="38.5" font-family="Plus Jakarta Sans, sans-serif" font-size="11" font-weight="700" fill="#a7f3d0" text-anchor="middle">D</text>
+              </svg>
+            </div>
+            <div class="mode-stats-badge" title="Multiple Choice Accuracy">
+              <span id="home-mc-stat-accuracy" class="badge-pct">0%</span>
+              <span id="home-mc-stat-ratio" class="badge-ratio">0 / 0 Correct</span>
+            </div>
+          </div>
+          <h3 id="txt-mode-mc-title">Multiple Choice</h3>
+          <p id="txt-mode-mc-desc">Identify the city from 4 smart options.</p>
+          <div class="mode-bottom-row">
+            <div class="mode-action-link">
+              <span id="txt-btn-play-mc">Play</span>
+              <span>→</span>
+            </div>
+            <button id="btn-reset-mc-stats" class="btn-reset-mode" title="Reset stats for this mode">
+              Reset
+            </button>
+          </div>
+        </div>
+
+        <!-- Mode 2: Type & Guess -->
+        <div id="btn-mode-text" class="mode-card" role="button" tabindex="0">
+          <div class="mode-top-row">
+            <div class="mode-icon mode-icon-svg" aria-hidden="true">
+              <svg width="40" height="40" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Keyboard Base -->
+                <rect x="4" y="22" width="40" height="22" rx="5" fill="#0e1b12" stroke="#22c55e" stroke-width="1.6"/>
+                <!-- Keycaps Top Row -->
+                <rect x="7" y="25" width="5" height="4.5" rx="1.5" fill="#1b3021" stroke="#4ade80" stroke-opacity="0.3" stroke-width="0.8"/>
+                <rect x="14" y="25" width="5" height="4.5" rx="1.5" fill="#1b3021" stroke="#4ade80" stroke-opacity="0.3" stroke-width="0.8"/>
+                <rect x="21" y="25" width="6" height="4.5" rx="1.5" fill="#22c55e" fill-opacity="0.35" stroke="#86efac" stroke-width="1.2"/>
+                <rect x="29" y="25" width="5" height="4.5" rx="1.5" fill="#1b3021" stroke="#4ade80" stroke-opacity="0.3" stroke-width="0.8"/>
+                <rect x="36" y="25" width="5" height="4.5" rx="1.5" fill="#1b3021" stroke="#4ade80" stroke-opacity="0.3" stroke-width="0.8"/>
+                <!-- Keycaps Middle Row -->
+                <rect x="8" y="31" width="6" height="4.5" rx="1.5" fill="#1b3021" stroke="#4ade80" stroke-opacity="0.3" stroke-width="0.8"/>
+                <rect x="16" y="31" width="6" height="4.5" rx="1.5" fill="#1b3021" stroke="#4ade80" stroke-opacity="0.3" stroke-width="0.8"/>
+                <rect x="24" y="31" width="6" height="4.5" rx="1.5" fill="#1b3021" stroke="#4ade80" stroke-opacity="0.3" stroke-width="0.8"/>
+                <rect x="32" y="31" width="8" height="4.5" rx="1.5" fill="#1b3021" stroke="#4ade80" stroke-opacity="0.3" stroke-width="0.8"/>
+                <!-- Spacebar Row -->
+                <rect x="14" y="37.5" width="20" height="3.5" rx="1.5" fill="#1b3021" stroke="#4ade80" stroke-opacity="0.3" stroke-width="0.8"/>
+                <!-- Stylized Typing Hand -->
+                <path d="M14 5 C14 5, 18 10, 20 14 L24 23.5 C24.2 24, 23.8 24.5, 23.2 24.5 L21.5 24.5 C21 24.5, 20.6 24, 20.4 23.5 L17.5 17 L15.5 19 C15 19.5, 14.2 19.5, 13.8 19 L11 16" 
+                      stroke="#86efac" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                <!-- Tap Contact Dot -->
+                <circle cx="24" cy="27" r="2" fill="#22c55e"/>
+              </svg>
+            </div>
+            <div class="mode-stats-badge" title="Type & Guess Accuracy">
+              <span id="home-text-stat-accuracy" class="badge-pct">0%</span>
+              <span id="home-text-stat-ratio" class="badge-ratio">0 / 0 Correct</span>
+            </div>
+          </div>
+          <h3 id="txt-mode-text-title">Type & Guess</h3>
+          <p id="txt-mode-text-desc">Type the city; get distance (km) and compass direction clues.</p>
+          <div class="mode-bottom-row">
+            <div class="mode-action-link">
+              <span id="txt-btn-play-text">Play</span>
+              <span>→</span>
+            </div>
+            <button id="btn-reset-text-stats" class="btn-reset-mode" title="Reset stats for this mode">
+              Reset
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- ====================================================================
+         2. GAMEPLAY SCREEN
+         ==================================================================== -->
+    <main id="screen-game" class="screen">
+      <!-- HUD Top Bar -->
+      <header class="game-top-bar glass-panel">
+        <div class="bar-left">
+          <button id="btn-game-home" class="btn-nav-home" title="Return to Main Menu">
+            <span>←</span>
+            <span id="txt-btn-menu">Menu</span>
+          </button>
+          <span id="game-mode-badge" class="game-mode-badge">Multiple Choice</span>
+          <span id="game-diff-badge" class="game-diff-badge">Easy</span>
+        </div>
+
+        <div class="bar-right">
+          <div class="hud-accuracy-box" title="Accuracy for this mode">
+            <span id="game-stat-accuracy" class="hud-pct">0%</span>
+            <span id="game-stat-ratio" class="hud-ratio">Accuracy: 0 / 0</span>
+          </div>
+          <button id="btn-reset-stats-game" class="btn-reset-mode" title="Reset this mode">
+            Reset
+          </button>
+        </div>
+      </header>
+
+      <!-- Main Game Workspace -->
+      <div class="game-workspace">
+        
+        <!-- Left: Locked Satellite Photo Viewport -->
+        <section class="photo-frame-card">
+          <div class="photo-overlay-top">
+            <div class="photo-badge-compass" title="Strict North-Up Geographic Orientation">
+              <span>🧭</span>
+              <span id="txt-compass-north">NORTH UP</span>
+            </div>
+            <button id="btn-expand-photo" class="photo-btn-expand" title="Expand photo to fullscreen">
+              <span>🔍</span>
+              <span id="txt-btn-expand">Expand Photo</span>
+            </button>
+          </div>
+
+          <!-- Locked Map Viewport -->
+          <div id="satellite-map-container" class="satellite-viewport"></div>
+        </section>
+
+        <!-- Right: Clues & Interactive Area -->
+        <section class="game-controls-card glass-panel">
+          
+          <!-- Clues Section -->
+          <div class="hints-section">
+            <div class="hints-title" id="txt-hints-header">Clues</div>
+            <div class="hints-grid">
+              <!-- Clue 1: Continent -->
+              <div id="btn-hint-continent" class="hint-item">
+                <span class="hint-label" id="txt-hint-continent-lbl">🌍 Continent</span>
+                <span id="hint-val-continent" class="hint-value">Click to reveal</span>
+              </div>
+              <!-- Clue 2: Country -->
+              <div id="btn-hint-country" class="hint-item">
+                <span class="hint-label" id="txt-hint-country-lbl">🚩 Country & Flag</span>
+                <span id="hint-val-country" class="hint-value">Click to reveal</span>
+              </div>
+              <!-- Clue 3: Info -->
+              <div id="btn-hint-detail" class="hint-item">
+                <span class="hint-label" id="txt-hint-detail-lbl">ℹ️ Info</span>
+                <span id="hint-val-detail" class="hint-value">Click to reveal</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Dynamic Mode Content Area -->
+          <div id="mode-content-area"></div>
+
+          <!-- Level Completed Card -->
+          <div id="completed-card" class="completed-card">
+            <div class="completed-icon">🏆</div>
+            <div class="completed-title" id="txt-completed-title">Congratulations, Level Completed!</div>
+            <div class="completed-desc" id="txt-completed-desc">You have completed all cities in this difficulty level.</div>
+            <div class="completed-btn-group">
+              <button id="btn-replay-tier" class="btn-primary-action">
+                <span id="txt-btn-replay">Reset and Replay</span>
+              </button>
+              <button id="btn-change-diff" class="btn-nav-home">
+                <span id="txt-btn-diff-change">Choose Another Difficulty</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Result Overlay Card -->
+          <div id="result-overlay-card" class="result-overlay-card">
+            <div class="result-header">
+              <span id="result-title" class="result-title">Congratulations!</span>
+              <span id="result-accuracy-badge" class="result-accuracy-badge">100%</span>
+            </div>
+            <div class="result-city-info">
+              <div id="result-city-name" class="result-city-name">Istanbul</div>
+              <div id="result-city-country" class="result-city-country">Turkey • Europe / Asia</div>
+              <div id="result-city-detail" class="result-city-detail">Historic strait city connecting two continents.</div>
+            </div>
+            <button id="btn-next-city" class="btn-primary-action">
+              <span id="txt-btn-next-city">Next City</span>
+              <span>→</span>
+            </button>
+          </div>
+
+        </section>
+
+      </div>
+    </main>
+
+  </div>
+
+  <!-- ====================================================================
+       3. EXPANDED PHOTO MODAL (LOCKED, PAN & ZOOM DISABLED)
+       ==================================================================== -->
+  <div id="photo-modal" class="photo-modal-backdrop">
+    <div class="photo-modal-container">
+      <button id="btn-close-photo-modal" class="btn-close-modal">Close (✕)</button>
+      <div id="modal-map-container" class="modal-map-viewport"></div>
+    </div>
+  </div>
+
+  <!-- Leaflet JS Library -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+  <!-- Application Entry Script -->
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

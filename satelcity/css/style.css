@@ -72,6 +72,29 @@ body {
   gap: 1rem;
 }
 
+.btn-geohub-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: rgba(14, 24, 17, 0.85);
+  border: 1px solid var(--glass-border);
+  color: var(--accent-sage);
+  padding: 0.45rem 0.9rem;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-decoration: none;
+  backdrop-filter: blur(8px);
+  transition: var(--transition-smooth);
+}
+
+.btn-geohub-back:hover {
+  background: rgba(34, 197, 94, 0.15);
+  border-color: rgba(34, 197, 94, 0.4);
+  color: #ffffff;
+  transform: translateX(-2px);
+}
+
 .brand-badge {
   display: inline-flex;
   align-items: center;
