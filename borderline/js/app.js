@@ -201,7 +201,7 @@ class BorderLineGame {
     this.currentCountry = this.deck.pop();
 
     // Render Silhouette
-    this.elements.silhouettePath.className = 'silhouette-path';
+    this.elements.silhouettePath.setAttribute('class', 'silhouette-path');
     this.elements.silhouettePath.setAttribute('d', this.currentCountry.svgPath || '');
 
     // Generate Smart Distractors (Strictly Same Continent)
