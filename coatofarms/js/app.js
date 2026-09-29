@@ -21,49 +21,49 @@ function normalizeText(str) {
 }
 
 const ARM_ALIASES = {
-  'ottoman_empire': ['ottoman', 'ottomanempire', 'osmanli', 'osmanliimparatorlugu', 'devletialiyye'],
-  'ussr': ['ussr', 'sovietunion', 'soviet', 'sscb', 'sovyetlerbirligi', 'sovyet'],
-  'austro_hungarian_empire': ['austrohungarianempire', 'austriahungary', 'austrohungary', 'avusturyamacaristan', 'avusturyamacaristanimparatorlugu'],
-  'russian_empire': ['russianempire', 'imperialrussia', 'rusimparatorlugu', 'carikrussiyasi'],
-  'byzantine_empire': ['byzantine', 'byzantineempire', 'byzantium', 'easternromanempire', 'bizans', 'bizansimparatorlugu', 'doguroma'],
-  'german_empire': ['germanempire', 'kaiserreich', 'deutscheskaiserreich', 'almanimparatorlugu'],
-  'kingdom_of_prussia': ['prussia', 'kingdomofprussia', 'preussen', 'prusya', 'prusyakralligi'],
-  'yugoslavia': ['yugoslavia', 'sfryugoslavia', 'yugoslavya'],
-  'holy_roman_empire': ['holyromanempire', 'hre', 'kutsalroma', 'kutsalromagermen', 'kutsalromagermenimparatorlugu'],
-  'polish_lithuanian_commonwealth': ['polishlithuaniancommonwealth', 'polandlithuania', 'commonwealth', 'lehistan', 'polonyalitvanya', 'polonyalitvanyabirligi'],
-  'empire_of_brazil': ['empireofbrazil', 'brazilianempire', 'brezilyaimparatorlugu'],
-  'kingdom_of_italy': ['kingdomofitaly', 'italykingdom', 'italyakralligi'],
-  'united_kingdom': ['unitedkingdom', 'uk', 'britain', 'greatbritain', 'england', 'ingiltere', 'birlesikkrallik', 'britanya'],
-  'united_states': ['unitedstates', 'usa', 'us', 'unitedstatesofamerica', 'america', 'abd', 'amerika', 'amerikabirlesikdevletleri'],
-  'germany': ['germany', 'deutschland', 'almanya'],
-  'spain': ['spain', 'espana', 'ispanya'],
-  'france': ['france', 'fransa'],
-  'italy': ['italy', 'italia', 'italya'],
-  'japan': ['japan', 'nippon', 'japonya'],
-  'australia': ['australia', 'avustralya'],
-  'canada': ['canada', 'kanada'],
-  'mexico': ['mexico', 'meksika'],
-  'sweden': ['sweden', 'sverige', 'isvec'],
-  'india': ['india', 'bharat', 'hindistan'],
-  'south_africa': ['southafrica', 'guneyafrika'],
-  'egypt': ['egypt', 'misir'],
-  'brazil': ['brazil', 'brasil', 'brezilya'],
-  'argentina': ['argentina', 'arjantin'],
-  'ireland': ['ireland', 'irlanda'],
-  'ukraine': ['ukraine', 'ukrayna'],
-  'netherlands': ['netherlands', 'holland', 'hollanda', 'felemenk'],
-  'belgium': ['belgium', 'belcika'],
-  'switzerland': ['switzerland', 'isvicre'],
-  'austria': ['austria', 'avusturya'],
-  'norway': ['norway', 'norvec'],
-  'denmark': ['denmark', 'danimarka'],
-  'finland': ['finland', 'finlandiya'],
-  'portugal': ['portugal', 'portekiz'],
-  'greece': ['greece', 'yunanistan', 'hellas'],
-  'poland': ['poland', 'polska', 'polonya'],
-  'iceland': ['iceland', 'izlanda'],
-  'saudi_arabia': ['saudiarabia', 'saudi', 'suudiarabistan'],
-  'south_korea': ['southkorea', 'korea', 'republicofkorea', 'guneykore']
+  'ottoman_empire': ['ottoman', 'ottomanempire'],
+  'ussr': ['ussr', 'sovietunion', 'soviet'],
+  'austro_hungarian_empire': ['austrohungarianempire', 'austriahungary', 'austrohungary'],
+  'russian_empire': ['russianempire', 'imperialrussia'],
+  'byzantine_empire': ['byzantine', 'byzantineempire', 'byzantium', 'easternromanempire'],
+  'german_empire': ['germanempire', 'kaiserreich', 'deutscheskaiserreich'],
+  'kingdom_of_prussia': ['prussia', 'kingdomofprussia', 'preussen'],
+  'yugoslavia': ['yugoslavia', 'sfryugoslavia'],
+  'holy_roman_empire': ['holyromanempire', 'hre'],
+  'polish_lithuanian_commonwealth': ['polishlithuaniancommonwealth', 'polandlithuania', 'commonwealth'],
+  'empire_of_brazil': ['empireofbrazil', 'brazilianempire'],
+  'kingdom_of_italy': ['kingdomofitaly', 'italykingdom'],
+  'united_kingdom': ['unitedkingdom', 'uk', 'britain', 'greatbritain', 'england'],
+  'united_states': ['unitedstates', 'usa', 'us', 'unitedstatesofamerica', 'america'],
+  'germany': ['germany', 'deutschland'],
+  'spain': ['spain', 'espana'],
+  'france': ['france'],
+  'italy': ['italy', 'italia'],
+  'japan': ['japan', 'nippon'],
+  'australia': ['australia'],
+  'canada': ['canada'],
+  'mexico': ['mexico'],
+  'sweden': ['sweden', 'sverige'],
+  'india': ['india', 'bharat'],
+  'south_africa': ['southafrica'],
+  'egypt': ['egypt'],
+  'brazil': ['brazil', 'brasil'],
+  'argentina': ['argentina'],
+  'ireland': ['ireland'],
+  'ukraine': ['ukraine'],
+  'netherlands': ['netherlands', 'holland'],
+  'belgium': ['belgium'],
+  'switzerland': ['switzerland'],
+  'austria': ['austria'],
+  'norway': ['norway'],
+  'denmark': ['denmark'],
+  'finland': ['finland'],
+  'portugal': ['portugal'],
+  'greece': ['greece', 'hellas'],
+  'poland': ['poland', 'polska'],
+  'iceland': ['iceland'],
+  'saudi_arabia': ['saudiarabia', 'saudi'],
+  'south_korea': ['southkorea', 'korea', 'republicofkorea']
 };
 
 function checkArmMatch(userInput, targetArm) {
@@ -579,9 +579,9 @@ class CoatOfArmsGame {
     // CRITICAL: DO NOT burn the question! Do NOT advance to next round!
     // Shake the input and inform the user to select from suggestions or type full name.
     if (this.dropdownMatches && this.dropdownMatches.length > 0) {
-      this.showInputError("Lütfen önerilenlerden birini seçin (↓ tuşu veya tıklayarak) ya da tam adını yazın.");
+      this.showInputError("Please select from the suggestions (↓ or click) or type the full name.");
     } else {
-      this.showInputError("Geçerli bir ülke veya imparatorluk bulunamadı. Lütfen listedeki tam adı yazın.");
+      this.showInputError("No matching nation or empire found. Please type a valid name from the list.");
     }
   }
 
