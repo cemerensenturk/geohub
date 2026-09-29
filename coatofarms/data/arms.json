@@ -1,0 +1,398 @@
+[
+  {
+    "id": "ottoman_empire",
+    "name": "Ottoman Empire",
+    "type": "historical",
+    "period": "1299 – 1922",
+    "region": "Middle East, North Africa & Balkans",
+    "description": "Designed in 1882 during Sultan Abdul Hamid II reign. Features the imperial tughra, scales of justice, the Quran, and 30 battle weapons surrounding the sun shield.",
+    "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Coat_of_arms_of_the_Ottoman_Empire_(1882%E2%80%931922).svg"
+  },
+  {
+    "id": "ussr",
+    "name": "Soviet Union (USSR)",
+    "type": "historical",
+    "period": "1922 – 1991",
+    "region": "Eurasia & Eastern Europe",
+    "description": "Adopted in 1923, depicting the hammer and sickle on a globe bathed in sun rays, framed by wheat stalks wrapped in ribbons carrying \"Workers of the world, unite!\" in 15 languages.",
+    "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Coat_of_arms_of_the_Soviet_Union_(1956%E2%80%931991).svg"
+  },
+  {
+    "id": "austro_hungarian_empire",
+    "name": "Austro-Hungarian Empire",
+    "type": "historical",
+    "period": "1867 – 1918",
+    "region": "Central Europe",
+    "description": "The imperial double-headed eagle of the House of Habsburg-Lorraine, crowned with the Imperial Crown of Austria and bearing heraldic shields of the dual monarchy realms.",
+    "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Imperial_Coat_of_Arms_of_the_Empire_of_Austria.svg"
+  },
+  {
+    "id": "russian_empire",
+    "name": "Russian Empire",
+    "type": "historical",
+    "period": "1721 – 1917",
+    "region": "Eurasia & Northern Europe",
+    "description": "The golden double-headed eagle of the Romanov dynasty, crowned with imperial crowns and displaying Saint George slaying the dragon on the breast shield.",
+    "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Lesser_Coat_of_Arms_of_Russian_Empire.svg"
+  },
+  {
+    "id": "byzantine_empire",
+    "name": "Byzantine Empire",
+    "type": "historical",
+    "period": "330 – 1453",
+    "region": "Eastern Mediterranean & Balkans",
+    "description": "The imperial gold double-headed eagle of the Palaiologos dynasty on a crimson field, symbolizing dominance over both East and West.",
+    "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Palaeologus_Emperor_Flag_Square.svg"
+  },
+  {
+    "id": "german_empire",
+    "name": "German Empire (Deutsches Kaiserreich)",
+    "type": "historical",
+    "period": "1871 – 1918",
+    "region": "Central Europe",
+    "description": "The Reichsadler (Imperial Eagle) bearing the Hohenzollern escutcheon, surrounded by the collar of the Order of the Black Eagle beneath the Imperial Crown.",
+    "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Imperial_Coat_of_arms_of_Germany_(1889%E2%80%931918).svg"
+  },
+  {
+    "id": "kingdom_of_prussia",
+    "name": "Kingdom of Prussia",
+    "type": "historical",
+    "period": "1701 – 1918",
+    "region": "Central & Eastern Europe",
+    "description": "Features the crowned black eagle holding a royal scepter and orb, with the monogram of King Frederick I on its chest.",
+    "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Wappen_Preu%C3%9Fen.svg"
+  },
+  {
+    "id": "yugoslavia",
+    "name": "SFR Yugoslavia",
+    "type": "historical",
+    "period": "1945 – 1992",
+    "region": "Balkans & Southeastern Europe",
+    "description": "Six torches burning in a single flame, symbolizing brotherhood and unity among the six constituent republics, topped by a red socialist star.",
+    "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Coat_of_arms_of_Yugoslavia_(1963%E2%80%931992).svg"
+  },
+  {
+    "id": "holy_roman_empire",
+    "name": "Holy Roman Empire",
+    "type": "historical",
+    "period": "962 – 1806",
+    "region": "Central Europe",
+    "description": "The black double-headed eagle on a golden banner with golden halos, representing universal Christian temporal authority.",
+    "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Banner_of_the_Holy_Roman_Emperor_with_haloes_(1400-1806).svg"
+  },
+  {
+    "id": "polish_lithuanian_commonwealth",
+    "name": "Polish-Lithuanian Commonwealth",
+    "type": "historical",
+    "period": "1569 – 1795",
+    "region": "Eastern & Central Europe",
+    "description": "Quartered arms displaying the White Eagle of the Crown of Poland and the Vytis (Pahonia knight) of the Grand Duchy of Lithuania.",
+    "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Herb_Rzeczypospolitej_Obojga_Narodow.svg"
+  },
+  {
+    "id": "empire_of_brazil",
+    "name": "Empire of Brazil",
+    "type": "historical",
+    "period": "1822 – 1889",
+    "region": "South America",
+    "description": "Green escutcheon bordered with 20 stars surrounding the celestial sphere and the cross of the Order of Christ, flanked by coffee and tobacco branches.",
+    "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Coat_of_arms_of_the_Empire_of_Brazil_(1870-1889).svg"
+  },
+  {
+    "id": "kingdom_of_italy",
+    "name": "Kingdom of Italy",
+    "type": "historical",
+    "period": "1861 – 1946",
+    "region": "Southern Europe",
+    "description": "The white cross on a red field of the royal House of Savoy, flanked by crowned lions and draped in the royal canopy.",
+    "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Lesser_coat_of_arms_of_the_Kingdom_of_Italy_(1890-1927_and_1944-1946).svg"
+  },
+  {
+    "id": "united_kingdom",
+    "name": "United Kingdom",
+    "type": "modern",
+    "period": "Modern Sovereign State",
+    "region": "Western Europe",
+    "description": "Supported by the English Lion and Scottish Unicorn, featuring the French mottoes \"Honi soit qui mal y pense\" and \"Dieu et mon droit\".",
+    "image": "https://mainfacts.com/media/images/coats_of_arms/gb.svg"
+  },
+  {
+    "id": "united_states",
+    "name": "United States",
+    "type": "modern",
+    "period": "Modern Sovereign State",
+    "region": "North America",
+    "description": "The Great Seal featuring the bald eagle clutching an olive branch with 13 olives and 13 arrows, beneath the motto \"E Pluribus Unum\".",
+    "image": "https://mainfacts.com/media/images/coats_of_arms/us.svg"
+  },
+  {
+    "id": "germany",
+    "name": "Germany",
+    "type": "modern",
+    "period": "Modern Sovereign State",
+    "region": "Western Europe",
+    "description": "The Bundesadler (Federal Eagle), one of the oldest state symbols in the world, originating from the medieval Holy Roman emperors.",
+    "image": "https://mainfacts.com/media/images/coats_of_arms/de.svg"
+  },
+  {
+    "id": "spain",
+    "name": "Spain",
+    "type": "modern",
+    "period": "Modern Sovereign State",
+    "region": "Southern Europe",
+    "description": "Combines the historic kingdoms of Castile, León, Aragon, Navarre, and Granada, flanked by the Pillars of Hercules with the motto \"Plus Ultra\".",
+    "image": "https://mainfacts.com/media/images/coats_of_arms/es.svg"
+  },
+  {
+    "id": "turkey",
+    "name": "Türkiye",
+    "type": "modern",
+    "period": "Modern Sovereign State",
+    "region": "Eurasia",
+    "description": "The Presidential Seal of Türkiye featuring a 16-pointed sun surrounded by 16 five-pointed stars representing the 16 Great Turkic Empires in history.",
+    "image": "https://mainfacts.com/media/images/coats_of_arms/tr.svg"
+  },
+  {
+    "id": "france",
+    "name": "France",
+    "type": "modern",
+    "period": "Modern Sovereign State",
+    "region": "Western Europe",
+    "description": "Features the Roman lictor fasces (symbolizing justice and unity), an oak branch (permanence), and an olive branch (peace), bearing the monogram RF.",
+    "image": "https://mainfacts.com/media/images/coats_of_arms/fr.svg"
+  },
+  {
+    "id": "italy",
+    "name": "Italy",
+    "type": "modern",
+    "period": "Modern Sovereign State",
+    "region": "Southern Europe",
+    "description": "The national emblem featuring the Stella d'Italia (star of Italy) centered on a five-spoked cogwheel, flanked by olive and oak branches.",
+    "image": "https://mainfacts.com/media/images/coats_of_arms/it.svg"
+  },
+  {
+    "id": "japan",
+    "name": "Japan",
+    "type": "modern",
+    "period": "Modern Sovereign State",
+    "region": "East Asia",
+    "description": "The Imperial Seal of Japan (Chrysanthemum Seal), a 16-petaled crest used by the Emperor of Japan and the Imperial family since the 12th century.",
+    "image": "https://mainfacts.com/media/images/coats_of_arms/jp.svg"
+  },
+  {
+    "id": "australia",
+    "name": "Australia",
+    "type": "modern",
+    "period": "Modern Sovereign State",
+    "region": "Oceania",
+    "description": "Supported by a red kangaroo and an emu (animals chosen because neither can move backwards easily, signifying progress), set against flowering golden wattle.",
+    "image": "https://mainfacts.com/media/images/coats_of_arms/au.svg"
+  },
+  {
+    "id": "canada",
+    "name": "Canada",
+    "type": "modern",
+    "period": "Modern Sovereign State",
+    "region": "North America",
+    "description": "Proclaimed by King George V in 1921, incorporating symbols of England, Scotland, Ireland, and France with Canadian red maple leaves.",
+    "image": "https://mainfacts.com/media/images/coats_of_arms/ca.svg"
+  },
+  {
+    "id": "mexico",
+    "name": "Mexico",
+    "type": "modern",
+    "period": "Modern Sovereign State",
+    "region": "North America",
+    "description": "Depicts an Aztec legend: a Mexican golden eagle perched on a prickly pear cactus devouring a rattlesnake, standing on an island in Lake Texcoco.",
+    "image": "https://mainfacts.com/media/images/coats_of_arms/mx.svg"
+  },
+  {
+    "id": "sweden",
+    "name": "Sweden",
+    "type": "modern",
+    "period": "Modern Sovereign State",
+    "region": "Northern Europe",
+    "description": "The Greater Coat of Arms featuring the three golden crowns (Tre Kronor) and the Folkung lion, supported by two crowned heraldic lions.",
+    "image": "https://mainfacts.com/media/images/coats_of_arms/se.svg"
+  },
+  {
+    "id": "india",
+    "name": "India",
+    "type": "modern",
+    "period": "Modern Sovereign State",
+    "region": "South Asia",
+    "description": "An adaptation of the Lion Capital of Ashoka from 250 BCE at Sarnath, with four Asiatic lions standing back to back above the motto \"Satyameva Jayate\" (Truth Alone Triumphs).",
+    "image": "https://mainfacts.com/media/images/coats_of_arms/in.svg"
+  },
+  {
+    "id": "south_africa",
+    "name": "South Africa",
+    "type": "modern",
+    "period": "Modern Sovereign State",
+    "region": "Southern Africa",
+    "description": "Adopted on Freedom Day 2000, displaying the secretary bird with outstretched wings, a rising sun, king protea, elephant tusks, and San rock art figures.",
+    "image": "https://mainfacts.com/media/images/coats_of_arms/za.svg"
+  },
+  {
+    "id": "egypt",
+    "name": "Egypt",
+    "type": "modern",
+    "period": "Modern Sovereign State",
+    "region": "North Africa",
+    "description": "The Eagle of Saladin, bearing on its breast an escutcheon with the vertical stripes of the national flag and gripping a scroll inscribed with the state name.",
+    "image": "https://mainfacts.com/media/images/coats_of_arms/eg.svg"
+  },
+  {
+    "id": "brazil",
+    "name": "Brazil",
+    "type": "modern",
+    "period": "Modern Sovereign State",
+    "region": "South America",
+    "description": "Features a central five-pointed star surrounded by coffee and tobacco sprigs, bearing the Southern Cross constellation within a blue circle.",
+    "image": "https://mainfacts.com/media/images/coats_of_arms/br.svg"
+  },
+  {
+    "id": "argentina",
+    "name": "Argentina",
+    "type": "modern",
+    "period": "Modern Sovereign State",
+    "region": "South America",
+    "description": "Features the Sun of May rising above two shaking hands holding a pike topped by a red Phrygian cap of liberty, encircled by laurel wreaths.",
+    "image": "https://mainfacts.com/media/images/coats_of_arms/ar.svg"
+  },
+  {
+    "id": "ireland",
+    "name": "Ireland",
+    "type": "modern",
+    "period": "Modern Sovereign State",
+    "region": "Western Europe",
+    "description": "The golden Gaelic harp (Cláirseach or Harp of Brian Boru) with silver strings on a field of Saint Patrick's blue.",
+    "image": "https://mainfacts.com/media/images/coats_of_arms/ie.svg"
+  },
+  {
+    "id": "ukraine",
+    "name": "Ukraine",
+    "type": "modern",
+    "period": "Modern Sovereign State",
+    "region": "Eastern Europe",
+    "description": "The Tryzub (Golden Trident), the historic seal of Grand Prince Volodymyr the Great of Kyivan Rus from the 10th century on a blue shield.",
+    "image": "https://mainfacts.com/media/images/coats_of_arms/ua.svg"
+  },
+  {
+    "id": "netherlands",
+    "name": "Netherlands",
+    "type": "modern",
+    "period": "Modern Sovereign State",
+    "region": "Western Europe",
+    "description": "The Royal Arms featuring a crowned golden lion bearing a sword and arrows of the House of Orange-Nassau beneath the royal mantle with motto \"Je Maintiendrai\".",
+    "image": "https://mainfacts.com/media/images/coats_of_arms/nl.svg"
+  },
+  {
+    "id": "belgium",
+    "name": "Belgium",
+    "type": "modern",
+    "period": "Modern Sovereign State",
+    "region": "Western Europe",
+    "description": "The Brabant lion rampant on a black shield supported by two lions holding Belgian banners, with the royal motto \"L'union fait la force\".",
+    "image": "https://mainfacts.com/media/images/coats_of_arms/be.svg"
+  },
+  {
+    "id": "switzerland",
+    "name": "Switzerland",
+    "type": "modern",
+    "period": "Modern Sovereign State",
+    "region": "Central Europe",
+    "description": "The iconic free-standing bold white cross with arms of equal length on a red heraldic shield, unchanged since the Old Swiss Confederacy.",
+    "image": "https://mainfacts.com/media/images/coats_of_arms/ch.svg"
+  },
+  {
+    "id": "austria",
+    "name": "Austria",
+    "type": "modern",
+    "period": "Modern Sovereign State",
+    "region": "Central Europe",
+    "description": "The black federal eagle wearing a mural crown (representing the middle class), holding a hammer (working class) and sickle (farmers), with broken chains on its feet symbolizing liberation.",
+    "image": "https://mainfacts.com/media/images/coats_of_arms/at.svg"
+  },
+  {
+    "id": "norway",
+    "name": "Norway",
+    "type": "modern",
+    "period": "Modern Sovereign State",
+    "region": "Northern Europe",
+    "description": "One of the oldest state coats of arms in Europe (since 1280), depicting a golden lion rampant crowned and holding an axe with a silver blade.",
+    "image": "https://mainfacts.com/media/images/coats_of_arms/no.svg"
+  },
+  {
+    "id": "denmark",
+    "name": "Denmark",
+    "type": "modern",
+    "period": "Modern Sovereign State",
+    "region": "Northern Europe",
+    "description": "Three crowned blue lions passant gardant accompanied by nine red water lily hearts on a golden heraldic shield, dating back to King Canute VI in 1194.",
+    "image": "https://mainfacts.com/media/images/coats_of_arms/dk.svg"
+  },
+  {
+    "id": "finland",
+    "name": "Finland",
+    "type": "modern",
+    "period": "Modern Sovereign State",
+    "region": "Northern Europe",
+    "description": "A crowned lion on a red field trampling a Russian sabre with its hind paws while wielding an armored sword, surrounded by nine silver roses.",
+    "image": "https://mainfacts.com/media/images/coats_of_arms/fi.svg"
+  },
+  {
+    "id": "portugal",
+    "name": "Portugal",
+    "type": "modern",
+    "period": "Modern Sovereign State",
+    "region": "Southern Europe",
+    "description": "The armillary sphere (symbolizing Portugal's Age of Discoveries) supporting a white shield with five blue quinas (shields) bordered by seven golden castles.",
+    "image": "https://mainfacts.com/media/images/coats_of_arms/pt.svg"
+  },
+  {
+    "id": "greece",
+    "name": "Greece",
+    "type": "modern",
+    "period": "Modern Sovereign State",
+    "region": "Southern Europe",
+    "description": "A blue escutcheon charged with a white Greek cross, completely surrounded by two laurel branches, representing victory and ancient Greek heritage.",
+    "image": "https://mainfacts.com/media/images/coats_of_arms/gr.svg"
+  },
+  {
+    "id": "poland",
+    "name": "Poland",
+    "type": "modern",
+    "period": "Modern Sovereign State",
+    "region": "Central Europe",
+    "description": "The White Eagle (Orzeł Biały) with a golden beak and talons, wearing a golden crown on a red heraldic shield, dating to the Piast dynasty.",
+    "image": "https://mainfacts.com/media/images/coats_of_arms/pl.svg"
+  },
+  {
+    "id": "iceland",
+    "name": "Iceland",
+    "type": "modern",
+    "period": "Modern Sovereign State",
+    "region": "Northern Europe",
+    "description": "Features the four legendary landvættir (protector spirits of Iceland): the bull (Griðungur), the eagle (Gammur), the dragon (Dreki), and the rock giant (Bergrisi).",
+    "image": "https://mainfacts.com/media/images/coats_of_arms/is.svg"
+  },
+  {
+    "id": "saudi_arabia",
+    "name": "Saudi Arabia",
+    "type": "modern",
+    "period": "Modern Sovereign State",
+    "region": "Middle East",
+    "description": "Two crossed scimitars beneath a green date palm tree, representing strength, sacrifice, vitality, and prosperity.",
+    "image": "https://mainfacts.com/media/images/coats_of_arms/sa.svg"
+  },
+  {
+    "id": "south_korea",
+    "name": "South Korea",
+    "type": "modern",
+    "period": "Modern Sovereign State",
+    "region": "East Asia",
+    "description": "Features the Taegeuk yin-yang symbol encircled by five petals of the Mugunghwa (Rose of Sharon, national flower of Korea) with a ribbon bearing the state name.",
+    "image": "https://mainfacts.com/media/images/coats_of_arms/kr.svg"
+  }
+]
