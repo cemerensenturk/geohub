@@ -20,6 +20,52 @@ function normalizeText(str) {
     .replace(/[^a-z0-9]/g, '');
 }
 
+const ARM_ALIASES = {
+  'ottoman_empire': ['ottoman', 'ottomanempire', 'osmanli', 'osmanliimparatorlugu', 'devletialiyye'],
+  'ussr': ['ussr', 'sovietunion', 'soviet', 'sscb', 'sovyetlerbirligi', 'sovyet'],
+  'austro_hungarian_empire': ['austrohungarianempire', 'austriahungary', 'austrohungary', 'avusturyamacaristan', 'avusturyamacaristanimparatorlugu'],
+  'russian_empire': ['russianempire', 'imperialrussia', 'rusimparatorlugu', 'carikrussiyasi'],
+  'byzantine_empire': ['byzantine', 'byzantineempire', 'byzantium', 'easternromanempire', 'bizans', 'bizansimparatorlugu', 'doguroma'],
+  'german_empire': ['germanempire', 'kaiserreich', 'deutscheskaiserreich', 'almanimparatorlugu'],
+  'kingdom_of_prussia': ['prussia', 'kingdomofprussia', 'preussen', 'prusya', 'prusyakralligi'],
+  'yugoslavia': ['yugoslavia', 'sfryugoslavia', 'yugoslavya'],
+  'holy_roman_empire': ['holyromanempire', 'hre', 'kutsalroma', 'kutsalromagermen', 'kutsalromagermenimparatorlugu'],
+  'polish_lithuanian_commonwealth': ['polishlithuaniancommonwealth', 'polandlithuania', 'commonwealth', 'lehistan', 'polonyalitvanya', 'polonyalitvanyabirligi'],
+  'empire_of_brazil': ['empireofbrazil', 'brazilianempire', 'brezilyaimparatorlugu'],
+  'kingdom_of_italy': ['kingdomofitaly', 'italykingdom', 'italyakralligi'],
+  'united_kingdom': ['unitedkingdom', 'uk', 'britain', 'greatbritain', 'england', 'ingiltere', 'birlesikkrallik', 'britanya'],
+  'united_states': ['unitedstates', 'usa', 'us', 'unitedstatesofamerica', 'america', 'abd', 'amerika', 'amerikabirlesikdevletleri'],
+  'germany': ['germany', 'deutschland', 'almanya'],
+  'spain': ['spain', 'espana', 'ispanya'],
+  'france': ['france', 'fransa'],
+  'italy': ['italy', 'italia', 'italya'],
+  'japan': ['japan', 'nippon', 'japonya'],
+  'australia': ['australia', 'avustralya'],
+  'canada': ['canada', 'kanada'],
+  'mexico': ['mexico', 'meksika'],
+  'sweden': ['sweden', 'sverige', 'isvec'],
+  'india': ['india', 'bharat', 'hindistan'],
+  'south_africa': ['southafrica', 'guneyafrika'],
+  'egypt': ['egypt', 'misir'],
+  'brazil': ['brazil', 'brasil', 'brezilya'],
+  'argentina': ['argentina', 'arjantin'],
+  'ireland': ['ireland', 'irlanda'],
+  'ukraine': ['ukraine', 'ukrayna'],
+  'netherlands': ['netherlands', 'holland', 'hollanda', 'felemenk'],
+  'belgium': ['belgium', 'belcika'],
+  'switzerland': ['switzerland', 'isvicre'],
+  'austria': ['austria', 'avusturya'],
+  'norway': ['norway', 'norvec'],
+  'denmark': ['denmark', 'danimarka'],
+  'finland': ['finland', 'finlandiya'],
+  'portugal': ['portugal', 'portekiz'],
+  'greece': ['greece', 'yunanistan', 'hellas'],
+  'poland': ['poland', 'polska', 'polonya'],
+  'iceland': ['iceland', 'izlanda'],
+  'saudi_arabia': ['saudiarabia', 'saudi', 'suudiarabistan'],
+  'south_korea': ['southkorea', 'korea', 'republicofkorea', 'guneykore']
+};
+
 function checkArmMatch(userInput, targetArm) {
   if (!userInput || !targetArm) return false;
   const cleanInput = normalizeText(userInput);
@@ -28,30 +74,23 @@ function checkArmMatch(userInput, targetArm) {
 
   if (cleanInput === cleanTargetName || cleanInput === cleanTargetId) return true;
 
-  // Specific alias mappings
-  const aliases = {
-    'ussr': ['ussr', 'sovietunion', 'soviet', 'sscb'],
-    'united_states': ['usa', 'us', 'unitedstates', 'unitedstatesofamerica', 'america'],
-    'united_kingdom': ['uk', 'britain', 'greatbritain', 'unitedkingdom', 'england'],
-    'german_empire': ['germanempire', 'kaiserreich', 'deutscheskaiserreich'],
-    'kingdom_of_prussia': ['prussia', 'kingdomofprussia', 'preussen'],
-    'yugoslavia': ['yugoslavia', 'sfryugoslavia', 'yugoslavya'],
-    'byzantine_empire': ['byzantine', 'byzantineempire', 'byzantium', 'easternromanempire'],
-    'holy_roman_empire': ['holyromanempire', 'hre', 'kutsalromagermen'],
-    'polish_lithuanian_commonwealth': ['polishlithuaniancommonwealth', 'polandlithuania', 'commonwealth'],
-    'empire_of_brazil': ['empireofbrazil', 'brazilianempire'],
-    'kingdom_of_italy': ['kingdomofitaly', 'italykingdom'],
-    'south_korea': ['southkorea', 'korea', 'republicofkorea'],
-    'saudi_arabia': ['saudiarabia', 'saudi'],
-    'austro_hungarian_empire': ['austrohungarianempire', 'austriahungary', 'austrohungary'],
-    'russian_empire': ['russianempire', 'imperialrussia'],
-    'ottoman_empire': ['ottomanempire', 'ottoman', 'osmanli']
-  };
-
-  const list = aliases[targetArm.id];
+  const list = ARM_ALIASES[targetArm.id];
   if (list && list.includes(cleanInput)) return true;
 
   return false;
+}
+
+function findMatchingArm(userInput, allArms) {
+  if (!userInput || !allArms) return null;
+  const cleanInput = normalizeText(userInput);
+  if (!cleanInput) return null;
+
+  for (const arm of allArms) {
+    if (checkArmMatch(cleanInput, arm)) {
+      return arm;
+    }
+  }
+  return null;
 }
 
 class CoatOfArmsGame {
@@ -196,6 +235,16 @@ class CoatOfArmsGame {
       } else if (e.key === 'ArrowUp') {
         e.preventDefault();
         this.navigateDropdown(-1);
+      } else if (e.key === 'Tab') {
+        if (this.selectedDropdownIdx >= 0 && this.dropdownMatches[this.selectedDropdownIdx]) {
+          e.preventDefault();
+          this.elements.searchInput.value = this.dropdownMatches[this.selectedDropdownIdx].name;
+          this.closeDropdown();
+        } else if (this.dropdownMatches && this.dropdownMatches.length > 0) {
+          e.preventDefault();
+          this.elements.searchInput.value = this.dropdownMatches[0].name;
+          this.closeDropdown();
+        }
       } else if (e.key === 'Enter') {
         e.preventDefault();
         if (this.selectedDropdownIdx >= 0 && this.dropdownMatches[this.selectedDropdownIdx]) {
@@ -221,7 +270,7 @@ class CoatOfArmsGame {
 
     // Close autocomplete on click outside
     document.addEventListener('click', (e) => {
-      if (!e.target.closest('.input-autocomplete-box')) {
+      if (!e.target.closest('.guess-input-wrapper')) {
         this.closeDropdown();
       }
     });
@@ -345,6 +394,7 @@ class CoatOfArmsGame {
   }
 
   handleSearchInput() {
+    this.clearInputError();
     const query = this.elements.searchInput.value.trim();
     const cleanQuery = normalizeText(query);
 
@@ -353,13 +403,55 @@ class CoatOfArmsGame {
       return;
     }
 
-    // Search strictly within our 43 arms
-    this.dropdownMatches = this.arms.filter(arm => {
-      const nameNorm = normalizeText(arm.name);
-      const idNorm = normalizeText(arm.id);
-      return nameNorm.includes(cleanQuery) || idNorm.includes(cleanQuery);
-    }).slice(0, 8); // Top 8 suggestions
+    // Rank candidate matches strictly from our 43 coats of arms
+    const scoredMatches = [];
 
+    for (const arm of this.arms) {
+      const nameClean = normalizeText(arm.name);
+      const idClean = normalizeText(arm.id);
+      const aliasList = ARM_ALIASES[arm.id] || [];
+
+      let rank = 99;
+
+      // Tier 1: Arm name starts with query (e.g. "pol" in "Poland", "por" in "Portugal")
+      if (nameClean.startsWith(cleanQuery)) {
+        rank = 1;
+      }
+      // Tier 2: Any individual word in name starts with query (e.g. "com" in "Polish-Lithuanian Commonwealth")
+      else if (arm.name.split(/[\s-]+/).some(word => normalizeText(word).startsWith(cleanQuery))) {
+        rank = 2;
+      }
+      // Tier 3: An alias starts with query (e.g. "pol" in "polonya", "ing" in "ingiltere")
+      else if (aliasList.some(al => al.startsWith(cleanQuery))) {
+        rank = 3;
+      }
+      // Tier 4: Substring anywhere in arm name or ID
+      else if (nameClean.includes(cleanQuery) || idClean.includes(cleanQuery)) {
+        rank = 4;
+      }
+      // Tier 5: Substring anywhere in aliases
+      else if (aliasList.some(al => al.includes(cleanQuery))) {
+        rank = 5;
+      }
+
+      if (rank < 99) {
+        scoredMatches.push({
+          arm,
+          rank,
+          len: arm.name.length
+        });
+      }
+    }
+
+    // Sort: 1) rank ascending, 2) shorter name length first (e.g. "Poland" before "Polish-Lithuanian Commonwealth")
+    scoredMatches.sort((a, b) => {
+      if (a.rank !== b.rank) return a.rank - b.rank;
+      return a.len - b.len;
+    });
+
+    this.dropdownMatches = scoredMatches.map(m => m.arm).slice(0, 8);
+
+    // CRITICAL UX: Do NOT pre-select when typing. User must arrow-down or click to select!
     this.selectedDropdownIdx = -1;
     this.renderDropdown();
   }
@@ -387,7 +479,8 @@ class CoatOfArmsGame {
     // Attach click handlers
     const items = this.elements.autocompleteList.querySelectorAll('.arm-autocomplete-item');
     items.forEach(item => {
-      item.addEventListener('click', () => {
+      item.addEventListener('click', (e) => {
+        e.stopPropagation();
         const idx = parseInt(item.dataset.idx, 10);
         if (this.dropdownMatches[idx]) {
           this.selectDropdownItem(this.dropdownMatches[idx]);
@@ -396,6 +489,14 @@ class CoatOfArmsGame {
     });
 
     this.elements.autocompleteList.classList.add('active');
+
+    // Scroll selected item into view if navigating with arrow keys
+    if (this.selectedDropdownIdx >= 0) {
+      const selectedEl = this.elements.autocompleteList.querySelector('.arm-autocomplete-item.selected');
+      if (selectedEl) {
+        selectedEl.scrollIntoView({ block: 'nearest' });
+      }
+    }
   }
 
   navigateDropdown(direction) {
@@ -416,7 +517,9 @@ class CoatOfArmsGame {
   selectDropdownItem(arm) {
     this.elements.searchInput.value = arm.name;
     this.closeDropdown();
-    this.handleGuessSubmit();
+    this.clearInputError();
+    const isCorrect = arm.id === this.currentArm.id;
+    this.finishRound(isCorrect, false);
   }
 
   closeDropdown() {
@@ -426,6 +529,32 @@ class CoatOfArmsGame {
     this.selectedDropdownIdx = -1;
   }
 
+  showInputError(msg) {
+    this.elements.searchInput.classList.remove('input-shake');
+    void this.elements.searchInput.offsetWidth;
+    this.elements.searchInput.classList.add('input-shake');
+
+    let hint = document.getElementById('guess-input-hint');
+    if (!hint) {
+      hint = document.createElement('div');
+      hint.id = 'guess-input-hint';
+      hint.className = 'guess-input-hint';
+      const wrapper = document.querySelector('.guess-input-wrapper');
+      if (wrapper) wrapper.appendChild(hint);
+    }
+    hint.textContent = `⚠️ ${msg}`;
+    hint.style.display = 'block';
+
+    setTimeout(() => {
+      if (hint) hint.style.display = 'none';
+    }, 3800);
+  }
+
+  clearInputError() {
+    const hint = document.getElementById('guess-input-hint');
+    if (hint) hint.style.display = 'none';
+  }
+
   handleGuessSubmit() {
     const rawInput = this.elements.searchInput.value.trim();
     if (!rawInput) {
@@ -433,13 +562,32 @@ class CoatOfArmsGame {
       return;
     }
 
-    this.closeDropdown();
-    const isCorrect = checkArmMatch(rawInput, this.currentArm);
-    this.finishRound(isCorrect, false);
+    // 1. If an item in dropdown is actively selected via arrow keys, pick it
+    if (this.selectedDropdownIdx >= 0 && this.dropdownMatches[this.selectedDropdownIdx]) {
+      this.selectDropdownItem(this.dropdownMatches[this.selectedDropdownIdx]);
+      return;
+    }
+
+    // 2. Direct match with any of the 43 arms (full name or known alias)
+    const matchedArm = findMatchingArm(rawInput, this.arms);
+    if (matchedArm) {
+      this.selectDropdownItem(matchedArm);
+      return;
+    }
+
+    // 3. User typed only a prefix (e.g. "po") or unrecognized text:
+    // CRITICAL: DO NOT burn the question! Do NOT advance to next round!
+    // Shake the input and inform the user to select from suggestions or type full name.
+    if (this.dropdownMatches && this.dropdownMatches.length > 0) {
+      this.showInputError("Lütfen önerilenlerden birini seçin (↓ tuşu veya tıklayarak) ya da tam adını yazın.");
+    } else {
+      this.showInputError("Geçerli bir ülke veya imparatorluk bulunamadı. Lütfen listedeki tam adı yazın.");
+    }
   }
 
   handleSkip() {
     this.closeDropdown();
+    this.clearInputError();
     this.finishRound(false, true);
   }
 

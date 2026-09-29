@@ -497,6 +497,19 @@ body {
   border: 1px solid rgba(56, 189, 248, 0.35);
 }
 
+.guess-input-hint {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #fbbf24;
+  margin-top: 0.65rem;
+  padding: 0.45rem 0.85rem;
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  border-radius: var(--radius-sm);
+  display: none;
+  animation: fadeIn 0.2s ease forwards;
+}
+
 /* GUESS FEEDBACK BANNER */
 .guess-feedback-banner {
   padding: 0.9rem 1.15rem;
