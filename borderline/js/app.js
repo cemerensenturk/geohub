@@ -5,6 +5,37 @@
 
 const STORAGE_KEY = "geohub_borderline_stats_v1";
 
+function getCountryName(c) {
+  if (!c) return '';
+  if (typeof c.name === 'string') return c.name;
+  if (c.commonName) return c.commonName;
+  if (c.name && c.name.common) return c.name.common;
+  if (c.name && c.name.official) return c.name.official;
+  return c.id || 'Country';
+}
+
+function getCountryCapital(c) {
+  if (!c) return 'N/A';
+  if (c.capitalName) return c.capitalName;
+  if (Array.isArray(c.capital) && c.capital.length > 0) return c.capital[0];
+  if (typeof c.capital === 'string') return c.capital;
+  return 'N/A';
+}
+
+function getCountryContinent(c) {
+  if (!c) return 'World';
+  if (c.continent) return c.continent;
+  if (Array.isArray(c.continents) && c.continents.length > 0) return c.continents[0];
+  return 'World';
+}
+
+function getCountryFlag(c) {
+  if (!c) return '';
+  if (c.flag) return c.flag;
+  if (c.flags && c.flags.png) return c.flags.png;
+  return '';
+}
+
 class BorderLineGame {
   constructor() {
     this.countries = [];
@@ -114,29 +145,27 @@ class BorderLineGame {
       return;
     }
 
-    // 2. Shared master dataset fetch
-    try {
-      const res = await fetch('../data/countries.json');
-      if (res.ok) {
-        const data = await res.json();
-        this.countries = data.filter(c => !!c.svgPath);
-        return;
-      }
-    } catch (e) {
-      console.warn("Relative fetch failed, trying fallback:", e);
-    }
+    // 2. Multi-path fetch fallback
+    const paths = [
+      '../data/countries.json',
+      './data/countries.json',
+      'data/countries.json',
+      '/data/countries.json'
+    ];
 
-    // 3. Absolute path fallback
-    try {
-      const res = await fetch('/data/countries.json');
-      if (res.ok) {
-        const data = await res.json();
-        this.countries = data.filter(c => !!c.svgPath);
-        return;
+    for (const p of paths) {
+      try {
+        const res = await fetch(p);
+        if (res.ok) {
+          const data = await res.json();
+          this.countries = data.filter(c => !!c.svgPath);
+          return;
+        }
+      } catch (e) {
+        // continue
       }
-    } catch (e) {
-      console.error("All dataset loading attempts failed:", e);
     }
+    console.error("All dataset loading attempts failed in BorderLine.");
   }
 
   updateStatsUI() {
@@ -181,9 +210,10 @@ class BorderLineGame {
   }
 
   generateOptions() {
+    const currentContinent = getCountryContinent(this.currentCountry);
     const sameContinent = this.countries.filter(c => 
       c.id !== this.currentCountry.id && 
-      c.continent === this.currentCountry.continent
+      getCountryContinent(c) === currentContinent
     );
 
     let candidatePool = sameContinent.length >= 3 
@@ -205,7 +235,7 @@ class BorderLineGame {
       btn.className = 'opt-btn';
       btn.innerHTML = `
         <span class="opt-letter">${letters[idx]}</span>
-        <span class="opt-name">${opt.name}</span>
+        <span class="opt-name">${getCountryName(opt)}</span>
       `;
 
       btn.addEventListener('click', () => {
@@ -250,9 +280,9 @@ class BorderLineGame {
     });
 
     // Reveal Dossier
-    this.elements.dossierFlag.src = this.currentCountry.flag || '';
-    this.elements.dossierName.textContent = this.currentCountry.name;
-    this.elements.dossierMeta.textContent = `${this.currentCountry.continent} • Capital: ${this.currentCountry.capital}`;
+    this.elements.dossierFlag.src = getCountryFlag(this.currentCountry);
+    this.elements.dossierName.textContent = getCountryName(this.currentCountry);
+    this.elements.dossierMeta.textContent = `${getCountryContinent(this.currentCountry)} • Capital: ${getCountryCapital(this.currentCountry)}`;
     this.elements.resultDossier.style.display = 'block';
 
     // Show Next Button
@@ -265,8 +295,8 @@ class BorderLineGame {
 
     if (this.clueRevealed) {
       this.elements.clueRevealBox.innerHTML = `
-        <strong>Region:</strong> ${this.currentCountry.continent} &nbsp;|&nbsp; 
-        <strong>Capital:</strong> ${this.currentCountry.capital}
+        <strong>Region:</strong> ${getCountryContinent(this.currentCountry)} &nbsp;|&nbsp; 
+        <strong>Capital:</strong> ${getCountryCapital(this.currentCountry)}
       `;
       this.elements.clueRevealBox.style.display = 'block';
       this.elements.cluePreview.textContent = 'Hide';
