@@ -277,7 +277,8 @@ body {
   stroke-width: 2.4;
   stroke-linejoin: round;
   stroke-linecap: round;
-  transition: fill 0.3s ease, stroke 0.3s ease;
+  vector-effect: non-scaling-stroke;
+  transition: fill 0.3s ease, stroke 0.3s ease, filter 0.3s ease;
 }
 
 .silhouette-path.answered-correct {

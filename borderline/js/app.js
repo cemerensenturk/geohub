@@ -108,12 +108,32 @@ class BorderLineGame {
   }
 
   async loadData() {
+    // 1. Direct window dataset (instant, 100% offline & file:// protocol compatible)
+    if (typeof window !== 'undefined' && window.BORDERLINE_DATA && Array.isArray(window.BORDERLINE_DATA) && window.BORDERLINE_DATA.length > 0) {
+      this.countries = window.BORDERLINE_DATA;
+      return;
+    }
+
+    // 2. Relative fetch
     try {
       const res = await fetch('data/countries_silhouette.json');
-      if (!res.ok) throw new Error("Failed to load silhouette dataset");
-      this.countries = await res.json();
+      if (res.ok) {
+        this.countries = await res.json();
+        return;
+      }
     } catch (e) {
-      console.error("Dataset load error:", e);
+      console.warn("Relative fetch failed, trying fallback:", e);
+    }
+
+    // 3. Fallback path
+    try {
+      const res = await fetch('./data/countries_silhouette.json');
+      if (res.ok) {
+        this.countries = await res.json();
+        return;
+      }
+    } catch (e) {
+      console.error("All dataset loading attempts failed:", e);
     }
   }
 
@@ -124,7 +144,15 @@ class BorderLineGame {
   }
 
   nextRound() {
-    if (this.countries.length === 0) return;
+    if (!this.countries || this.countries.length === 0) {
+      this.elements.optionsGrid.innerHTML = `
+        <div style="text-align: center; padding: 2rem; color: #f87171;">
+          <p style="margin-bottom: 1rem; font-weight: 700;">Could not load country silhouettes dataset.</p>
+          <button class="btn-next-action" style="display:inline-flex;" onclick="window.location.reload()">Reload Game</button>
+        </div>
+      `;
+      return;
+    }
 
     this.isAnswered = false;
     this.clueRevealed = false;
@@ -133,13 +161,17 @@ class BorderLineGame {
     this.elements.clueRevealBox.style.display = 'none';
     this.elements.cluePreview.textContent = 'Continent';
 
-    // Pick random country
-    const randIdx = Math.floor(Math.random() * this.countries.length);
-    this.currentCountry = this.countries[randIdx];
+    // Deck management to avoid repeating countries in the same session
+    if (!this.deck || this.deck.length === 0) {
+      this.deck = [...this.countries].sort(() => 0.5 - Math.random());
+    }
+
+    // Pick next country from shuffled deck
+    this.currentCountry = this.deck.pop();
 
     // Render Silhouette
     this.elements.silhouettePath.className = 'silhouette-path';
-    this.elements.silhouettePath.setAttribute('d', this.currentCountry.svgPath);
+    this.elements.silhouettePath.setAttribute('d', this.currentCountry.svgPath || '');
 
     // Generate Smart Distractors (Strictly Same Continent)
     this.generateOptions();
@@ -243,6 +275,19 @@ class BorderLineGame {
   }
 }
 
-window.addEventListener('DOMContentLoaded', () => {
-  window.borderLine = new BorderLineGame();
-});
+function startBorderLineApp() {
+  if (!window.borderLine) {
+    try {
+      window.borderLine = new BorderLineGame();
+    } catch (err) {
+      console.error("Error starting BorderLine game:", err);
+    }
+  }
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', startBorderLineApp);
+} else {
+  startBorderLineApp();
+}
+

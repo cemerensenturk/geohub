@@ -316,6 +316,19 @@ class GeoRankGame {
   }
 }
 
-window.addEventListener('DOMContentLoaded', () => {
-  window.geoRank = new GeoRankGame();
-});
+function startGeoRankApp() {
+  if (!window.geoRank) {
+    try {
+      window.geoRank = new GeoRankGame();
+    } catch (err) {
+      console.error("Error starting GeoRank game:", err);
+    }
+  }
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', startGeoRankApp);
+} else {
+  startGeoRankApp();
+}
+
