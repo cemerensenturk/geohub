@@ -14,6 +14,13 @@ class CoatOfArmsGame {
     this.clueRevealed = false;
     this.deck = [];
 
+    // Session-specific tracking
+    this.sessionTotal = 0;
+    this.sessionIndex = 0;
+    this.sessionCorrect = 0;
+    this.sessionCurrentStreak = 0;
+    this.sessionBestStreak = 0;
+
     this.stats = this.loadStats();
 
     this.init();
@@ -24,7 +31,7 @@ class CoatOfArmsGame {
     this.bindEvents();
     await this.loadData();
     this.updateStatsUI();
-    this.nextRound();
+    this.startNewSession();
   }
 
   loadStats() {
@@ -55,6 +62,7 @@ class CoatOfArmsGame {
 
   initElements() {
     this.elements = {
+      hudProgress: document.getElementById('hud-progress'),
       hudStreak: document.getElementById('hud-streak'),
       hudScore: document.getElementById('hud-score'),
       btnResetStats: document.getElementById('btn-reset-stats'),
@@ -75,7 +83,14 @@ class CoatOfArmsGame {
       dossierThumb: document.getElementById('dossier-thumb'),
       dossierName: document.getElementById('dossier-name'),
       dossierMeta: document.getElementById('dossier-meta'),
-      dossierDesc: document.getElementById('dossier-desc')
+      dossierDesc: document.getElementById('dossier-desc'),
+
+      // Victory Modal
+      modalVictory: document.getElementById('modal-victory'),
+      victoryScore: document.getElementById('victory-score'),
+      victoryAccuracy: document.getElementById('victory-accuracy'),
+      victoryStreak: document.getElementById('victory-streak'),
+      btnPlayAgain: document.getElementById('btn-play-again')
     };
   }
 
@@ -90,6 +105,9 @@ class CoatOfArmsGame {
 
     this.elements.btnToggleClue.addEventListener('click', () => this.toggleClue());
     this.elements.btnNextArm.addEventListener('click', () => this.nextRound());
+    if (this.elements.btnPlayAgain) {
+      this.elements.btnPlayAgain.addEventListener('click', () => this.startNewSession());
+    }
 
     // Keyboard navigation (1-4, A-D, Enter)
     window.addEventListener('keydown', (e) => {
@@ -104,7 +122,11 @@ class CoatOfArmsGame {
         }
       } else {
         if (key === 'enter') {
-          this.nextRound();
+          if (this.elements.modalVictory && this.elements.modalVictory.style.display === 'flex') {
+            this.startNewSession();
+          } else {
+            this.nextRound();
+          }
         }
       }
     });
@@ -145,6 +167,38 @@ class CoatOfArmsGame {
     this.elements.hudScore.textContent = `${this.stats.correct} / ${this.stats.played} (${pct}%)`;
   }
 
+  startNewSession() {
+    if (!this.arms || this.arms.length === 0) return;
+    this.deck = [...this.arms].sort(() => 0.5 - Math.random());
+    this.sessionTotal = this.arms.length;
+    this.sessionIndex = 0;
+    this.sessionCorrect = 0;
+    this.sessionCurrentStreak = 0;
+    this.sessionBestStreak = 0;
+
+    if (this.elements.modalVictory) {
+      this.elements.modalVictory.style.display = 'none';
+    }
+
+    this.nextRound();
+  }
+
+  showVictoryModal() {
+    const pct = this.sessionTotal > 0 ? Math.round((this.sessionCorrect / this.sessionTotal) * 100) : 0;
+    if (this.elements.victoryScore) {
+      this.elements.victoryScore.textContent = `${this.sessionCorrect} / ${this.sessionTotal}`;
+    }
+    if (this.elements.victoryAccuracy) {
+      this.elements.victoryAccuracy.textContent = `${pct}%`;
+    }
+    if (this.elements.victoryStreak) {
+      this.elements.victoryStreak.textContent = `🔥 ${this.sessionBestStreak}`;
+    }
+    if (this.elements.modalVictory) {
+      this.elements.modalVictory.style.display = 'flex';
+    }
+  }
+
   nextRound() {
     if (!this.arms || this.arms.length === 0) {
       this.elements.optionsGrid.innerHTML = `
@@ -156,6 +210,12 @@ class CoatOfArmsGame {
       return;
     }
 
+    // Check if session completed
+    if (!this.deck || this.deck.length === 0) {
+      this.showVictoryModal();
+      return;
+    }
+
     this.isAnswered = false;
     this.clueRevealed = false;
     this.elements.btnNextArm.style.display = 'none';
@@ -163,13 +223,13 @@ class CoatOfArmsGame {
     this.elements.clueRevealBox.style.display = 'none';
     this.elements.cluePreview.textContent = 'Era & Region';
 
-    // Deck management for non-repeating gameplay in a session
-    if (!this.deck || this.deck.length === 0) {
-      this.deck = [...this.arms].sort(() => 0.5 - Math.random());
-    }
-
-    // Pick next coat of arms
+    // Pick next coat of arms from non-repeating session deck
     this.currentArm = this.deck.pop();
+    this.sessionIndex++;
+
+    if (this.elements.hudProgress) {
+      this.elements.hudProgress.textContent = `${this.sessionIndex} / ${this.sessionTotal}`;
+    }
 
     // Render Heraldic Image
     this.elements.heraldryImg.src = this.currentArm.image;
@@ -228,7 +288,18 @@ class CoatOfArmsGame {
     this.isAnswered = true;
     const isCorrect = chosenId === this.currentArm.id;
 
-    // Update stats
+    // Update session stats
+    if (isCorrect) {
+      this.sessionCorrect += 1;
+      this.sessionCurrentStreak += 1;
+      if (this.sessionCurrentStreak > this.sessionBestStreak) {
+        this.sessionBestStreak = this.sessionCurrentStreak;
+      }
+    } else {
+      this.sessionCurrentStreak = 0;
+    }
+
+    // Update overall stats
     this.stats.played += 1;
     if (isCorrect) {
       this.stats.correct += 1;

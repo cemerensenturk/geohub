@@ -6,7 +6,7 @@
     "period": "1299 – 1922",
     "region": "Middle East, North Africa & Balkans",
     "description": "Designed in 1882 during Sultan Abdul Hamid II reign. Features the imperial tughra, scales of justice, the Quran, and 30 battle weapons surrounding the sun shield.",
-    "image": "img/ottoman_empire.svg"
+    "image": "img/ottoman_empire.png"
   },
   {
     "id": "ussr",
@@ -24,7 +24,7 @@
     "period": "1867 – 1918",
     "region": "Central Europe",
     "description": "The imperial double-headed eagle of the House of Habsburg-Lorraine, crowned with the Imperial Crown of Austria and bearing heraldic shields of the dual monarchy realms.",
-    "image": "img/austro_hungarian_empire.svg"
+    "image": "img/austro_hungarian_empire.png"
   },
   {
     "id": "russian_empire",
@@ -33,7 +33,7 @@
     "period": "1721 – 1917",
     "region": "Eurasia & Northern Europe",
     "description": "The golden double-headed eagle of the Romanov dynasty, crowned with imperial crowns and displaying Saint George slaying the dragon on the breast shield.",
-    "image": "img/russian_empire.svg"
+    "image": "img/russian_empire.png"
   },
   {
     "id": "byzantine_empire",
@@ -51,7 +51,7 @@
     "period": "1871 – 1918",
     "region": "Central Europe",
     "description": "The Reichsadler (Imperial Eagle) bearing the Hohenzollern escutcheon, surrounded by the collar of the Order of the Black Eagle beneath the Imperial Crown.",
-    "image": "img/german_empire.svg"
+    "image": "img/german_empire.png"
   },
   {
     "id": "kingdom_of_prussia",
@@ -60,7 +60,7 @@
     "period": "1701 – 1918",
     "region": "Central & Eastern Europe",
     "description": "Features the crowned black eagle holding a royal scepter and orb, with the monogram of King Frederick I on its chest.",
-    "image": "img/kingdom_of_prussia.svg"
+    "image": "img/kingdom_of_prussia.png"
   },
   {
     "id": "yugoslavia",
@@ -87,7 +87,7 @@
     "period": "1569 – 1795",
     "region": "Eastern & Central Europe",
     "description": "Quartered arms displaying the White Eagle of the Crown of Poland and the Vytis (Pahonia knight) of the Grand Duchy of Lithuania.",
-    "image": "img/polish_lithuanian_commonwealth.svg"
+    "image": "img/polish_lithuanian_commonwealth.png"
   },
   {
     "id": "empire_of_brazil",
@@ -96,7 +96,7 @@
     "period": "1822 – 1889",
     "region": "South America",
     "description": "Green escutcheon bordered with 20 stars surrounding the celestial sphere and the cross of the Order of Christ, flanked by coffee and tobacco branches.",
-    "image": "img/empire_of_brazil.svg"
+    "image": "img/empire_of_brazil.png"
   },
   {
     "id": "kingdom_of_italy",
@@ -105,7 +105,7 @@
     "period": "1861 – 1946",
     "region": "Southern Europe",
     "description": "The white cross on a red field of the royal House of Savoy, flanked by crowned lions and draped in the royal canopy.",
-    "image": "img/kingdom_of_italy.svg"
+    "image": "img/kingdom_of_italy.png"
   },
   {
     "id": "united_kingdom",
@@ -114,7 +114,7 @@
     "period": "Modern Sovereign State",
     "region": "Western Europe",
     "description": "Supported by the English Lion and Scottish Unicorn, featuring the French mottoes \"Honi soit qui mal y pense\" and \"Dieu et mon droit\".",
-    "image": "img/united_kingdom.svg"
+    "image": "img/united_kingdom.png"
   },
   {
     "id": "united_states",
@@ -142,15 +142,6 @@
     "region": "Southern Europe",
     "description": "Combines the historic kingdoms of Castile, León, Aragon, Navarre, and Granada, flanked by the Pillars of Hercules with the motto \"Plus Ultra\".",
     "image": "img/spain.svg"
-  },
-  {
-    "id": "turkey",
-    "name": "Türkiye",
-    "type": "modern",
-    "period": "Modern Sovereign State",
-    "region": "Eurasia",
-    "description": "The Presidential Seal of Türkiye featuring a 16-pointed sun surrounded by 16 five-pointed stars representing the 16 Great Turkic Empires in history.",
-    "image": "img/turkey.svg"
   },
   {
     "id": "france",
@@ -186,7 +177,7 @@
     "period": "Modern Sovereign State",
     "region": "Oceania",
     "description": "Supported by a red kangaroo and an emu (animals chosen because neither can move backwards easily, signifying progress), set against flowering golden wattle.",
-    "image": "img/australia.svg"
+    "image": "img/australia.png"
   },
   {
     "id": "canada",
@@ -213,7 +204,7 @@
     "period": "Modern Sovereign State",
     "region": "Northern Europe",
     "description": "The Greater Coat of Arms featuring the three golden crowns (Tre Kronor) and the Folkung lion, supported by two crowned heraldic lions.",
-    "image": "img/sweden.svg"
+    "image": "img/sweden.png"
   },
   {
     "id": "india",
@@ -285,7 +276,7 @@
     "period": "Modern Sovereign State",
     "region": "Western Europe",
     "description": "The Royal Arms featuring a crowned golden lion bearing a sword and arrows of the House of Orange-Nassau beneath the royal mantle with motto \"Je Maintiendrai\".",
-    "image": "img/netherlands.svg"
+    "image": "img/netherlands.png"
   },
   {
     "id": "belgium",
@@ -294,7 +285,7 @@
     "period": "Modern Sovereign State",
     "region": "Western Europe",
     "description": "The Brabant lion rampant on a black shield supported by two lions holding Belgian banners, with the royal motto \"L'union fait la force\".",
-    "image": "img/belgium.svg"
+    "image": "img/belgium.png"
   },
   {
     "id": "switzerland",
@@ -312,7 +303,7 @@
     "period": "Modern Sovereign State",
     "region": "Central Europe",
     "description": "The black federal eagle wearing a mural crown (representing the middle class), holding a hammer (working class) and sickle (farmers), with broken chains on its feet symbolizing liberation.",
-    "image": "img/austria.svg"
+    "image": "img/austria.png"
   },
   {
     "id": "norway",
@@ -330,7 +321,7 @@
     "period": "Modern Sovereign State",
     "region": "Northern Europe",
     "description": "Three crowned blue lions passant gardant accompanied by nine red water lily hearts on a golden heraldic shield, dating back to King Canute VI in 1194.",
-    "image": "img/denmark.svg"
+    "image": "img/denmark.png"
   },
   {
     "id": "finland",

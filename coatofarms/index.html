@@ -59,6 +59,10 @@
     <!-- HUD Stats Bar -->
     <section class="game-hud glass-panel">
       <div class="hud-streak-box">
+        <span class="hud-label">Progress:</span>
+        <span class="hud-stat-val" id="hud-progress">1 / 43</span>
+      </div>
+      <div class="hud-streak-box">
         <span class="hud-label">Streak:</span>
         <span class="hud-streak-val" id="hud-streak">🔥 0</span>
       </div>
@@ -128,9 +132,36 @@
 
     </div>
 
+    <!-- Victory / Completion Modal -->
+    <div id="modal-victory" class="modal-backdrop" style="display: none;">
+      <div class="modal-card glass-panel victory-card">
+        <div class="victory-icon">🏆</div>
+        <h2 class="victory-title">Session Complete!</h2>
+        <p class="victory-subtitle">Congratulations! You have decoded all 43 imperial &amp; state coats of arms!</p>
+        <div class="victory-stats-grid">
+          <div class="victory-stat-item">
+            <span class="stat-number" id="victory-score">0 / 43</span>
+            <span class="stat-desc">Final Score</span>
+          </div>
+          <div class="victory-stat-item">
+            <span class="stat-number" id="victory-accuracy">0%</span>
+            <span class="stat-desc">Accuracy</span>
+          </div>
+          <div class="victory-stat-item">
+            <span class="stat-number" id="victory-streak">🔥 0</span>
+            <span class="stat-desc">Best Streak</span>
+          </div>
+        </div>
+        <button id="btn-play-again" class="btn-primary-action">
+          <span>Play New Session</span>
+          <span>🔄</span>
+        </button>
+      </div>
+    </div>
+
   </main>
 
   <script src="data/arms.js"></script>
-  <script src="js/app.js?v=1"></script>
+  <script src="js/app.js?v=2"></script>
 </body>
 </html>
