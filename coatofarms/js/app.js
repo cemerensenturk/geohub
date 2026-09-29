@@ -378,7 +378,10 @@ class CoatOfArmsGame {
 
       return `
         <div class="arm-autocomplete-item ${isSelected}" data-idx="${idx}">
-          <span class="arm-item-name">${arm.name}</span>
+          <div class="arm-item-left">
+            <img src="${arm.image}" class="arm-item-thumb" alt="${arm.name}">
+            <span class="arm-item-name">${arm.name}</span>
+          </div>
           <span class="arm-item-badge ${badgeClass}">${badgeText}</span>
         </div>
       `;
