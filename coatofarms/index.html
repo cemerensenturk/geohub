@@ -29,7 +29,7 @@
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
 
-  <link rel="stylesheet" href="css/style.css?v=1">
+  <link rel="stylesheet" href="css/style.css?v=3">
 </head>
 <body>
 
@@ -101,12 +101,32 @@
 
       <!-- Right: Multiple Choice Controls -->
       <section class="controls-card glass-panel">
-        <h2 class="question-prompt">Which empire or nation bears this coat of arms?</h2>
-        
-        <!-- 4 Options Grid -->
-        <div class="options-grid" id="options-grid">
-          <!-- Buttons dynamically injected via JS -->
+        <!-- Open-ended Search & Autocomplete Input -->
+        <div class="guess-input-wrapper">
+          <div class="guess-input-row">
+            <div class="input-autocomplete-box">
+              <input 
+                type="text" 
+                id="arm-search-input" 
+                class="arm-search-input" 
+                placeholder="Type empire or country name..." 
+                autocomplete="off" 
+                spellcheck="false"
+              />
+              <div id="arm-autocomplete-list" class="arm-autocomplete-dropdown"></div>
+            </div>
+            <button id="btn-submit-guess" class="btn-submit-guess" title="Submit your guess">
+              <span>Guess</span>
+              <span>⏎</span>
+            </button>
+            <button id="btn-skip-arm" class="btn-skip-arm" title="Skip this coat of arms">
+              <span>Skip</span>
+            </button>
+          </div>
         </div>
+
+        <!-- Feedback Banner (Correct / Wrong / Skipped) -->
+        <div id="guess-feedback-banner" class="guess-feedback-banner" style="display: none;"></div>
 
         <!-- Action / Next Button -->
         <button id="btn-next-arm" class="btn-next-action" style="display: none;">

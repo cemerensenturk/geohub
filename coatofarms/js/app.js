@@ -1,15 +1,63 @@
 /**
  * Coat of Arms - Imperial & State Heraldry Quiz
- * Identifies historic empires and modern sovereign nations from heraldic crests.
+ * Open-ended text guess mode with smart autocomplete strictly from the 43 heraldic crests.
  */
 
 const STORAGE_KEY = "geohub_coatofarms_stats_v1";
+
+function normalizeText(str) {
+  if (!str) return '';
+  return str
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/ı/g, 'i')
+    .replace(/ğ/g, 'g')
+    .replace(/ü/g, 'u')
+    .replace(/ş/g, 's')
+    .replace(/ö/g, 'o')
+    .replace(/ç/g, 'c')
+    .replace(/[^a-z0-9]/g, '');
+}
+
+function checkArmMatch(userInput, targetArm) {
+  if (!userInput || !targetArm) return false;
+  const cleanInput = normalizeText(userInput);
+  const cleanTargetName = normalizeText(targetArm.name);
+  const cleanTargetId = normalizeText(targetArm.id);
+
+  if (cleanInput === cleanTargetName || cleanInput === cleanTargetId) return true;
+
+  // Specific alias mappings
+  const aliases = {
+    'ussr': ['ussr', 'sovietunion', 'soviet', 'sscb'],
+    'united_states': ['usa', 'us', 'unitedstates', 'unitedstatesofamerica', 'america'],
+    'united_kingdom': ['uk', 'britain', 'greatbritain', 'unitedkingdom', 'england'],
+    'german_empire': ['germanempire', 'kaiserreich', 'deutscheskaiserreich'],
+    'kingdom_of_prussia': ['prussia', 'kingdomofprussia', 'preussen'],
+    'yugoslavia': ['yugoslavia', 'sfryugoslavia', 'yugoslavya'],
+    'byzantine_empire': ['byzantine', 'byzantineempire', 'byzantium', 'easternromanempire'],
+    'holy_roman_empire': ['holyromanempire', 'hre', 'kutsalromagermen'],
+    'polish_lithuanian_commonwealth': ['polishlithuaniancommonwealth', 'polandlithuania', 'commonwealth'],
+    'empire_of_brazil': ['empireofbrazil', 'brazilianempire'],
+    'kingdom_of_italy': ['kingdomofitaly', 'italykingdom'],
+    'south_korea': ['southkorea', 'korea', 'republicofkorea'],
+    'saudi_arabia': ['saudiarabia', 'saudi'],
+    'austro_hungarian_empire': ['austrohungarianempire', 'austriahungary', 'austrohungary'],
+    'russian_empire': ['russianempire', 'imperialrussia'],
+    'ottoman_empire': ['ottomanempire', 'ottoman', 'osmanli']
+  };
+
+  const list = aliases[targetArm.id];
+  if (list && list.includes(cleanInput)) return true;
+
+  return false;
+}
 
 class CoatOfArmsGame {
   constructor() {
     this.arms = [];
     this.currentArm = null;
-    this.options = [];
     this.isAnswered = false;
     this.clueRevealed = false;
     this.deck = [];
@@ -20,6 +68,10 @@ class CoatOfArmsGame {
     this.sessionCorrect = 0;
     this.sessionCurrentStreak = 0;
     this.sessionBestStreak = 0;
+
+    // Autocomplete state
+    this.dropdownMatches = [];
+    this.selectedDropdownIdx = -1;
 
     this.stats = this.loadStats();
 
@@ -74,8 +126,12 @@ class CoatOfArmsGame {
       cluePreview: document.getElementById('clue-preview'),
       clueRevealBox: document.getElementById('clue-reveal-box'),
 
-      // Controls
-      optionsGrid: document.getElementById('options-grid'),
+      // Input Controls
+      searchInput: document.getElementById('arm-search-input'),
+      autocompleteList: document.getElementById('arm-autocomplete-list'),
+      btnSubmitGuess: document.getElementById('btn-submit-guess'),
+      btnSkipArm: document.getElementById('btn-skip-arm'),
+      feedbackBanner: document.getElementById('guess-feedback-banner'),
       btnNextArm: document.getElementById('btn-next-arm'),
 
       // Dossier
@@ -95,6 +151,7 @@ class CoatOfArmsGame {
   }
 
   bindEvents() {
+    // Reset stats
     this.elements.btnResetStats.addEventListener('click', () => {
       if (confirm("Are you sure you want to reset your Coat of Arms stats?")) {
         this.stats = { played: 0, correct: 0, streak: 0, bestStreak: 0 };
@@ -103,37 +160,75 @@ class CoatOfArmsGame {
       }
     });
 
+    // Clue toggle
     this.elements.btnToggleClue.addEventListener('click', () => this.toggleClue());
+
+    // Submit guess
+    this.elements.btnSubmitGuess.addEventListener('click', () => {
+      if (this.isAnswered) return;
+      this.handleGuessSubmit();
+    });
+
+    // Skip
+    this.elements.btnSkipArm.addEventListener('click', () => {
+      if (this.isAnswered) return;
+      this.handleSkip();
+    });
+
+    // Next round
     this.elements.btnNextArm.addEventListener('click', () => this.nextRound());
+
+    // Play again
     if (this.elements.btnPlayAgain) {
       this.elements.btnPlayAgain.addEventListener('click', () => this.startNewSession());
     }
 
-    // Keyboard navigation (1-4, A-D, Enter)
-    window.addEventListener('keydown', (e) => {
-      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+    // Search input typing & autocomplete
+    this.elements.searchInput.addEventListener('input', () => this.handleSearchInput());
 
-      const key = e.key.toLowerCase();
-      if (!this.isAnswered) {
-        const keyMap = { '1': 0, 'a': 0, '2': 1, 'b': 1, '3': 2, 'c': 2, '4': 3, 'd': 3 };
-        if (keyMap[key] !== undefined) {
-          const btn = this.elements.optionsGrid.children[keyMap[key]];
-          if (btn) btn.click();
+    // Keyboard navigation in search input
+    this.elements.searchInput.addEventListener('keydown', (e) => {
+      if (this.isAnswered) return;
+
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        this.navigateDropdown(1);
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        this.navigateDropdown(-1);
+      } else if (e.key === 'Enter') {
+        e.preventDefault();
+        if (this.selectedDropdownIdx >= 0 && this.dropdownMatches[this.selectedDropdownIdx]) {
+          this.selectDropdownItem(this.dropdownMatches[this.selectedDropdownIdx]);
+        } else {
+          this.handleGuessSubmit();
         }
-      } else {
-        if (key === 'enter') {
-          if (this.elements.modalVictory && this.elements.modalVictory.style.display === 'flex') {
-            this.startNewSession();
-          } else {
-            this.nextRound();
-          }
+      } else if (e.key === 'Escape') {
+        this.closeDropdown();
+      }
+    });
+
+    // Global Enter key to advance round when answered
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && this.isAnswered) {
+        if (this.elements.modalVictory && this.elements.modalVictory.style.display === 'flex') {
+          this.startNewSession();
+        } else {
+          this.nextRound();
         }
+      }
+    });
+
+    // Close autocomplete on click outside
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.input-autocomplete-box')) {
+        this.closeDropdown();
       }
     });
   }
 
   async loadData() {
-    // 1. Direct window dataset (instant, 100% offline & file:// compatible)
+    // 1. Direct window dataset
     if (typeof window !== 'undefined' && window.COAT_OF_ARMS_DATA && Array.isArray(window.COAT_OF_ARMS_DATA)) {
       this.arms = window.COAT_OF_ARMS_DATA;
       return;
@@ -200,15 +295,7 @@ class CoatOfArmsGame {
   }
 
   nextRound() {
-    if (!this.arms || this.arms.length === 0) {
-      this.elements.optionsGrid.innerHTML = `
-        <div style="text-align: center; padding: 2rem; color: #f87171;">
-          <p style="margin-bottom: 1rem; font-weight: 700;">Could not load Coat of Arms dataset.</p>
-          <button class="btn-next-action" style="display:inline-flex;" onclick="window.location.reload()">Reload Game</button>
-        </div>
-      `;
-      return;
-    }
+    if (!this.arms || this.arms.length === 0) return;
 
     // Check if session completed
     if (!this.deck || this.deck.length === 0) {
@@ -218,9 +305,18 @@ class CoatOfArmsGame {
 
     this.isAnswered = false;
     this.clueRevealed = false;
+    this.closeDropdown();
+
+    // Reset controls & feedback
+    this.elements.searchInput.value = '';
+    this.elements.searchInput.disabled = false;
+    this.elements.searchInput.classList.remove('input-shake');
+    this.elements.btnSubmitGuess.disabled = false;
+    this.elements.btnSkipArm.disabled = false;
     this.elements.btnNextArm.style.display = 'none';
     this.elements.resultDossier.style.display = 'none';
     this.elements.clueRevealBox.style.display = 'none';
+    this.elements.feedbackBanner.style.display = 'none';
     this.elements.cluePreview.textContent = 'Era & Region';
 
     // Pick next coat of arms from non-repeating session deck
@@ -242,88 +338,153 @@ class CoatOfArmsGame {
       this.elements.badgeEra.textContent = '🏛️ Sovereign Nation';
     }
 
-    // Generate Smart Distractors (Strictly same type: historical with historical, modern with modern)
-    this.generateOptions();
-    this.renderOptions();
+    // Focus input for seamless keyboard typing
+    setTimeout(() => {
+      this.elements.searchInput.focus();
+    }, 50);
   }
 
-  generateOptions() {
-    const sameType = this.arms.filter(a => 
-      a.id !== this.currentArm.id && 
-      a.type === this.currentArm.type
-    );
+  handleSearchInput() {
+    const query = this.elements.searchInput.value.trim();
+    const cleanQuery = normalizeText(query);
 
-    let candidatePool = sameType.length >= 3 
-      ? sameType 
-      : this.arms.filter(a => a.id !== this.currentArm.id);
+    if (cleanQuery.length === 0) {
+      this.closeDropdown();
+      return;
+    }
 
-    const shuffled = [...candidatePool].sort(() => 0.5 - Math.random());
-    const distractors = shuffled.slice(0, 3);
+    // Search strictly within our 43 arms
+    this.dropdownMatches = this.arms.filter(arm => {
+      const nameNorm = normalizeText(arm.name);
+      const idNorm = normalizeText(arm.id);
+      return nameNorm.includes(cleanQuery) || idNorm.includes(cleanQuery);
+    }).slice(0, 8); // Top 8 suggestions
 
-    this.options = [this.currentArm, ...distractors].sort(() => 0.5 - Math.random());
+    this.selectedDropdownIdx = -1;
+    this.renderDropdown();
   }
 
-  renderOptions() {
-    this.elements.optionsGrid.innerHTML = '';
+  renderDropdown() {
+    if (this.dropdownMatches.length === 0) {
+      this.closeDropdown();
+      return;
+    }
 
-    const letters = ['A', 'B', 'C', 'D'];
-    this.options.forEach((opt, idx) => {
-      const btn = document.createElement('button');
-      btn.className = 'opt-btn';
-      btn.innerHTML = `
-        <span class="opt-letter">${letters[idx]}</span>
-        <span class="opt-name">${opt.name}</span>
+    this.elements.autocompleteList.innerHTML = this.dropdownMatches.map((arm, idx) => {
+      const isHist = arm.type === 'historical';
+      const badgeText = isHist ? '👑 Historical' : '🏛️ Sovereign';
+      const badgeClass = isHist ? 'badge-hist' : 'badge-mod';
+      const isSelected = idx === this.selectedDropdownIdx ? 'selected' : '';
+
+      return `
+        <div class="arm-autocomplete-item ${isSelected}" data-idx="${idx}">
+          <span class="arm-item-name">${arm.name}</span>
+          <span class="arm-item-badge ${badgeClass}">${badgeText}</span>
+        </div>
       `;
+    }).join('');
 
-      btn.addEventListener('click', () => {
-        if (this.isAnswered) return;
-        this.handleAnswer(opt.id, btn);
+    // Attach click handlers
+    const items = this.elements.autocompleteList.querySelectorAll('.arm-autocomplete-item');
+    items.forEach(item => {
+      item.addEventListener('click', () => {
+        const idx = parseInt(item.dataset.idx, 10);
+        if (this.dropdownMatches[idx]) {
+          this.selectDropdownItem(this.dropdownMatches[idx]);
+        }
       });
-
-      this.elements.optionsGrid.appendChild(btn);
     });
+
+    this.elements.autocompleteList.classList.add('active');
   }
 
-  handleAnswer(chosenId, chosenBtn) {
-    this.isAnswered = true;
-    const isCorrect = chosenId === this.currentArm.id;
+  navigateDropdown(direction) {
+    if (!this.elements.autocompleteList.classList.contains('active') || this.dropdownMatches.length === 0) {
+      return;
+    }
 
-    // Update session stats
+    this.selectedDropdownIdx += direction;
+    if (this.selectedDropdownIdx >= this.dropdownMatches.length) {
+      this.selectedDropdownIdx = 0;
+    } else if (this.selectedDropdownIdx < 0) {
+      this.selectedDropdownIdx = this.dropdownMatches.length - 1;
+    }
+
+    this.renderDropdown();
+  }
+
+  selectDropdownItem(arm) {
+    this.elements.searchInput.value = arm.name;
+    this.closeDropdown();
+    this.handleGuessSubmit();
+  }
+
+  closeDropdown() {
+    this.elements.autocompleteList.innerHTML = '';
+    this.elements.autocompleteList.classList.remove('active');
+    this.dropdownMatches = [];
+    this.selectedDropdownIdx = -1;
+  }
+
+  handleGuessSubmit() {
+    const rawInput = this.elements.searchInput.value.trim();
+    if (!rawInput) {
+      this.elements.searchInput.focus();
+      return;
+    }
+
+    this.closeDropdown();
+    const isCorrect = checkArmMatch(rawInput, this.currentArm);
+    this.finishRound(isCorrect, false);
+  }
+
+  handleSkip() {
+    this.closeDropdown();
+    this.finishRound(false, true);
+  }
+
+  finishRound(isCorrect, isSkipped) {
+    this.isAnswered = true;
+
+    // Disable input controls
+    this.elements.searchInput.disabled = true;
+    this.elements.btnSubmitGuess.disabled = true;
+    this.elements.btnSkipArm.disabled = true;
+
+    // Update stats
     if (isCorrect) {
       this.sessionCorrect += 1;
       this.sessionCurrentStreak += 1;
       if (this.sessionCurrentStreak > this.sessionBestStreak) {
         this.sessionBestStreak = this.sessionCurrentStreak;
       }
-    } else {
-      this.sessionCurrentStreak = 0;
-    }
-
-    // Update overall stats
-    this.stats.played += 1;
-    if (isCorrect) {
       this.stats.correct += 1;
       this.stats.streak += 1;
       if (this.stats.streak > this.stats.bestStreak) {
         this.stats.bestStreak = this.stats.streak;
       }
     } else {
+      this.sessionCurrentStreak = 0;
       this.stats.streak = 0;
     }
+
+    this.stats.played += 1;
     this.saveStats();
     this.updateStatsUI();
 
-    // Option Button Highlights
-    const buttons = this.elements.optionsGrid.querySelectorAll('.opt-btn');
-    buttons.forEach((btn, idx) => {
-      btn.disabled = true;
-      const optId = this.options[idx].id;
-      if (optId === this.currentArm.id) {
-        btn.classList.add('correct');
-      } else if (btn === chosenBtn && !isCorrect) {
-        btn.classList.add('wrong');
-      }
-    });
+    // Feedback banner presentation
+    if (isCorrect) {
+      this.elements.feedbackBanner.className = 'guess-feedback-banner correct';
+      this.elements.feedbackBanner.innerHTML = `🎉 <strong>Correct!</strong> It is the Coat of Arms of <strong>${this.currentArm.name}</strong>.`;
+    } else if (isSkipped) {
+      this.elements.feedbackBanner.className = 'guess-feedback-banner skipped';
+      this.elements.feedbackBanner.innerHTML = `⏭️ <strong>Skipped.</strong> This was the Coat of Arms of <strong>${this.currentArm.name}</strong>.`;
+    } else {
+      this.elements.searchInput.classList.add('input-shake');
+      this.elements.feedbackBanner.className = 'guess-feedback-banner wrong';
+      this.elements.feedbackBanner.innerHTML = `❌ <strong>Incorrect!</strong> This was the Coat of Arms of <strong>${this.currentArm.name}</strong>.`;
+    }
+    this.elements.feedbackBanner.style.display = 'block';
 
     // Reveal Heraldic Dossier
     this.elements.dossierThumb.src = this.currentArm.image;
@@ -334,6 +495,7 @@ class CoatOfArmsGame {
 
     // Show Next Button
     this.elements.btnNextArm.style.display = 'inline-flex';
+    this.elements.btnNextArm.focus();
   }
 
   toggleClue() {
