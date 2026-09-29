@@ -108,28 +108,30 @@ class BorderLineGame {
   }
 
   async loadData() {
-    // 1. Direct window dataset (instant, 100% offline & file:// protocol compatible)
-    if (typeof window !== 'undefined' && window.BORDERLINE_DATA && Array.isArray(window.BORDERLINE_DATA) && window.BORDERLINE_DATA.length > 0) {
-      this.countries = window.BORDERLINE_DATA;
+    // 1. Direct window master dataset (instant, 100% offline & file:// protocol compatible)
+    if (typeof window !== 'undefined' && window.GEO_COUNTRIES && Array.isArray(window.GEO_COUNTRIES)) {
+      this.countries = window.GEO_COUNTRIES.filter(c => !!c.svgPath);
       return;
     }
 
-    // 2. Relative fetch
+    // 2. Shared master dataset fetch
     try {
-      const res = await fetch('data/countries_silhouette.json');
+      const res = await fetch('../data/countries.json');
       if (res.ok) {
-        this.countries = await res.json();
+        const data = await res.json();
+        this.countries = data.filter(c => !!c.svgPath);
         return;
       }
     } catch (e) {
       console.warn("Relative fetch failed, trying fallback:", e);
     }
 
-    // 3. Fallback path
+    // 3. Absolute path fallback
     try {
-      const res = await fetch('./data/countries_silhouette.json');
+      const res = await fetch('/data/countries.json');
       if (res.ok) {
-        this.countries = await res.json();
+        const data = await res.json();
+        this.countries = data.filter(c => !!c.svgPath);
         return;
       }
     } catch (e) {

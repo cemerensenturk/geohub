@@ -5,43 +5,38 @@ let score = 0; // User score
 let questionCounter = 0;
 let answered = false; // Flag to track if question has been answered
 
+function setCountries(raw) {
+    countriesData = raw.map(c => ({
+        ...c,
+        name: typeof c.name === 'object' ? c.name : { common: c.name, official: c.name },
+        flags: c.flags || { png: c.flag },
+        continents: Array.isArray(c.continents) ? c.continents : [c.continent || 'World'],
+        capital: Array.isArray(c.capital) ? c.capital : [c.capital || 'N/A']
+    }));
+    shuffleArray(countriesData);
+    showNextQuestion();
+}
+
 // Initialize Quiz
 function startQuiz() {
-    // Fetch countries from REST API endpoint
-    fetch('./data/countries.json')
+    if (typeof window !== 'undefined' && window.GEO_COUNTRIES && Array.isArray(window.GEO_COUNTRIES)) {
+        setCountries(window.GEO_COUNTRIES);
+        return;
+    }
+
+    fetch('../data/countries.json')
         .then(response => {
             if (!response.ok) throw new Error('Network response was not ok');
             return response.json();
         })
         .then(data => {
-            if (!Array.isArray(data) || data.length === 0) {
-                throw new Error('Invalid data format received');
-            }
-            countriesData = data;
-            shuffleArray(countriesData);
-            showNextQuestion();
+            setCountries(data);
         })
         .catch(error => {
-            console.error('API data error, attempting fallback:', error);
-            // Fallback mirror if local data fetch fails
-            fetch('https://raw.githubusercontent.com/mledoze/countries/master/countries.json')
+            console.warn('Primary shared fetch failed, attempting local fallback:', error);
+            fetch('./data/countries.json')
                 .then(r => r.json())
-                .then(raw => {
-                    countriesData = raw.map(c => ({
-                        name: { common: c.name?.common || c.cca2, official: c.name?.official || c.name?.common },
-                        flags: { png: `https://flagcdn.com/w320/${(c.cca2 || '').toLowerCase()}.png` },
-                        population: c.area ? c.area * 50 : 1000000,
-                        continents: [c.region || 'World'],
-                        capital: (Array.isArray(c.capital) && c.capital.length > 0) ? c.capital : ['N/A'],
-                        currencies: c.currencies || { N_A: { name: 'N/A' } },
-                        languages: c.languages || { eng: 'English' },
-                        independent: c.independent !== false,
-                        unMember: c.unMember === true,
-                        car: { side: 'right' }
-                    }));
-                    shuffleArray(countriesData);
-                    showNextQuestion();
-                })
+                .then(data => setCountries(data))
                 .catch(err => console.error('All API endpoints failed:', err));
         });
 }

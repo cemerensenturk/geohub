@@ -61,19 +61,43 @@ class GeoRankGame {
   }
 
   async loadData() {
-    try {
-      const response = await fetch('../flagquiz/data/countries.json');
-      if (!response.ok) throw new Error('Failed to fetch country dataset');
-      const data = await response.json();
+    let data = null;
 
+    if (typeof window !== 'undefined' && window.GEO_COUNTRIES && Array.isArray(window.GEO_COUNTRIES)) {
+      data = window.GEO_COUNTRIES;
+    } else {
+      try {
+        const response = await fetch('../data/countries.json');
+        if (response.ok) {
+          data = await response.json();
+        }
+      } catch (e) {
+        console.warn('Relative data fetch failed, trying root fallback:', e);
+      }
+
+      if (!data) {
+        try {
+          const response = await fetch('/data/countries.json');
+          if (response.ok) {
+            data = await response.json();
+          }
+        } catch (e) {
+          console.error('All data sources failed in GeoRank:', e);
+        }
+      }
+    }
+
+    if (Array.isArray(data)) {
       // Filter countries to ensure viable comparative gameplay
       this.allCountries = data.filter(c => 
         c.population && c.population > 50000 && 
         c.area && c.area > 500 &&
-        c.name && c.name.common
-      );
-    } catch (e) {
-      console.error('Data loading error:', e);
+        (typeof c.name === 'string' ? c.name.length > 0 : (c.name && c.name.common))
+      ).map(c => ({
+        ...c,
+        name: typeof c.name === 'object' ? c.name : { common: c.name, official: c.name },
+        flags: c.flags || { png: c.flag }
+      }));
     }
   }
 
