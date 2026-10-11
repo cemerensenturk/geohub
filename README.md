@@ -1,91 +1,115 @@
-# SatelCity 🛰️🌲
+# GeoHub 🌍
 
-> **Can you identify world cities from high-resolution, label-free satellite imagery?**  
+> **Explore the world through play: five browser-based geography games in one portal.**
 
 [![Live Demo](https://img.shields.io/badge/Demo-cemeren.dev%2Fsatelcity-22c55e?style=for-the-badge&logo=googlechrome&logoColor=white)](https://cemeren.dev/satelcity)
 [![License: MIT](https://img.shields.io/badge/License-MIT-amber.svg?style=for-the-badge)](LICENSE)
 [![Vanilla JS](https://img.shields.io/badge/Vanilla-JS_ES6+-yellow.svg?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 [![Zero Dependency](https://img.shields.io/badge/Zero-Build_Steps-brightgreen.svg?style=for-the-badge)](https://leafletjs.com/)
 
-**SatelCity** is a geography guessing game where players identify cities around the globe using authentic, label-free satellite imagery. Developed with modern vanilla web standards, it requires zero API keys and zero build steps.
+**GeoHub** is a collection of geography games built with plain HTML, CSS and JavaScript. It needs no API keys, no package installs and no build step: serve the folder and play.
 
 ---
 
-## ✨ Features
+## 🎮 Games
 
-### 🛰️ 1. Authentic Satellite Photography (ESRI World Imagery)
-- **Label-Free (No Labels):** No street names, borders, or text overlays; only pure aerial satellite photography is shown.
-- **Strict Geographic Orientation (North-Up):** Standard Web Mercator locked with North pointing straight up. A corner `🧭 NORTH UP` badge reminds the player of the geographic frame.
-- **Locked Frame Experience & Anti-Cheat Protection:** Map dragging (pan) and free zooming are strictly locked. The **🔍 Expand Photo** modal opens the exact high-definition crop in a larger theater view.
+| Game | Folder | How it plays |
+|---|---|---|
+| 🛰️ **SatelCity** | `satelcity/` | Identify world cities from label-free satellite imagery |
+| 🚩 **FlagQuiz** | `flagquiz/` | Name the country from its flag |
+| 📊 **GeoRank** | `georank/` | Drag 10 countries into order by land area or population |
+| 🗺️ **BorderLine** | `borderline/` | Recognise a country from its border silhouette, 4 choices, streak tracking |
+| 🛡️ **Coat of Arms** | `coatofarms/` | Name the state or empire behind a coat of arms |
 
-### 🎮 2. Two Distinct Game Modes
-- **🔠 Multiple Choice Mode (4 Options):**
-  - Smart distractor algorithm: Distractors are chosen strictly from the same difficulty tier and prioritize similar geographic character (coastal vs inland).
-  - Keyboard shortcuts: Instant answering with `1, 2, 3, 4` or `A, B, C, D`; advance to next question with `Enter`.
-- **✍️ Type & Guess Mode (Search & Distance Clues):**
-  - Diacritic-insensitive intelligent autocomplete search.
-  - 5 guess attempts: each incorrect attempt provides the great-circle **distance (km)** via the Haversine formula and an **8-point compass arrow (⬆️, ↗️, ➡️, ↘️, etc.)** directing you toward the target city.
+### 🛰️ SatelCity
+- **Label-free ESRI World Imagery** through Leaflet, locked north-up with pan and free zoom disabled. An **🔍 Expand Photo** view shows the same crop larger.
+- **500 cities in 2 tiers:** 100 Easy (Paris, Tokyo, Istanbul, Rio de Janeiro…) and 400 Hard (Kigali, Ulaanbaatar, Tbilisi, Ushuaia…), generated from GeoNames, Natural Earth and a hybrid fame index.
+- **Multiple Choice mode:** 4 options with distractors from the same tier and similar geography (coastal vs inland). Answer with `1–4` or `A–D`, continue with `Enter`.
+- **Type & Guess mode:** diacritic-insensitive autocomplete and 5 attempts. Each wrong guess shows the great-circle distance (Haversine) and an 8-point compass arrow toward the target.
+- **Anti-cheat:** leaving, refreshing or closing the tab mid-round counts as a wrong answer.
 
-### 🎯 3. 500 Unique World Cities Across 2 Disjoint Tiers
-- Generated using **GeoNames + Natural Earth + Hybrid Global Fame Index**:
-- **🟢 Easy (100 Cities):** Globally recognized iconic superstars *(Paris, London, Tokyo, New York, Rome, Istanbul, Venice, Monaco, Dubai, Sydney, Rio de Janeiro, Los Angeles, Singapore...)*
-- **🔴 Hard (400 Cities):** National capitals, historic trading ports, and distinctive world cities *(Kigali, Ulaanbaatar, Tbilisi, Baku, Reykjavik, Bern, Sarajevo, Valletta, Ushuaia, Tromsø...)*
+### 🚩 FlagQuiz
+- Flags and country trivia from the shared country dataset (250 countries, originally from the REST Countries API).
 
-### 🛡️ 4. Anti-Cheat Escape Protection
-- Leaving to the main menu, refreshing the browser (F5 / Cmd+R), or closing the tab during an active round automatically records an incorrect answer, preserving genuine stats.
+### 📊 GeoRank
+- Rank 10 random countries from largest to smallest, by **area** or **population**. Aim for a perfect 10/10.
 
-### 🌲 5. Deep Forest Explorer Aesthetics
-- Deep pine forest palette (`#060a07`), vibrant sage (`#86efac`), warm amber/earth accents, and glassmorphic panels.
-- Handcrafted vector SVG mode icons with responsive typography powered by Google Fonts (Plus Jakarta Sans).
+### 🗺️ BorderLine
+- Guess the country from its SVG outline (174 countries with border paths), with 4 choices, a streak counter and session progress.
+
+### 🛡️ Coat of Arms
+- 43 coats of arms, both historical empires (Ottoman Empire, USSR, Kingdom of Prussia…) and modern sovereign states.
+- Open-ended text guess with autocomplete limited to the 43 answers, a feedback banner after each guess and a victory modal at the end of a session.
+- All images are stored locally in `coatofarms/img/`.
 
 ---
 
-## 📁 Project Architecture
+## 📁 Project Structure
 
 ```
-satelcity/
-├── index.html              # Semantic HTML5, meta tags, and SVG mode icons
-├── satelcity.jpeg          # Brand logo, favicon, and social media banner
-├── LICENSE                 # MIT Open Source License
-├── .gitignore              # Git ignore rules
-├── README.md               # Project documentation
-├── css/
-│   └── style.css           # Deep Forest Explorer glassmorphism design system
-└── js/
-    ├── app.js              # Core application controller, round lifecycle, keyboard shortcuts
-    ├── cities.js           # 500 curated world cities (coords, zoom, continent, difficulty, geo type)
-    ├── i18n.js             # English string dictionary and number/population formatters
-    ├── map.js              # Leaflet + ESRI World Imagery locked camera engine
-    ├── stats.js            # Independent mode statistics and seen city tracker
-    └── modes/
-        ├── multipleChoice.js # 4-option smart distractor mode
-        └── textGuess.js      # Autocomplete, Haversine distance, and bearing calculation
+satellite/
+├── index.html              # GeoHub portal (game cards)
+├── css/portal.css          # Portal styles
+├── satelcity.jpeg          # Brand logo and social preview image
+├── data/
+│   ├── countries.json      # Shared country dataset (FlagQuiz, GeoRank, BorderLine)
+│   └── countries.js        # Same data as window.GEO_COUNTRIES, works over file:// too
+├── scripts/
+│   └── build_cities.js     # Node pipeline that generates satelcity/js/cities.js
+├── satelcity/
+│   ├── index.html
+│   ├── css/style.css
+│   └── js/
+│       ├── app.js          # Round lifecycle and keyboard shortcuts
+│       ├── cities.js       # 500 curated cities (generated)
+│       ├── i18n.js         # English strings and number formatters
+│       ├── map.js          # Leaflet + ESRI locked camera
+│       ├── stats.js        # Per-mode stats and seen-city tracking
+│       └── modes/
+│           ├── multipleChoice.js
+│           └── textGuess.js
+├── flagquiz/               # index.html, styles.css, js/quiz.js, img/
+├── georank/                # index.html, css/style.css, js/app.js
+├── borderline/             # index.html, css/style.css, js/app.js
+└── coatofarms/
+    ├── index.html
+    ├── css/style.css
+    ├── js/app.js
+    ├── data/arms.json      # 43 coats of arms
+    ├── data/arms.js        # Same data as window.COAT_OF_ARMS_DATA
+    └── img/                # Local PNG/SVG artwork
 ```
+
+### Shared data
+FlagQuiz, GeoRank and BorderLine all read **one** dataset in `data/`. Each game first loads `../data/countries.js`, which sets `window.GEO_COUNTRIES` (this also works when the page is opened straight from disk). If that fails, it fetches `../data/countries.json`, then `/data/countries.json`. To change country data, edit `data/countries.json` and regenerate `data/countries.js` so the two stay identical.
 
 ---
 
 ## 🚀 Running Locally
 
-No Node.js, Webpack, or Vite build steps are required. As pure modern ES modules, it runs instantly with any static HTTP server:
+Any static HTTP server works:
 
-### Using Python 3:
 ```bash
 python3 -m http.server 8080
-```
-Open in your browser: **`http://localhost:8080`**
-
-### Using Node / npx:
-```bash
+# or
 npx serve .
+```
+
+Then open **`http://localhost:8080`**.
+
+To regenerate the SatelCity city list, first download these source files into `/tmp/`: `cities15000.txt` and `countryInfo.txt` (GeoNames) and `ne_50m_coastline.geojson` (Natural Earth). Then run the script from the `satelcity/` folder, because it reads and rewrites `js/cities.js`:
+
+```bash
+cd satelcity && node ../scripts/build_cities.js
 ```
 
 ---
 
-## 🌐 Production Deployment (Subpath & Root Friendly)
+## 🌐 Production Deployment
 
-All asset links and scripts use relative paths (`./`), ensuring zero-configuration deployment to either a root domain (`example.com`) or a subfolder (`cemeren.dev/satelcity/`).
+All asset links use relative paths, so the site works on a root domain (`example.com`) or in a subfolder (`cemeren.dev/satelcity/`).
 
-### Nginx Subdirectory Configuration Example:
+### Nginx subdirectory example
 ```nginx
 location /satelcity/ {
     alias /var/www/satelcity/;
@@ -94,7 +118,7 @@ location /satelcity/ {
 }
 ```
 
-### Direct Server Upload (rsync / scp):
+### Direct upload (rsync)
 ```bash
 rsync -avz --exclude '.git' ./ user@cemeren.dev:/var/www/satelcity/
 ```
@@ -104,4 +128,4 @@ rsync -avz --exclude '.git' ./ user@cemeren.dev:/var/www/satelcity/
 ## 📄 License
 
 This project is licensed under the [MIT License](LICENSE).
-Feel free to fork, expand, and create your own geography games!
+Feel free to fork, expand and build your own geography games!

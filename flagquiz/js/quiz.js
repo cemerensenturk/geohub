@@ -33,8 +33,8 @@ function startQuiz() {
             setCountries(data);
         })
         .catch(error => {
-            console.warn('Primary shared fetch failed, attempting local fallback:', error);
-            fetch('./data/countries.json')
+            console.warn('Relative data fetch failed, trying root fallback:', error);
+            fetch('/data/countries.json')
                 .then(r => r.json())
                 .then(data => setCountries(data))
                 .catch(err => console.error('All API endpoints failed:', err));

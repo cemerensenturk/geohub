@@ -171,8 +171,6 @@ class BorderLineGame {
     // 2. Multi-path fetch fallback
     const paths = [
       '../data/countries.json',
-      './data/countries.json',
-      'data/countries.json',
       '/data/countries.json'
     ];
 
