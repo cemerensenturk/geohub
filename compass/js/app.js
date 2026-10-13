@@ -4,7 +4,7 @@
  */
 
 import CITIES from '../../satelcity/js/cities.js';
-import { MAP_WIDTH, MAP_HEIGHT, LAND_PATH, project } from './worldmap.js';
+import { MAP_WIDTH, MAP_HEIGHT, LAND_PATH, project } from '../../data/worldmap.js';
 import {
   greatCircleBearing, rhumbBearing, distanceKm, angularError,
   formatBearing, pointName, roundPoints, normalize

@@ -1,0 +1,337 @@
+/* ==========================================================================
+   Neighbours
+   Builds on css/atlas.css (tokens and shared components).
+   ========================================================================== */
+
+.nb-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+  gap: 20px;
+  align-items: start;
+}
+
+/* ---------- Map ---------- */
+
+.nb-map-panel {
+  padding: 16px 16px 18px;
+}
+
+.nb-map-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 2px 4px 12px;
+}
+
+.nb-legend {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--ink-muted);
+}
+
+.nb-key {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  margin-left: 8px;
+}
+
+.nb-key--target {
+  background: var(--accent);
+}
+
+.nb-key--found {
+  background: var(--accent-soft);
+  border: 1.5px solid var(--accent);
+}
+
+.nb-map-frame {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--rule);
+  background-color: var(--paper);
+  background-image:
+    linear-gradient(to right, rgba(194, 183, 162, 0.18) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(194, 183, 162, 0.18) 1px, transparent 1px);
+  background-size: 40px 40px;
+  overflow: hidden;
+}
+
+.nb-map,
+.nb-map-labels {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.nb-map-labels {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.nb-country {
+  fill: var(--paper-sunken);
+  stroke: var(--rule-strong);
+  stroke-width: 0.75;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+  transition: fill 0.25s var(--ease), stroke 0.25s var(--ease);
+}
+
+.nb-country.is-target {
+  fill: var(--accent);
+  stroke: var(--accent);
+}
+
+.nb-country.is-found {
+  fill: var(--accent-soft);
+  stroke: var(--accent);
+  stroke-width: 1.5;
+}
+
+.nb-country.is-missed {
+  fill: var(--wrong-soft);
+  stroke: var(--wrong);
+  stroke-width: 1.5;
+  stroke-dasharray: 4 3;
+}
+
+.nb-label {
+  font-family: var(--font-body);
+  font-size: 12.5px;
+  font-weight: 600;
+  stroke-width: 3.5px;
+  fill: var(--ink);
+  stroke: var(--paper-raised);
+  stroke-linejoin: round;
+  paint-order: stroke;
+  pointer-events: none;
+}
+
+.nb-label.is-target {
+  font-family: var(--font-display);
+  font-size: 16px;
+  fill: var(--paper-raised);
+  stroke: var(--accent);
+}
+
+.nb-label.is-missed {
+  fill: var(--wrong);
+}
+
+/* ---------- Guess panel ---------- */
+
+.nb-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 22px;
+}
+
+.nb-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.nb-question {
+  font-size: clamp(24px, 3vw, 30px);
+  line-height: 1.15;
+}
+
+.nb-target {
+  color: var(--accent);
+}
+
+.nb-progress {
+  margin-top: -8px;
+  font-size: 15px;
+  color: var(--ink-soft);
+}
+
+.nb-progress .mono {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+.nb-guess {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.nb-input-wrap {
+  position: relative;
+}
+
+.nb-suggestions {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  z-index: 20;
+  margin: 0;
+  padding: 4px;
+  list-style: none;
+  background: #FFFFFF;
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+}
+
+.nb-suggestion {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 44px;
+  padding: 0 12px;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.nb-suggestion.is-active,
+.nb-suggestion:hover {
+  background: var(--accent-soft);
+}
+
+.nb-suggestion-alias {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--ink-muted);
+}
+
+.nb-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.nb-actions .atlas-btn--primary {
+  flex: 1;
+}
+
+.nb-feedback {
+  font-weight: 500;
+}
+
+.nb-fact {
+  padding: 10px 14px;
+  border-radius: var(--radius-md);
+  background: var(--accent-soft);
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+
+.nb-found {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.nb-found:empty {
+  display: none;
+}
+
+.nb-next {
+  width: 100%;
+}
+
+/* ---------- Summary ---------- */
+
+.nb-summary {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+}
+
+.nb-summary-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 26px;
+}
+
+.nb-summary h2 {
+  font-size: 30px;
+}
+
+.nb-summary-score {
+  font-size: 17px;
+  color: var(--ink-soft);
+}
+
+.nb-summary-score .mono {
+  font-size: 22px;
+  color: var(--ink);
+}
+
+.nb-summary-best {
+  font-size: 14px;
+  color: var(--ink-muted);
+}
+
+.nb-summary-list {
+  width: 100%;
+  margin: 4px 0 8px;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--rule);
+}
+
+.nb-summary-list li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 2px;
+  border-bottom: 1px solid var(--rule);
+  font-size: 15px;
+  text-align: left;
+}
+
+.nb-summary .atlas-btn {
+  width: 100%;
+}
+
+/* ---------- Small screens ---------- */
+
+@media (max-width: 860px) {
+  .nb-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 520px) {
+  .nb-map-panel {
+    padding: 12px;
+  }
+
+  .nb-panel {
+    padding: 18px;
+  }
+
+  .nb-legend {
+    display: none;
+  }
+
+  .atlas-stats .atlas-btn {
+    margin-left: 0;
+  }
+}

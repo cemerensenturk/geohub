@@ -1,6 +1,6 @@
 # GeoHub 🌍
 
-> **Explore the world through play: eight browser-based geography games in one portal.**
+> **Explore the world through play: ten browser-based geography games in one portal.**
 
 [![Live Demo](https://img.shields.io/badge/Demo-cemeren.dev%2Fgeohub-22c55e?style=for-the-badge&logo=googlechrome&logoColor=white)](https://cemeren.dev/geohub)
 [![License: MIT](https://img.shields.io/badge/License-MIT-amber.svg?style=for-the-badge)](LICENSE)
@@ -23,6 +23,8 @@
 | 🧭 **Compass** | `compass/` | Point the needle from one city to another (initial great-circle bearing) |
 | 🗺️ **Mercator's Lie** | `mercator/` | Two countries at Mercator scale: which one is really larger? |
 | ⬆️ **Further North** | `furthernorth/` | Which of two cities is further north? Keep the streak going |
+| 🧩 **Neighbours** | `neighbours/` | Name every country that shares a land border with the highlighted one |
+| 📍 **Pin the City** | `pinthecity/` | Drop a pin on a blank world map; points fall off with every kilometre |
 
 ### 🛰️ SatelCity
 - **Label-free ESRI World Imagery** through Leaflet, locked north-up with pan and free zoom disabled. An **🔍 Expand Photo** view shows the same crop larger.
@@ -50,6 +52,12 @@
 ### ⬆️ Further North
 - Streak game: which city is further north? A latitude ruler reveals the answer; pairs get closer in latitude as the streak grows.
 
+### 🧩 Neighbours
+- A country is highlighted on the map; type its land neighbours. Neighbours are derived from Natural Earth topology (shared border arcs) by `scripts/build_neighbours.js`, so overseas borders count too (France borders Brazil).
+
+### 📍 Pin the City
+- Find a city from the SatelCity list on a label-free world map (pan and zoom), then see how many kilometres off you were. Uses the shared map in `data/worldmap.js`.
+
 ### 🛡️ Coat of Arms
 - 43 coats of arms, both historical empires (Ottoman Empire, USSR, Kingdom of Prussia…) and modern sovereign states.
 - Open-ended text guess with autocomplete limited to the 43 answers, a feedback banner after each guess and a victory modal at the end of a session.
@@ -67,14 +75,16 @@ satellite/
 │   └── portal.css          # Portal-only styles
 ├── og/                     # 1200×630 social preview images, one per page
 ├── data/
-│   ├── countries.json      # Shared country dataset (FlagQuiz, GeoRank, BorderLine)
+│   ├── countries.json      # Shared country dataset (FlagQuiz, GeoRank, BorderLine, Mercator's Lie)
+│   ├── worldmap.js         # Mercator world map + project/unproject (Compass, Pin the City)
 │   └── countries.js        # Same data as window.GEO_COUNTRIES, works over file:// too
 ├── scripts/
 │   ├── build_cities.js     # Node pipeline that generates satelcity/js/cities.js
 │   ├── build_outlines.js   # Redraws BorderLine outlines from Natural Earth 1:50m
-│   └── build_worldmap.js   # Generates compass/js/worldmap.js (Mercator world map)
+│   ├── build_worldmap.js   # Generates data/worldmap.js (Mercator world map)
+│   └── build_neighbours.js # Generates neighbours/js/data.js (country shapes + land neighbours)
 ├── favicons/               # SVG favicons + 180px touch icons, one per page
-├── compass/  mercator/  furthernorth/   # index.html, css/style.css, js/app.js each
+├── compass/  mercator/  furthernorth/  neighbours/  pinthecity/   # index.html, css/style.css, js/app.js each
 ├── satelcity/
 │   ├── index.html
 │   ├── css/style.css
@@ -132,7 +142,7 @@ The site is plain static files, deployed at **`cemeren.dev/geohub/`** with each 
 Create a `geohub/` folder in the web root and upload into it:
 
 - `index.html`, `css/`, `data/`, `favicons/`, `og/`
-- every game folder: `satelcity/`, `flagquiz/`, `georank/`, `borderline/`, `coatofarms/`, `compass/`, `mercator/`, `furthernorth/`
+- every game folder: `satelcity/`, `flagquiz/`, `georank/`, `borderline/`, `coatofarms/`, `compass/`, `mercator/`, `furthernorth/`, `neighbours/`, `pinthecity/`
 
 Not needed on the server: `.git/`, `.DS_Store`, `scripts/`, `README.md`, `CLAUDE.md`, `LICENSE`.
 

@@ -1,7 +1,7 @@
 /* ==========================================================================
    GeoHub - Atlas Design System
    Shared tokens and components for the portal and every game.
-   A page picks its accent with <body data-game="satelcity|flagquiz|georank|borderline|coatofarms|compass|mercator|furthernorth">.
+   A page picks its accent with <body data-game="satelcity|flagquiz|georank|borderline|coatofarms|compass|mercator|furthernorth|neighbours|pinthecity">.
    Fonts (load in each page <head>):
    https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500;6..72,600&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap
    ========================================================================== */
@@ -26,6 +26,8 @@
   --raspberry: #9B2D5C;
   --rust: #A4521A;
   --indigo: #3E3F96;
+  --olive: #5B6B12;
+  --cerulean: #1C6EA4;
 
   /* Feedback */
   --correct: #2E6B45;
@@ -61,6 +63,8 @@ body[data-game="coatofarms"] { --accent: var(--heraldic); --accent-soft: #DEE3EC
 body[data-game="compass"]      { --accent: var(--raspberry); --accent-soft: #F1DDE6; }
 body[data-game="mercator"]     { --accent: var(--rust);      --accent-soft: #F3E2D4; }
 body[data-game="furthernorth"] { --accent: var(--indigo);    --accent-soft: #E1E1F2; }
+body[data-game="neighbours"]   { --accent: var(--olive);     --accent-soft: #E6E8D2; }
+body[data-game="pinthecity"]   { --accent: var(--cerulean);  --accent-soft: #DCE8F1; }
 
 /* ---------- Base ---------- */
 

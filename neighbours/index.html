@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Neighbours — Name Every Country Next Door</title>
+  <link rel="icon" type="image/svg+xml" href="../favicons/neighbours.svg">
+  <link rel="icon" type="image/png" sizes="180x180" href="../favicons/neighbours-180.png">
+  <link rel="apple-touch-icon" href="../favicons/neighbours-180.png">
+  <meta name="description" content="A country lights up on the map. Can you name every country it shares a land border with? China has 14 neighbours: how many can you get?">
+
+  <!-- OpenGraph / Twitter -->
+  <meta property="og:site_name" content="Neighbours — GeoHub">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://cemeren.dev/geohub/neighbours/">
+  <meta property="og:title" content="Neighbours — Name Every Country Next Door">
+  <meta property="og:description" content="Name all the land neighbours of a country and watch them light up on the map.">
+  <meta property="og:image" content="https://cemeren.dev/geohub/og/neighbours.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Neighbours — Name Every Country Next Door">
+  <meta name="twitter:description" content="China has 14 neighbours. How many can you name?">
+  <meta name="twitter:image" content="https://cemeren.dev/geohub/og/neighbours.png">
+
+  <!-- Google Fonts: Atlas (Newsreader, Public Sans, IBM Plex Mono) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500;6..72,600&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../css/atlas.css?v=1">
+  <link rel="stylesheet" href="css/style.css?v=1">
+</head>
+<body data-game="neighbours">
+
+  <div class="atlas-page">
+
+    <header class="atlas-topbar">
+      <a href="../" class="atlas-back">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        GeoHub
+      </a>
+      <a href="./" class="atlas-title">Neighbours</a>
+    </header>
+
+    <section class="atlas-stats" aria-label="Stats">
+      <span class="atlas-stat"><span class="atlas-stat-label">Round</span><span class="atlas-stat-value" id="stat-round">1 / 6</span></span>
+      <span class="atlas-stat"><span class="atlas-stat-label">Found</span><span class="atlas-stat-value" id="stat-found">0 / 0</span></span>
+      <span class="atlas-stat"><span class="atlas-stat-label">Score</span><span class="atlas-stat-value" id="stat-score">0</span></span>
+      <span class="atlas-stat"><span class="atlas-stat-label">Best</span><span class="atlas-stat-value" id="stat-best">–</span></span>
+      <button type="button" class="atlas-btn atlas-btn--ghost atlas-btn--sm" id="btn-restart">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"/></svg>
+        Restart
+      </button>
+    </section>
+
+    <main class="nb-layout">
+
+      <section class="atlas-panel nb-map-panel" aria-label="Map">
+        <div class="nb-map-head">
+          <span class="atlas-eyebrow">Land borders</span>
+          <span class="nb-legend" aria-hidden="true">
+            <span class="nb-key nb-key--target"></span>Country
+            <span class="nb-key nb-key--found"></span>Found
+          </span>
+        </div>
+        <div class="nb-map-frame">
+          <svg id="map" class="nb-map" viewBox="0 0 1000 679" preserveAspectRatio="xMidYMid meet" role="img" aria-label="World map">
+            <g id="map-land"></g>
+          </svg>
+          <svg id="map-labels" class="nb-map-labels" aria-hidden="true"></svg>
+        </div>
+      </section>
+
+      <section class="atlas-panel nb-panel" aria-label="Guesses">
+        <div class="nb-panel-head">
+          <span class="atlas-eyebrow" id="round-label">Round 1 of 6</span>
+          <div class="atlas-segmented" role="group" aria-label="Difficulty">
+            <button type="button" data-level="easy" aria-pressed="true">Easy</button>
+            <button type="button" data-level="hard" aria-pressed="false">Hard</button>
+          </div>
+        </div>
+
+        <h1 class="nb-question">Name every neighbour of <span class="nb-target" id="target-name">…</span></h1>
+        <p class="nb-progress"><span class="mono" id="progress-count">0 / 0</span> found · <span id="mistakes-left">3 mistakes left</span></p>
+
+        <form class="nb-guess" id="guess-form" autocomplete="off">
+          <label for="guess-input" class="visually-hidden">Country name</label>
+          <div class="nb-input-wrap">
+            <input id="guess-input" class="atlas-input" type="text" placeholder="Type a country…" spellcheck="false"
+              role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="suggestions">
+            <ul id="suggestions" class="nb-suggestions" role="listbox" hidden></ul>
+          </div>
+          <div class="nb-actions">
+            <button type="submit" class="atlas-btn atlas-btn--primary" id="btn-guess">Guess</button>
+            <button type="button" class="atlas-btn atlas-btn--ghost" id="btn-giveup">
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 21V4M5 4c4-2 7 2 11 0s3 0 3 0v9s-1-2-3 0-7-2-11 0"/></svg>
+              Give up
+            </button>
+          </div>
+        </form>
+
+        <div class="atlas-feedback nb-feedback" id="feedback" role="status" aria-live="polite" hidden></div>
+        <p class="nb-fact" id="fun-fact" hidden></p>
+
+        <ul class="nb-found" id="found-list" aria-label="Neighbours found"></ul>
+
+        <button type="button" class="atlas-btn atlas-btn--primary nb-next" id="btn-next" hidden>
+          Next country
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </button>
+      </section>
+
+    </main>
+  </div>
+
+  <div class="atlas-modal-backdrop" id="summary" hidden>
+    <div class="atlas-modal nb-summary" role="dialog" aria-modal="true" aria-labelledby="summary-title">
+      <div class="nb-summary-icon" aria-hidden="true">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"/></svg>
+      </div>
+      <h2 id="summary-title">Session complete</h2>
+      <p class="nb-summary-score"><span class="mono" id="summary-score">0 / 0</span> neighbours named</p>
+      <p class="nb-summary-best" id="summary-best"></p>
+      <ul class="nb-summary-list" id="summary-list"></ul>
+      <button type="button" class="atlas-btn atlas-btn--primary" id="btn-again">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"/></svg>
+        Play again
+      </button>
+    </div>
+  </div>
+
+  <script type="module" src="js/app.js?v=1"></script>
+</body>
+</html>

@@ -1,7 +1,7 @@
-// Builds compass/js/worldmap.js: a simplified Mercator world map (Natural Earth 1:50m)
+// Builds data/worldmap.js: a simplified Mercator world map (Natural Earth 1:50m)
 // plus the projection, so the game can place cities on the same coordinates.
 // Input (download first): https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/countries-50m.json
-// Usage: node scripts/build_worldmap.js countries-50m.json compass/js/worldmap.js
+// Usage: node scripts/build_worldmap.js countries-50m.json data/worldmap.js
 const fs = require('fs');
 const [, , topoPath, outPath] = process.argv;
 const topo = JSON.parse(fs.readFileSync(topoPath, 'utf8'));
@@ -87,6 +87,11 @@ const mercY = lat => {
 const TOP = mercY(${LAT_TOP});
 // [x, y] in map units for a latitude/longitude in degrees
 export const project = (lat, lng) => [(lng + 180) * K, (TOP - mercY(lat)) * K];
+// Inverse of project: [lat, lng] in degrees for a point in map units
+export const unproject = (x, y) => {
+  const m = (TOP - y / K) * Math.PI / 180;
+  return [(2 * Math.atan(Math.exp(m)) - Math.PI / 2) * 180 / Math.PI, x / K - 180];
+};
 export const LAND_PATH = '${d}';
 `;
 fs.writeFileSync(outPath, out);

@@ -1,0 +1,334 @@
+/* ==========================================================================
+   Pin the City
+   Builds on css/atlas.css (tokens and shared components).
+   ========================================================================== */
+
+.atlas-stats .pc-difficulty {
+  margin-left: auto;
+}
+
+.pc-difficulty button {
+  min-height: 36px;
+}
+
+/* ---------- Layout ---------- */
+
+.pc-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  gap: 20px;
+  align-items: start;
+}
+
+.pc-map-card {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+}
+
+.pc-side {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.pc-side > div {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.pc-wide {
+  width: 100%;
+}
+
+/* ---------- Prompt ---------- */
+
+.pc-prompt {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  padding: 0 4px;
+}
+
+.pc-prompt-text {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  min-width: 0;
+}
+
+.pc-city {
+  font-family: var(--font-display);
+  font-size: clamp(26px, 4vw, 36px);
+  font-weight: 600;
+  line-height: 1.1;
+  color: var(--accent);
+  overflow-wrap: anywhere;
+}
+
+/* ---------- Map ---------- */
+
+.pc-map {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1000 / 679;
+  max-height: 72vh;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--rule);
+  overflow: hidden;
+  background: var(--paper);
+  cursor: crosshair;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.pc-map.is-dragging {
+  cursor: grabbing;
+}
+
+.pc-map:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.pc-map svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.pc-sea {
+  fill: var(--paper);
+}
+
+.pc-graticule line {
+  stroke: var(--rule);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.pc-graticule line.is-equator {
+  stroke: var(--rule-strong);
+  stroke-dasharray: 4 4;
+}
+
+.pc-land {
+  fill: var(--paper-sunken);
+  stroke: var(--rule-strong);
+  stroke-width: 0.75;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.pc-pin path {
+  fill: var(--ink);
+  stroke: #FFFFFF;
+  stroke-width: 1.5;
+}
+
+.pc-pin circle {
+  fill: #FFFFFF;
+}
+
+.pc-target-halo {
+  fill: var(--accent);
+  fill-opacity: 0.18;
+}
+
+.pc-target-dot {
+  fill: var(--accent);
+  stroke: #FFFFFF;
+  stroke-width: 2;
+}
+
+.pc-target-label text {
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 700;
+  fill: var(--ink);
+  paint-order: stroke;
+  stroke: var(--paper-raised);
+  stroke-width: 4px;
+  stroke-linejoin: round;
+}
+
+.pc-line {
+  stroke: var(--ink);
+  stroke-width: 1.75;
+  stroke-dasharray: 6 5;
+  vector-effect: non-scaling-stroke;
+}
+
+/* Zoom controls */
+
+.pc-zoom {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.pc-zoom-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--rule-strong);
+  background: var(--paper-raised);
+  color: var(--ink);
+  font-size: 18px;
+  cursor: pointer;
+  box-shadow: 0 1px 2px rgba(30, 41, 51, 0.12);
+}
+
+.pc-zoom-btn:hover {
+  border-color: var(--ink-muted);
+}
+
+/* ---------- Side panel ---------- */
+
+.pc-hint {
+  color: var(--ink-soft);
+  font-size: 15px;
+}
+
+.pc-keys {
+  font-size: 12px;
+  color: var(--ink-muted);
+}
+
+.pc-result-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.pc-result-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px 12px;
+  border-radius: var(--radius-md);
+  background: var(--paper-sunken);
+}
+
+.pc-result-value {
+  font-size: 20px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* ---------- Summary modal ---------- */
+
+.pc-summary {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+}
+
+.pc-summary-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 26px;
+}
+
+.pc-summary h2 {
+  font-size: 30px;
+}
+
+.pc-summary-score {
+  font-size: 40px;
+  font-weight: 500;
+  color: var(--accent);
+}
+
+.pc-summary-max {
+  font-size: 20px;
+  color: var(--ink-muted);
+}
+
+.pc-summary-best {
+  color: var(--ink-soft);
+}
+
+.pc-summary-list {
+  width: 100%;
+  margin: 4px 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--rule);
+  text-align: left;
+}
+
+.pc-summary-list li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto 48px;
+  gap: 12px;
+  align-items: baseline;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.pc-summary-city {
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pc-summary-km {
+  font-size: 13px;
+  color: var(--ink-muted);
+}
+
+.pc-summary-pts {
+  text-align: right;
+}
+
+/* ---------- Small screens ---------- */
+
+@media (max-width: 860px) {
+  .pc-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .pc-map {
+    aspect-ratio: auto;
+    height: 52vh;
+    min-height: 300px;
+    max-height: none;
+  }
+}
+
+@media (max-width: 520px) {
+  .pc-map-card {
+    padding: 10px;
+  }
+
+  .pc-side {
+    padding: 16px;
+  }
+
+  .pc-keys {
+    display: none;
+  }
+}
