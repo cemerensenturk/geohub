@@ -9,7 +9,7 @@ export const translations = {
   heroPill: "Real ESRI Satellite Imagery",
 
   // Difficulty Levels
-  difficultyLabel: "Difficulty Level:",
+  difficultyLabel: "Difficulty",
   diffEasy: "Easy",
   diffHard: "Hard",
   diffEasyDesc: "Top 100 Famous Cities",
@@ -32,13 +32,13 @@ export const translations = {
   // HUD & Imagery
   compassNorth: "NORTH UP",
   btnExpand: "Expand Photo",
-  btnCloseModal: "Close (✕)",
+  btnCloseModal: "Close",
 
   // Clues
   hintsHeader: "Clues",
-  hintContinent: "🌍 Continent",
-  hintCountry: "🚩 Country & Flag",
-  hintDetail: "ℹ️ Info",
+  hintContinent: "Continent",
+  hintCountry: "Country",
+  hintDetail: "Info",
   hintClickToReveal: "Click to reveal",
 
   // Multiple Choice Mode
@@ -66,8 +66,8 @@ export const translations = {
   dirNorthwest: "Northwest",
 
   // Result Overlay
-  resultCorrect: "🎉 Congratulations, Correct Guess!",
-  resultWrong: "❌ Incorrect!",
+  resultCorrect: "Correct!",
+  resultWrong: "Not this time",
   resultAccuracy: "Current Accuracy:",
   btnNextCity: "Next City",
   populationLabel: "Population:",
@@ -75,7 +75,7 @@ export const translations = {
   million: "Million",
 
   // Level Completed
-  completedTitle: "🏆 Congratulations, Level Completed!",
+  completedTitle: "Level completed",
   completedDesc: "You have completed all cities in this difficulty level.",
   btnPlayAgain: "Reset and Replay",
   btnChangeDiff: "Choose Another Difficulty"
@@ -117,9 +117,6 @@ class I18nManager {
     const acc = Math.round(Number(accuracy) || 0);
     return `${acc}%`;
   }
-
-  subscribe() {}
-  notify() {}
 }
 
 export const i18n = new I18nManager();

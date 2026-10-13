@@ -4,6 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Coat of Arms — Imperial & State Heraldry Quiz</title>
+  <link rel="icon" type="image/svg+xml" href="../favicons/coatofarms.svg">
+  <link rel="icon" type="image/png" sizes="180x180" href="../favicons/coatofarms-180.png">
+  <link rel="apple-touch-icon" href="../favicons/coatofarms-180.png">
   <meta name="description" content="Decode historic and contemporary heraldry. Match royal crests, state emblems, and imperial coats of arms to their sovereign origins.">
 
   <!-- OpenGraph / WhatsApp Meta Tags -->
@@ -12,177 +15,178 @@
   <meta property="og:url" content="https://cemeren.dev/geohub/coatofarms/">
   <meta property="og:title" content="Coat of Arms — Heraldry & State Emblems Quiz">
   <meta property="og:description" content="Can you identify great empires and modern nations from their imperial coats of arms? Play now!">
-  <meta property="og:image" content="../satelcity.jpeg">
+  <meta property="og:image" content="https://cemeren.dev/geohub/og/coatofarms.png">
   <meta property="og:image:type" content="image/jpeg">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Coat of Arms — Heraldry Quiz">
   <meta name="twitter:description" content="Can you identify great empires and nations from their royal coats of arms?">
-  <meta name="twitter:image" content="../satelcity.jpeg">
+  <meta name="twitter:image" content="https://cemeren.dev/geohub/og/coatofarms.png">
 
-  <!-- Google Fonts: Plus Jakarta Sans -->
+  <!-- Google Fonts (Atlas) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500;6..72,600&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 
   <!-- Prevent stale caching -->
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
 
-  <link rel="stylesheet" href="css/style.css?v=6">
+  <link rel="stylesheet" href="../css/atlas.css?v=1">
+  <link rel="stylesheet" href="css/style.css?v=7">
 </head>
-<body>
+<body data-game="coatofarms">
 
-  <!-- Top Navigation Bar -->
-  <header class="top-nav-bar">
-    <a href="../" class="btn-geohub-back" title="Back to GeoHub Portal">
-      <span>← GeoHub</span>
-    </a>
-    <div class="brand-badge">
-      <div class="brand-icon-svg" aria-hidden="true">
-        <svg width="28" height="28" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M20 35C20 35 32 28 32 13V7L20 4L8 7V13C8 28 20 35 20 35Z" fill="#241805" stroke="#f59e0b" stroke-width="2" stroke-linejoin="round"/>
-          <line x1="20" y1="4" x2="20" y2="35" stroke="#fbbf24" stroke-width="1.3" stroke-opacity="0.6"/>
-          <line x1="8" y1="16" x2="32" y2="16" stroke="#fbbf24" stroke-width="1.3" stroke-opacity="0.6"/>
-          <path d="M14 4L16 1L20 3L24 1L26 4" stroke="#d97706" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          <circle cx="20" cy="16" r="3" fill="#f59e0b"/>
-          <path d="M20 11v10M15 16h10" stroke="#ffffff" stroke-width="1.2" stroke-linecap="round"/>
-        </svg>
-      </div>
-      <span>Coat of Arms</span>
-    </div>
-  </header>
+  <div class="atlas-page coa-page">
 
-  <!-- Main Game Container -->
-  <main class="game-container">
+    <!-- Top Navigation Bar -->
+    <header class="atlas-topbar">
+      <a href="../" class="atlas-back" title="Back to GeoHub">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        <span>GeoHub</span>
+      </a>
+      <a href="./" class="atlas-title">Coat of Arms</a>
+    </header>
 
-    <!-- HUD Stats Bar -->
-    <section class="game-hud glass-panel">
-      <div class="hud-streak-box">
-        <span class="hud-label">Progress:</span>
-        <span class="hud-stat-val" id="hud-progress">1 / 43</span>
-      </div>
-      <div class="hud-streak-box">
-        <span class="hud-label">Streak:</span>
-        <span class="hud-streak-val" id="hud-streak">🔥 0</span>
-      </div>
-      <div class="hud-accuracy-box">
-        <span class="hud-label">Score:</span>
-        <span class="hud-stat-val" id="hud-score">0 / 0 (0%)</span>
-      </div>
-      <button id="btn-reset-stats" class="btn-reset-stats" title="Reset stats">
-        Reset
-      </button>
-    </section>
+    <main class="game-container">
 
-    <!-- Main Game Workspace -->
-    <div class="game-workspace">
-      
-      <!-- Left: Heraldic Display Stage -->
-      <section class="heraldry-card glass-panel">
-        <div class="heraldry-overlay-top">
-          <span class="badge-heraldry" id="badge-era">👑 Imperial &amp; State Heraldry</span>
-          <button id="btn-toggle-clue" class="btn-clue-pill" title="Reveal historical era hint">
-            <span>💡 Clue:</span>
-            <span id="clue-preview">Era &amp; Region</span>
-          </button>
+      <!-- Stats line -->
+      <section class="atlas-stats coa-stats" aria-label="Game stats">
+        <div class="atlas-stat">
+          <span class="atlas-stat-label">Progress</span>
+          <span class="atlas-stat-value" id="hud-progress">1 / 43</span>
         </div>
-
-        <!-- Heraldry Image Viewport -->
-        <div class="heraldry-viewport" id="heraldry-viewport">
-          <div class="heraldry-glow-ring" aria-hidden="true"></div>
-          <img id="heraldry-img" class="heraldry-img" src="" alt="Coat of Arms" loading="eager">
+        <div class="atlas-stat">
+          <span class="atlas-stat-label">Streak</span>
+          <span class="atlas-stat-value stat-streak">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3c1 3.5 5 5.5 5 10a5 5 0 0 1-10 0c0-2.5 1.5-4 2.5-5 .3 1.6 1.2 2.6 2.5 3 0-3-1.5-5.5 0-8z"/></svg>
+            <span id="hud-streak">0</span>
+          </span>
         </div>
-
-        <div class="clue-reveal-box" id="clue-reveal-box" style="display: none;">
-          <!-- Revealed historical clue -->
+        <div class="atlas-stat">
+          <span class="atlas-stat-label">Score</span>
+          <span class="atlas-stat-value" id="hud-score">0 / 0 (0%)</span>
         </div>
+        <button id="btn-reset-stats" class="atlas-btn atlas-btn--ghost atlas-btn--sm" title="Reset stats">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"/></svg>
+          <span>Reset</span>
+        </button>
       </section>
 
-      <!-- Right: Multiple Choice Controls -->
-      <section class="controls-card glass-panel">
-        <!-- Open-ended Search & Autocomplete Input -->
-        <div class="guess-input-wrapper">
-          <div class="guess-input-row">
+      <!-- Main Game Workspace -->
+      <div class="game-workspace">
+
+        <!-- Left: Heraldic Display Stage -->
+        <section class="heraldry-card atlas-panel" aria-label="Coat of arms">
+          <div class="heraldry-overlay-top">
+            <span class="atlas-chip atlas-chip--accent" id="badge-era">Imperial &amp; State Heraldry</span>
+            <button id="btn-toggle-clue" class="atlas-btn atlas-btn--sm btn-clue" title="Reveal era and region hint">
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/></svg>
+              <span>Clue:</span>
+              <span id="clue-preview" class="clue-preview">Era &amp; Region</span>
+            </button>
+          </div>
+
+          <!-- Heraldry Image Viewport -->
+          <div class="heraldry-viewport">
+            <img id="heraldry-img" class="heraldry-img" src="" alt="Coat of Arms" loading="eager">
+          </div>
+
+          <div class="clue-reveal-box" id="clue-reveal-box" style="display: none;">
+            <!-- Revealed historical clue -->
+          </div>
+        </section>
+
+        <!-- Right: Guess Controls -->
+        <section class="controls-card atlas-panel" aria-label="Your guess">
+          <h2 class="question-prompt">Whose coat of arms is this?</h2>
+
+          <!-- Open-ended Search & Autocomplete Input -->
+          <div class="guess-input-wrapper">
             <div class="input-autocomplete-box">
-              <input 
-                type="text" 
-                id="arm-search-input" 
-                class="arm-search-input" 
-                placeholder="Type empire or country name..." 
-                autocomplete="off" 
+              <label for="arm-search-input" class="visually-hidden">Empire or country name</label>
+              <input
+                type="text"
+                id="arm-search-input"
+                class="atlas-input arm-search-input"
+                placeholder="Type an empire or country name"
+                autocomplete="off"
                 spellcheck="false"
               />
+              <!-- Full-width Autocomplete Dropdown -->
+              <div id="arm-autocomplete-list" class="arm-autocomplete-dropdown"></div>
             </div>
-            <button id="btn-submit-guess" class="btn-submit-guess" title="Submit your guess">
-              <span>Guess</span>
-              <span>⏎</span>
-            </button>
-            <button id="btn-skip-arm" class="btn-skip-arm" title="Skip this coat of arms">
-              <span>Skip</span>
-            </button>
-          </div>
-          <!-- Full-width Autocomplete Dropdown -->
-          <div id="arm-autocomplete-list" class="arm-autocomplete-dropdown"></div>
-        </div>
-
-        <!-- Feedback Banner (Correct / Wrong / Skipped) -->
-        <div id="guess-feedback-banner" class="guess-feedback-banner" style="display: none;"></div>
-
-        <!-- Action / Next Button -->
-        <button id="btn-next-arm" class="btn-next-action" style="display: none;">
-          <span>Next Coat of Arms</span>
-          <span>→</span>
-        </button>
-
-        <!-- Result Heraldic Dossier (Revealed on Answer) -->
-        <div class="result-dossier" id="result-dossier" style="display: none;">
-          <div class="dossier-header">
-            <div class="dossier-emblem-preview">
-              <img id="dossier-thumb" src="" alt="Emblem thumbnail">
-            </div>
-            <div>
-              <h3 id="dossier-name" class="dossier-name">Empire / State Name</h3>
-              <p id="dossier-meta" class="dossier-meta">Era • Region</p>
+            <div class="guess-button-row">
+              <button id="btn-submit-guess" class="atlas-btn atlas-btn--primary btn-submit-guess" title="Submit your guess">
+                <span>Guess</span>
+              </button>
+              <button id="btn-skip-arm" class="atlas-btn btn-skip-arm" title="Skip this coat of arms">
+                <span>Skip</span>
+              </button>
             </div>
           </div>
-          <p id="dossier-desc" class="dossier-desc">Heraldic description and historical context.</p>
-        </div>
 
-      </section>
+          <!-- Feedback Banner (Correct / Wrong / Skipped) -->
+          <div id="guess-feedback-banner" class="atlas-feedback guess-feedback-banner" style="display: none;"></div>
 
-    </div>
+          <!-- Action / Next Button -->
+          <button id="btn-next-arm" class="atlas-btn atlas-btn--primary btn-next-action" style="display: none;">
+            <span>Next coat of arms</span>
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
 
-    <!-- Victory / Completion Modal -->
-    <div id="modal-victory" class="modal-backdrop" style="display: none;">
-      <div class="modal-card glass-panel victory-card">
-        <div class="victory-icon">🏆</div>
-        <h2 class="victory-title">Session Complete!</h2>
-        <p class="victory-subtitle">Congratulations! You have decoded all 43 imperial &amp; state coats of arms!</p>
-        <div class="victory-stats-grid">
-          <div class="victory-stat-item">
-            <span class="stat-number" id="victory-score">0 / 43</span>
-            <span class="stat-desc">Final Score</span>
+          <!-- Result Heraldic Dossier (Revealed on Answer) -->
+          <div class="result-dossier" id="result-dossier" style="display: none;">
+            <div class="dossier-header">
+              <div class="dossier-emblem-preview">
+                <img id="dossier-thumb" src="" alt="">
+              </div>
+              <div>
+                <h3 id="dossier-name" class="dossier-name">Empire / State Name</h3>
+                <p id="dossier-meta" class="dossier-meta">Era · Region</p>
+              </div>
+            </div>
+            <p id="dossier-desc" class="dossier-desc">Heraldic description and historical context.</p>
           </div>
-          <div class="victory-stat-item">
-            <span class="stat-number" id="victory-accuracy">0%</span>
-            <span class="stat-desc">Accuracy</span>
-          </div>
-          <div class="victory-stat-item">
-            <span class="stat-number" id="victory-streak">🔥 0</span>
-            <span class="stat-desc">Best Streak</span>
-          </div>
-        </div>
-        <button id="btn-play-again" class="btn-primary-action">
-          <span>Play New Session</span>
-          <span>🔄</span>
-        </button>
+
+        </section>
+
       </div>
-    </div>
 
-  </main>
+      <!-- Victory / Completion Modal -->
+      <div id="modal-victory" class="atlas-modal-backdrop" style="display: none;">
+        <div class="atlas-modal victory-card" role="dialog" aria-modal="true" aria-labelledby="victory-title">
+          <div class="victory-icon" aria-hidden="true">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"/></svg>
+          </div>
+          <h2 class="victory-title" id="victory-title">Session complete</h2>
+          <p class="victory-subtitle">You have been through all 43 imperial and state coats of arms.</p>
+          <div class="victory-stats-grid">
+            <div class="victory-stat-item">
+              <span class="stat-number" id="victory-score">0 / 43</span>
+              <span class="stat-desc">Final score</span>
+            </div>
+            <div class="victory-stat-item">
+              <span class="stat-number" id="victory-accuracy">0%</span>
+              <span class="stat-desc">Accuracy</span>
+            </div>
+            <div class="victory-stat-item">
+              <span class="stat-number" id="victory-streak">0</span>
+              <span class="stat-desc">Best streak</span>
+            </div>
+          </div>
+          <button id="btn-play-again" class="atlas-btn atlas-btn--primary btn-play-again">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"/></svg>
+            <span>Play a new session</span>
+          </button>
+        </div>
+      </div>
+
+    </main>
+
+  </div>
 
   <script src="data/arms.js"></script>
-  <script src="js/app.js?v=5"></script>
+  <script src="js/app.js?v=7"></script>
 </body>
 </html>

@@ -1,8 +1,8 @@
 # GeoHub 🌍
 
-> **Explore the world through play: five browser-based geography games in one portal.**
+> **Explore the world through play: eight browser-based geography games in one portal.**
 
-[![Live Demo](https://img.shields.io/badge/Demo-cemeren.dev%2Fsatelcity-22c55e?style=for-the-badge&logo=googlechrome&logoColor=white)](https://cemeren.dev/satelcity)
+[![Live Demo](https://img.shields.io/badge/Demo-cemeren.dev%2Fgeohub-22c55e?style=for-the-badge&logo=googlechrome&logoColor=white)](https://cemeren.dev/geohub)
 [![License: MIT](https://img.shields.io/badge/License-MIT-amber.svg?style=for-the-badge)](LICENSE)
 [![Vanilla JS](https://img.shields.io/badge/Vanilla-JS_ES6+-yellow.svg?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 [![Zero Dependency](https://img.shields.io/badge/Zero-Build_Steps-brightgreen.svg?style=for-the-badge)](https://leafletjs.com/)
@@ -20,6 +20,9 @@
 | 📊 **GeoRank** | `georank/` | Drag 10 countries into order by land area or population |
 | 🗺️ **BorderLine** | `borderline/` | Recognise a country from its border silhouette, 4 choices, streak tracking |
 | 🛡️ **Coat of Arms** | `coatofarms/` | Name the state or empire behind a coat of arms |
+| 🧭 **Compass** | `compass/` | Point the needle from one city to another (initial great-circle bearing) |
+| 🗺️ **Mercator's Lie** | `mercator/` | Two countries at Mercator scale: which one is really larger? |
+| ⬆️ **Further North** | `furthernorth/` | Which of two cities is further north? Keep the streak going |
 
 ### 🛰️ SatelCity
 - **Label-free ESRI World Imagery** through Leaflet, locked north-up with pan and free zoom disabled. An **🔍 Expand Photo** view shows the same crop larger.
@@ -36,6 +39,16 @@
 
 ### 🗺️ BorderLine
 - Guess the country from its SVG outline (174 countries with border paths), with 4 choices, a streak counter and session progress.
+- Outlines are drawn from [Natural Earth](https://www.naturalearthdata.com/) 1:50m (public domain) by `scripts/build_outlines.js`.
+
+### 🧭 Compass
+- Two cities from the SatelCity list: rotate the needle to the initial great-circle bearing from the first to the second. The reveal also shows the flat-map (rhumb line) bearing, which is often far off. 10 rounds, up to 100 points each.
+
+### 🗺️ Mercator's Lie
+- Two country outlines drawn at the same Mercator scale. Pick the one that is really larger, then watch both shrink to their true relative size. Uses the `svgScale` / `svgLat` fields written by `scripts/build_outlines.js`.
+
+### ⬆️ Further North
+- Streak game: which city is further north? A latitude ruler reveals the answer; pairs get closer in latitude as the streak grows.
 
 ### 🛡️ Coat of Arms
 - 43 coats of arms, both historical empires (Ottoman Empire, USSR, Kingdom of Prussia…) and modern sovereign states.
@@ -49,13 +62,19 @@
 ```
 satellite/
 ├── index.html              # GeoHub portal (game cards)
-├── css/portal.css          # Portal styles
-├── satelcity.jpeg          # Brand logo and social preview image
+├── css/
+│   ├── atlas.css           # Shared "Atlas" design system: tokens + components for every page
+│   └── portal.css          # Portal-only styles
+├── og/                     # 1200×630 social preview images, one per page
 ├── data/
 │   ├── countries.json      # Shared country dataset (FlagQuiz, GeoRank, BorderLine)
 │   └── countries.js        # Same data as window.GEO_COUNTRIES, works over file:// too
 ├── scripts/
-│   └── build_cities.js     # Node pipeline that generates satelcity/js/cities.js
+│   ├── build_cities.js     # Node pipeline that generates satelcity/js/cities.js
+│   ├── build_outlines.js   # Redraws BorderLine outlines from Natural Earth 1:50m
+│   └── build_worldmap.js   # Generates compass/js/worldmap.js (Mercator world map)
+├── favicons/               # SVG favicons + 180px touch icons, one per page
+├── compass/  mercator/  furthernorth/   # index.html, css/style.css, js/app.js each
 ├── satelcity/
 │   ├── index.html
 │   ├── css/style.css
@@ -107,21 +126,17 @@ cd satelcity && node ../scripts/build_cities.js
 
 ## 🌐 Production Deployment
 
-All asset links use relative paths, so the site works on a root domain (`example.com`) or in a subfolder (`cemeren.dev/satelcity/`).
+The site is plain static files, deployed at **`cemeren.dev/geohub/`** with each game in its own subfolder (`cemeren.dev/geohub/satelcity/`, `cemeren.dev/geohub/compass/`, …). All internal links are relative, so the folder can live anywhere; only the absolute `og:url` / `og:image` tags in each page assume `https://cemeren.dev/geohub/`.
 
-### Nginx subdirectory example
-```nginx
-location /satelcity/ {
-    alias /var/www/satelcity/;
-    index index.html;
-    try_files $uri $uri/ /satelcity/index.html;
-}
-```
+### Upload with FTP (e.g. FileZilla)
+Create a `geohub/` folder in the web root and upload into it:
 
-### Direct upload (rsync)
-```bash
-rsync -avz --exclude '.git' ./ user@cemeren.dev:/var/www/satelcity/
-```
+- `index.html`, `css/`, `data/`, `favicons/`, `og/`
+- every game folder: `satelcity/`, `flagquiz/`, `georank/`, `borderline/`, `coatofarms/`, `compass/`, `mercator/`, `furthernorth/`
+
+Not needed on the server: `.git/`, `.DS_Store`, `scripts/`, `README.md`, `CLAUDE.md`, `LICENSE`.
+
+When you re-upload a changed CSS or JS file, bump its `?v=` number in the HTML that links it so visitors don't get the old cached copy.
 
 ---
 

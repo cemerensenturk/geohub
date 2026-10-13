@@ -405,7 +405,7 @@ class App {
     } else if (type === 'country') {
       this.unlockedHints.country = true;
       this.elements.btnHintCountry.classList.add('unlocked');
-      this.elements.hintValCountry.textContent = `${this.currentCity.flag} ${i18n.getCountryName(this.currentCity)}`;
+      this.elements.hintValCountry.textContent = i18n.getCountryName(this.currentCity);
     } else if (type === 'detail') {
       this.unlockedHints.detail = true;
       this.elements.btnHintDetail.classList.add('unlocked');
@@ -428,7 +428,7 @@ class App {
     this.elements.resultTitle.className = isCorrect ? 'result-title correct' : 'result-title wrong';
     this.elements.resultTitle.textContent = isCorrect ? i18n.t('resultCorrect') : i18n.t('resultWrong');
     
-    this.elements.resultCityName.textContent = `${targetCity.flag} ${i18n.getCityName(targetCity)}`;
+    this.elements.resultCityName.textContent = i18n.getCityName(targetCity);
     this.elements.resultCityCountry.textContent = `${i18n.getCountryName(targetCity)} • ${i18n.getContinentName(targetCity)}`;
     this.elements.resultCityDetail.textContent = `${i18n.getCityHint(targetCity)} — ${i18n.t('populationLabel')} ${i18n.formatPopulation(targetCity)}`;
     

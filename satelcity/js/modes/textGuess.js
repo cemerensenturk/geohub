@@ -66,20 +66,22 @@ export class TextGuessMode {
     brng = (brng + 360) % 360;
 
     const directions = [
-      { key: "dirNorth", arrow: "⬆️", min: 337.5, max: 360 },
-      { key: "dirNorth", arrow: "⬆️", min: 0, max: 22.5 },
-      { key: "dirNortheast", arrow: "↗️", min: 22.5, max: 67.5 },
-      { key: "dirEast", arrow: "➡️", min: 67.5, max: 112.5 },
-      { key: "dirSoutheast", arrow: "↘️", min: 112.5, max: 157.5 },
-      { key: "dirSouth", arrow: "⬇️", min: 157.5, max: 202.5 },
-      { key: "dirSouthwest", arrow: "↙️", min: 202.5, max: 247.5 },
-      { key: "dirWest", arrow: "⬅️", min: 247.5, max: 292.5 },
-      { key: "dirNorthwest", arrow: "↖️", min: 292.5, max: 337.5 }
+      { key: "dirNorth", deg: 0, min: 337.5, max: 360 },
+      { key: "dirNorth", deg: 0, min: 0, max: 22.5 },
+      { key: "dirNortheast", deg: 45, min: 22.5, max: 67.5 },
+      { key: "dirEast", deg: 90, min: 67.5, max: 112.5 },
+      { key: "dirSoutheast", deg: 135, min: 112.5, max: 157.5 },
+      { key: "dirSouth", deg: 180, min: 157.5, max: 202.5 },
+      { key: "dirSouthwest", deg: 225, min: 202.5, max: 247.5 },
+      { key: "dirWest", deg: 270, min: 247.5, max: 292.5 },
+      { key: "dirNorthwest", deg: 315, min: 292.5, max: 337.5 }
     ];
 
-    const match = directions.find(d => brng >= d.min && brng < d.max) || { key: "dirNorth", arrow: "⬆️" };
+    const match = directions.find(d => brng >= d.min && brng < d.max) || { key: "dirNorth", deg: 0 };
+    // Arrow icon rotated to the 8-point compass direction (0deg = north/up)
+    const arrow = `<svg class="icon tg-bearing-arrow" viewBox="0 0 24 24" aria-hidden="true" style="transform: rotate(${match.deg}deg)"><path d="M12 19V5M5 12l7-7 7 7"/></svg>`;
     return {
-      arrow: match.arrow,
+      arrow,
       label: i18n.t(match.key)
     };
   }
@@ -109,12 +111,12 @@ export class TextGuessMode {
             <input 
               type="text" 
               id="tg-search-input" 
-              class="tg-input" 
+              class="atlas-input tg-input" 
               placeholder="${i18n.t('tgInputPlaceholder')}" 
               autocomplete="off"
               ${this.isFinished ? "disabled" : ""}
             />
-            <button id="tg-submit-btn" class="tg-btn-submit" ${this.isFinished ? "disabled" : ""}>
+            <button type="button" id="tg-submit-btn" class="atlas-btn atlas-btn--primary tg-btn-submit" ${this.isFinished ? "disabled" : ""}>
               ${i18n.t('tgSubmit')}
             </button>
           </div>
@@ -127,7 +129,7 @@ export class TextGuessMode {
 
         ${!this.isFinished ? `
           <div class="tg-actions">
-            <button id="tg-surrender-btn" class="tg-btn-surrender">${i18n.t('tgSurrender')}</button>
+            <button type="button" id="tg-surrender-btn" class="atlas-btn atlas-btn--ghost tg-btn-surrender">${i18n.t('tgSurrender')}</button>
           </div>
         ` : ''}
       </div>
@@ -144,12 +146,12 @@ export class TextGuessMode {
     return this.guesses.map((g, idx) => `
       <div class="tg-guess-row ${g.proxClass} animate-fade-in">
         <span class="tg-row-num">${idx + 1}.</span>
-        <span class="tg-row-name">${i18n.getCityName(g.city)} <small class="tg-row-country">${g.city.flag} ${i18n.getCountryName(g.city)}</small></span>
+        <span class="tg-row-name">${i18n.getCityName(g.city)} <small class="tg-row-country">${i18n.getCountryName(g.city)}</small></span>
         <span class="tg-row-metric">
           ${g.distance === 0 ? `
-            <strong class="tg-exact-badge">🎯 ${i18n.t('tgExact')}</strong>
+            <strong class="tg-exact-badge"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg> ${i18n.t('tgExact')}</strong>
           ` : `
-            <span class="tg-distance">${g.distance.toLocaleString('en-US')} km</span>
+            <span class="tg-distance mono">${g.distance.toLocaleString('en-US')} km</span>
             <span class="tg-direction">${g.bearing.arrow} ${g.bearing.label}</span>
           `}
         </span>
@@ -184,7 +186,6 @@ export class TextGuessMode {
       if (matches.length > 0) {
         dropdown.innerHTML = matches.map(m => `
           <div class="tg-dropdown-item" data-id="${m.id}">
-            <span class="tg-item-flag">${m.flag}</span>
             <span class="tg-item-name">${i18n.getCityName(m)}</span>
             <span class="tg-item-country">${i18n.getCountryName(m)}</span>
           </div>

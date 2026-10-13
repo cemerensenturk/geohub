@@ -1,38 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-    <link rel="stylesheet" href="styles.css?v=5">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flag Quiz — Name the Country from its Flag</title>
+  <link rel="icon" type="image/svg+xml" href="../favicons/flagquiz.svg">
+  <link rel="icon" type="image/png" sizes="180x180" href="../favicons/flagquiz-180.png">
+  <link rel="apple-touch-icon" href="../favicons/flagquiz-180.png">
+  <meta name="description" content="Which country flies this flag? Pick from 4 options and learn each country's capital, languages, currency and more.">
+
+  <!-- OpenGraph / WhatsApp Meta Tags -->
+  <meta property="og:site_name" content="Flag Quiz — GeoHub">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://cemeren.dev/geohub/flagquiz/">
+  <meta property="og:title" content="Flag Quiz — Name the Country from its Flag">
+  <meta property="og:description" content="250 flags, 4 options each, and a short country profile after every answer.">
+  <meta property="og:image" content="https://cemeren.dev/geohub/og/flagquiz.png">
+  <meta property="og:image:type" content="image/jpeg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Flag Quiz — Name the Country from its Flag">
+  <meta name="twitter:description" content="250 flags, 4 options each, and a short country profile after every answer.">
+  <meta name="twitter:image" content="https://cemeren.dev/geohub/og/flagquiz.png">
+
+  <!-- Google Fonts: Atlas -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500;6..72,600&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- Prevent stale caching -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+
+  <link rel="stylesheet" href="../css/atlas.css?v=1">
+  <link rel="stylesheet" href="styles.css?v=7">
 </head>
-<body>
-    <header class="top-nav-bar">
-        <a href="../" class="btn-geohub-back" title="Back to GeoHub Portal">
-            <span>← GeoHub</span>
-        </a>
-        <h1 class="header-title">Flags Quiz</h1>
+<body data-game="flagquiz">
+
+  <div class="atlas-page">
+
+    <header class="atlas-topbar">
+      <a href="../" class="atlas-back">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        <span>GeoHub</span>
+      </a>
+      <a href="./" class="atlas-title">Flag Quiz</a>
     </header>
 
-    <div id="quiz-container">
-        <div id="question">
-            <img id="flag-image" src="" alt="Flag">
-        </div>
-        <div id="options">
-        </div>
-        <div id="score">
-            Score: <span id="score-value">0</span> / <span id="question-count-value">0</span>
-        </div>
-        <div id="countryInfo">
-        </div>
-        <button id="next-question" onclick="showNextQuestion()">Next Question</button>
+    <div class="atlas-stats" aria-live="polite">
+      <span class="atlas-stat"><span class="atlas-stat-label">Flag</span><span class="atlas-stat-value" id="progress-value">0 / 0</span></span>
+      <span class="atlas-stat"><span class="atlas-stat-label">Score</span><span class="atlas-stat-value"><span id="score-value">0</span> / <span id="question-count-value">0</span></span></span>
+      <span class="atlas-stat"><span class="atlas-stat-label">Accuracy</span><span class="atlas-stat-value" id="accuracy-value">0%</span></span>
     </div>
 
-    <!-- Shared data & API script -->
-    <script src="../data/countries.js"></script>
-    <script src="js/quiz.js?v=2"></script>
+    <main id="quiz-container" class="fq-layout">
+
+      <section class="atlas-panel fq-flag-panel" aria-label="Flag">
+        <p class="atlas-eyebrow">Whose flag is this?</p>
+        <div class="fq-flag-frame">
+          <img id="flag-image" src="" alt="Flag">
+        </div>
+      </section>
+
+      <section class="atlas-panel fq-question-panel">
+        <h1 class="fq-question">Which country flies this flag?</h1>
+        <div id="options" class="atlas-options"></div>
+
+        <div id="feedback" class="atlas-feedback" hidden></div>
+
+        <div class="fq-actions">
+          <span class="fq-hint mono">Keys 1–4 or A–D · Enter for next</span>
+          <button id="next-question" class="atlas-btn atlas-btn--primary" type="button" hidden>
+            <span>Next flag</span>
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
+        </div>
+      </section>
+
+      <section id="countryInfo" class="atlas-panel fq-dossier" aria-live="polite" hidden></section>
+
+    </main>
+
+  </div>
+
+  <!-- Shared data -->
+  <script src="../data/countries.js?v=2"></script>
+  <script src="js/quiz.js?v=4"></script>
 </body>
 </html>

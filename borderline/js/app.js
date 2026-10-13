@@ -190,7 +190,7 @@ class BorderLineGame {
   }
 
   updateStatsUI() {
-    this.elements.hudStreak.textContent = `🔥 ${this.stats.streak}`;
+    this.elements.hudStreak.textContent = `${this.stats.streak}`;
     const pct = this.stats.played > 0 ? Math.round((this.stats.correct / this.stats.played) * 100) : 0;
     this.elements.hudScore.textContent = `${this.stats.correct} / ${this.stats.played} (${pct}%)`;
   }
@@ -220,7 +220,7 @@ class BorderLineGame {
       this.elements.victoryAccuracy.textContent = `${pct}%`;
     }
     if (this.elements.victoryStreak) {
-      this.elements.victoryStreak.textContent = `🔥 ${this.sessionBestStreak}`;
+      this.elements.victoryStreak.textContent = `${this.sessionBestStreak}`;
     }
     if (this.elements.modalVictory) {
       this.elements.modalVictory.style.display = 'flex';
@@ -230,9 +230,9 @@ class BorderLineGame {
   nextRound() {
     if (!this.countries || this.countries.length === 0) {
       this.elements.optionsGrid.innerHTML = `
-        <div style="text-align: center; padding: 2rem; color: #f87171;">
-          <p style="margin-bottom: 1rem; font-weight: 700;">Could not load country silhouettes dataset.</p>
-          <button class="btn-next-action" style="display:inline-flex;" onclick="window.location.reload()">Reload Game</button>
+        <div class="load-error">
+          <p>Could not load the country outlines.</p>
+          <button class="atlas-btn" onclick="window.location.reload()">Reload game</button>
         </div>
       `;
       return;
@@ -249,7 +249,7 @@ class BorderLineGame {
     this.elements.btnNextCountry.style.display = 'none';
     this.elements.resultDossier.style.display = 'none';
     this.elements.clueRevealBox.style.display = 'none';
-    this.elements.cluePreview.textContent = 'Continent';
+    this.elements.cluePreview.textContent = 'Show clue';
 
     // Pick next country from non-repeating session deck
     this.currentCountry = this.deck.pop();
@@ -291,9 +291,9 @@ class BorderLineGame {
     const letters = ['A', 'B', 'C', 'D'];
     this.options.forEach((opt, idx) => {
       const btn = document.createElement('button');
-      btn.className = 'opt-btn';
+      btn.className = 'atlas-option opt-btn';
       btn.innerHTML = `
-        <span class="opt-letter">${letters[idx]}</span>
+        <span class="atlas-option-key">${letters[idx]}</span>
         <span class="opt-name">${getCountryName(opt)}</span>
       `;
 
@@ -343,16 +343,18 @@ class BorderLineGame {
       btn.disabled = true;
       const optId = this.options[idx].id;
       if (optId === this.currentCountry.id) {
-        btn.classList.add('correct');
+        btn.classList.add('is-correct');
       } else if (btn === chosenBtn && !isCorrect) {
-        btn.classList.add('wrong');
+        btn.classList.add('is-wrong');
+      } else {
+        btn.classList.add('is-dimmed');
       }
     });
 
     // Reveal Dossier
     this.elements.dossierFlag.src = getCountryFlag(this.currentCountry);
     this.elements.dossierName.textContent = getCountryName(this.currentCountry);
-    this.elements.dossierMeta.textContent = `${getCountryContinent(this.currentCountry)} • Capital: ${getCountryCapital(this.currentCountry)}`;
+    this.elements.dossierMeta.textContent = `${getCountryContinent(this.currentCountry)} · Capital: ${getCountryCapital(this.currentCountry)}`;
     this.elements.resultDossier.style.display = 'block';
 
     // Show Next Button
@@ -365,14 +367,14 @@ class BorderLineGame {
 
     if (this.clueRevealed) {
       this.elements.clueRevealBox.innerHTML = `
-        <strong>Region:</strong> ${getCountryContinent(this.currentCountry)} &nbsp;|&nbsp; 
-        <strong>Capital:</strong> ${getCountryCapital(this.currentCountry)}
+        <span><span class="clue-label">Region</span> ${getCountryContinent(this.currentCountry)}</span>
+        <span><span class="clue-label">Capital</span> ${getCountryCapital(this.currentCountry)}</span>
       `;
-      this.elements.clueRevealBox.style.display = 'block';
-      this.elements.cluePreview.textContent = 'Hide';
+      this.elements.clueRevealBox.style.display = 'flex';
+      this.elements.cluePreview.textContent = 'Hide clue';
     } else {
       this.elements.clueRevealBox.style.display = 'none';
-      this.elements.cluePreview.textContent = 'Continent';
+      this.elements.cluePreview.textContent = 'Show clue';
     }
   }
 }

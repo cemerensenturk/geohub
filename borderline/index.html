@@ -4,6 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>BorderLine — Country Outline Silhouette Guesser</title>
+  <link rel="icon" type="image/svg+xml" href="../favicons/borderline.svg">
+  <link rel="icon" type="image/png" sizes="180x180" href="../favicons/borderline-180.png">
+  <link rel="apple-touch-icon" href="../favicons/borderline-180.png">
   <meta name="description" content="Can you identify sovereign nations from their border outlines and geographic silhouette contours? 4 smart choices, instant clues, and streak tracking.">
 
   <!-- OpenGraph / WhatsApp Meta Tags -->
@@ -12,152 +15,153 @@
   <meta property="og:url" content="https://cemeren.dev/geohub/borderline/">
   <meta property="og:title" content="BorderLine — Country Silhouette Guesser">
   <meta property="og:description" content="Can you identify countries from pure vector border silhouettes? Play now!">
-  <meta property="og:image" content="../satelcity.jpeg">
+  <meta property="og:image" content="https://cemeren.dev/geohub/og/borderline.png">
   <meta property="og:image:type" content="image/jpeg">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="BorderLine — Country Silhouette Guesser">
   <meta name="twitter:description" content="Can you identify countries from pure vector border silhouettes?">
-  <meta name="twitter:image" content="../satelcity.jpeg">
+  <meta name="twitter:image" content="https://cemeren.dev/geohub/og/borderline.png">
 
-  <!-- Google Fonts: Plus Jakarta Sans -->
+  <!-- Google Fonts: Atlas (Newsreader, Public Sans, IBM Plex Mono) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500;6..72,600&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 
   <!-- Prevent stale caching -->
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
 
-  <link rel="stylesheet" href="css/style.css?v=6">
+  <link rel="stylesheet" href="../css/atlas.css?v=1">
+  <link rel="stylesheet" href="css/style.css?v=8">
 </head>
-<body>
+<body data-game="borderline">
 
-  <!-- Top Navigation Bar -->
-  <header class="top-nav-bar">
-    <a href="../" class="btn-geohub-back" title="Back to GeoHub Portal">
-      <span>← GeoHub</span>
-    </a>
-    <div class="brand-badge">
-      <div class="brand-icon-svg" aria-hidden="true">
-        <svg width="28" height="28" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M12 9 L23 7 L32 13 L35 22 L29 31 L20 33 L11 28 L6 20 L8 13 Z" fill="#1e102d" stroke="#c084fc" stroke-width="2" stroke-linejoin="round"/>
-          <path d="M14 15 L22 13 L28 17 L29 23 L25 27 L18 28 L12 24 L11 19 Z" stroke="#a855f7" stroke-width="1.2" stroke-opacity="0.6" stroke-dasharray="2 2" fill="none"/>
-          <circle cx="21" cy="20" r="3" fill="#c084fc"/>
-          <circle cx="21" cy="20" r="1.2" fill="#0f051d"/>
-        </svg>
-      </div>
-      <span>BorderLine</span>
-    </div>
-  </header>
+  <div class="atlas-page">
 
-  <!-- Main Game Container -->
-  <main class="game-container">
+    <!-- Top Navigation Bar -->
+    <header class="atlas-topbar">
+      <a href="../" class="atlas-back" title="Back to GeoHub">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        <span>GeoHub</span>
+      </a>
+      <h1 class="atlas-title">BorderLine</h1>
+    </header>
 
-    <!-- HUD Stats Bar -->
-    <section class="game-hud glass-panel">
-      <div class="hud-streak-box">
-        <span class="hud-label">Progress:</span>
-        <span class="hud-stat-val" id="hud-progress">1 / 197</span>
-      </div>
-      <div class="hud-streak-box">
-        <span class="hud-label">Streak:</span>
-        <span class="hud-streak-val" id="hud-streak">🔥 0</span>
-      </div>
-      <div class="hud-accuracy-box">
-        <span class="hud-label">Score:</span>
-        <span class="hud-stat-val" id="hud-score">0 / 0 (0%)</span>
-      </div>
-      <button id="btn-reset-stats" class="btn-reset-stats" title="Reset stats">
-        Reset
-      </button>
-    </section>
+    <main class="game-container">
 
-    <!-- Main Game Workspace -->
-    <div class="game-workspace">
-      
-      <!-- Left: Country Outline Silhouette Stage -->
-      <section class="silhouette-card glass-panel">
-        <div class="silhouette-overlay-top">
-          <span class="badge-contour">📐 Vector Contour</span>
-          <button id="btn-toggle-clue" class="btn-clue-pill" title="Reveal hint">
-            <span>💡 Clue:</span>
-            <span id="clue-preview">Continent</span>
-          </button>
+      <!-- Stats Bar -->
+      <section class="atlas-stats game-stats" aria-label="Stats">
+        <div class="atlas-stat">
+          <span class="atlas-stat-label">Progress</span>
+          <span class="atlas-stat-value" id="hud-progress">1 / 174</span>
         </div>
-
-        <!-- SVG Silhouette Viewport -->
-        <div class="svg-viewport" id="svg-viewport">
-          <svg id="country-svg" viewBox="0 0 400 400" preserveAspectRatio="xMidYMid meet">
-            <path id="silhouette-path" class="silhouette-path" d=""></path>
-          </svg>
+        <div class="atlas-stat">
+          <span class="atlas-stat-label">Streak</span>
+          <span class="atlas-stat-value stat-streak">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3c1 3.5 5 5.5 5 10a5 5 0 0 1-10 0c0-2.5 1.5-4 2.5-5 .3 1.6 1.2 2.6 2.5 3 0-3-1.5-5.5 0-8z"/></svg>
+            <span id="hud-streak">0</span>
+          </span>
         </div>
-
-        <div class="clue-reveal-box" id="clue-reveal-box">
-          <!-- Revealed clues -->
+        <div class="atlas-stat">
+          <span class="atlas-stat-label">Score</span>
+          <span class="atlas-stat-value" id="hud-score">0 / 0 (0%)</span>
         </div>
+        <button id="btn-reset-stats" class="atlas-btn atlas-btn--ghost" title="Reset stats">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"/></svg>
+          <span>Reset</span>
+        </button>
       </section>
 
-      <!-- Right: Multiple Choice Controls -->
-      <section class="controls-card glass-panel">
-        <h2 class="question-prompt">Which country has this border outline?</h2>
-        
-        <!-- 4 Options Grid -->
-        <div class="options-grid" id="options-grid">
-          <!-- Buttons generated dynamically in JS -->
-        </div>
+      <!-- Main Game Workspace -->
+      <div class="game-workspace">
 
-        <!-- Action / Next Button -->
-        <button id="btn-next-country" class="btn-next-action">
-          <span>Next Country</span>
-          <span>→</span>
-        </button>
+        <!-- Left: Country Outline Stage -->
+        <section class="silhouette-card atlas-panel">
+          <div class="silhouette-overlay-top">
+            <span class="atlas-eyebrow">Border outline</span>
+            <button id="btn-toggle-clue" class="atlas-btn atlas-btn--ghost btn-clue" title="Reveal hint">
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/></svg>
+              <span id="clue-preview">Show clue</span>
+            </button>
+          </div>
 
-        <!-- Result Country Dossier (Revealed on Answer) -->
-        <div class="result-dossier" id="result-dossier">
-          <div class="dossier-header">
-            <img id="dossier-flag" class="dossier-flag" src="" alt="Flag">
-            <div>
-              <h3 id="dossier-name" class="dossier-name">Country</h3>
-              <p id="dossier-meta" class="dossier-meta">Continent • Capital</p>
+          <!-- SVG Silhouette Viewport -->
+          <div class="svg-viewport">
+            <svg id="country-svg" viewBox="0 0 400 400" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Country outline">
+              <path id="silhouette-path" class="silhouette-path" d=""></path>
+            </svg>
+          </div>
+
+          <div class="clue-reveal-box" id="clue-reveal-box">
+            <!-- Revealed clues -->
+          </div>
+        </section>
+
+        <!-- Right: Multiple Choice Controls -->
+        <section class="controls-card atlas-panel">
+          <h2 class="question-prompt">Which country is this?</h2>
+
+          <!-- 4 Options Grid -->
+          <div class="atlas-options options-grid" id="options-grid">
+            <!-- Buttons generated dynamically in JS -->
+          </div>
+
+          <!-- Result Country Dossier (Revealed on Answer) -->
+          <div class="result-dossier" id="result-dossier">
+            <div class="dossier-header">
+              <img id="dossier-flag" class="dossier-flag" src="" alt="">
+              <div>
+                <h3 id="dossier-name" class="dossier-name">Country</h3>
+                <p id="dossier-meta" class="dossier-meta">Continent · Capital</p>
+              </div>
             </div>
           </div>
-        </div>
 
-      </section>
+          <!-- Next Button -->
+          <button id="btn-next-country" class="atlas-btn atlas-btn--primary btn-next-action">
+            <span>Next country</span>
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
 
-    </div>
+        </section>
 
-    <!-- Victory / Completion Modal -->
-    <div id="modal-victory" class="modal-backdrop" style="display: none;">
-      <div class="modal-card glass-panel victory-card">
-        <div class="victory-icon">🏆</div>
-        <h2 class="victory-title">Session Complete!</h2>
-        <p class="victory-subtitle">Incredible! You have identified all country silhouettes in this session!</p>
-        <div class="victory-stats-grid">
-          <div class="victory-stat-item">
-            <span class="stat-number" id="victory-score">0 / 0</span>
-            <span class="stat-desc">Final Score</span>
-          </div>
-          <div class="victory-stat-item">
-            <span class="stat-number" id="victory-accuracy">0%</span>
-            <span class="stat-desc">Accuracy</span>
-          </div>
-          <div class="victory-stat-item">
-            <span class="stat-number" id="victory-streak">🔥 0</span>
-            <span class="stat-desc">Best Streak</span>
-          </div>
-        </div>
-        <button id="btn-play-again" class="btn-primary-action">
-          <span>Play New Session</span>
-          <span>🔄</span>
-        </button>
       </div>
-    </div>
 
-  </main>
+      <!-- Victory / Completion Modal -->
+      <div id="modal-victory" class="atlas-modal-backdrop" style="display: none;">
+        <div class="atlas-modal victory-card" role="dialog" aria-modal="true" aria-labelledby="victory-title">
+          <div class="victory-icon" aria-hidden="true">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"/></svg>
+          </div>
+          <h2 class="victory-title" id="victory-title">Session complete</h2>
+          <p class="victory-subtitle">You have gone through every country outline in this session.</p>
+          <div class="victory-stats-grid">
+            <div class="victory-stat-item">
+              <span class="stat-number" id="victory-score">0 / 0</span>
+              <span class="stat-desc">Final score</span>
+            </div>
+            <div class="victory-stat-item">
+              <span class="stat-number" id="victory-accuracy">0%</span>
+              <span class="stat-desc">Accuracy</span>
+            </div>
+            <div class="victory-stat-item">
+              <span class="stat-number" id="victory-streak">0</span>
+              <span class="stat-desc">Best streak</span>
+            </div>
+          </div>
+          <button id="btn-play-again" class="atlas-btn atlas-btn--primary btn-play-again">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"/></svg>
+            <span>Play a new session</span>
+          </button>
+        </div>
+      </div>
 
-  <script src="../data/countries.js"></script>
-  <script src="js/app.js?v=7"></script>
+    </main>
+
+  </div>
+
+  <script src="../data/countries.js?v=2"></script>
+  <script src="js/app.js?v=8"></script>
 </body>
 </html>

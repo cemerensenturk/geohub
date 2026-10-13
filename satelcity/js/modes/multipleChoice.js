@@ -66,8 +66,8 @@ export class MultipleChoiceMode {
         <div class="mc-prompt">${i18n.t('mcPrompt')}</div>
         <div class="mc-options-grid">
           ${options.map((opt, idx) => `
-            <button class="mc-btn" data-city-id="${opt.id}" data-index="${idx}">
-              <span class="mc-letter">${['A', 'B', 'C', 'D'][idx]}</span>
+            <button type="button" class="atlas-option mc-btn" data-city-id="${opt.id}" data-index="${idx}">
+              <span class="atlas-option-key mc-letter">${['A', 'B', 'C', 'D'][idx]}</span>
               <span class="mc-name">${i18n.getCityName(opt)}</span>
             </button>
           `).join('')}
@@ -115,9 +115,11 @@ export class MultipleChoiceMode {
       const btnCityId = btn.getAttribute('data-city-id');
       
       if (btnCityId === this.currentCity.id) {
-        btn.classList.add('correct');
+        btn.classList.add('is-correct');
       } else if (btnCityId === selectedId && !isCorrect) {
-        btn.classList.add('wrong');
+        btn.classList.add('is-wrong');
+      } else {
+        btn.classList.add('is-dimmed');
       }
     });
 

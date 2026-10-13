@@ -5,6 +5,15 @@
 
 const STORAGE_KEY = "geohub_coatofarms_stats_v1";
 
+// Inline stroke icons (Atlas design system)
+const ICONS = {
+  crown: '<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 8l4 4 5-7 5 7 4-4-2 11H5z"/></svg>',
+  landmark: '<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21h18M4 10h16M12 3l8 5H4z"/><path d="M6 10v8M10 10v8M14 10v8M18 10v8"/></svg>',
+  check: '<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',
+  x: '<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>',
+  next: '<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>'
+};
+
 function normalizeText(str) {
   if (!str) return '';
   return str
@@ -260,6 +269,8 @@ class CoatOfArmsGame {
     // Global Enter key to advance round when answered
     window.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' && this.isAnswered) {
+        // A focused button already handles Enter as a click; handling it here too would skip a round
+        if (e.target instanceof Element && e.target.closest('button')) return;
         if (this.elements.modalVictory && this.elements.modalVictory.style.display === 'flex') {
           this.startNewSession();
         } else {
@@ -306,7 +317,7 @@ class CoatOfArmsGame {
   }
 
   updateStatsUI() {
-    this.elements.hudStreak.textContent = `🔥 ${this.stats.streak}`;
+    this.elements.hudStreak.textContent = `${this.stats.streak}`;
     const pct = this.stats.played > 0 ? Math.round((this.stats.correct / this.stats.played) * 100) : 0;
     this.elements.hudScore.textContent = `${this.stats.correct} / ${this.stats.played} (${pct}%)`;
   }
@@ -336,7 +347,7 @@ class CoatOfArmsGame {
       this.elements.victoryAccuracy.textContent = `${pct}%`;
     }
     if (this.elements.victoryStreak) {
-      this.elements.victoryStreak.textContent = `🔥 ${this.sessionBestStreak}`;
+      this.elements.victoryStreak.textContent = `${this.sessionBestStreak}`;
     }
     if (this.elements.modalVictory) {
       this.elements.modalVictory.style.display = 'flex';
@@ -382,9 +393,9 @@ class CoatOfArmsGame {
 
     // Update Stage Badge
     if (this.currentArm.type === 'historical') {
-      this.elements.badgeEra.textContent = '👑 Historical Empire / State';
+      this.elements.badgeEra.innerHTML = `${ICONS.crown}<span>Historical empire / state</span>`;
     } else {
-      this.elements.badgeEra.textContent = '🏛️ Sovereign Nation';
+      this.elements.badgeEra.innerHTML = `${ICONS.landmark}<span>Sovereign nation</span>`;
     }
 
     // Focus input for seamless keyboard typing
@@ -464,7 +475,7 @@ class CoatOfArmsGame {
 
     this.elements.autocompleteList.innerHTML = this.dropdownMatches.map((arm, idx) => {
       const isHist = arm.type === 'historical';
-      const badgeText = isHist ? '👑 Historical' : '🏛️ Sovereign';
+      const badgeText = isHist ? 'Historical' : 'Sovereign';
       const badgeClass = isHist ? 'badge-hist' : 'badge-mod';
       const isSelected = idx === this.selectedDropdownIdx ? 'selected' : '';
 
@@ -542,7 +553,7 @@ class CoatOfArmsGame {
       const wrapper = document.querySelector('.guess-input-wrapper');
       if (wrapper) wrapper.appendChild(hint);
     }
-    hint.textContent = `⚠️ ${msg}`;
+    hint.textContent = msg;
     hint.style.display = 'block';
 
     setTimeout(() => {
@@ -622,22 +633,22 @@ class CoatOfArmsGame {
 
     // Feedback banner presentation
     if (isCorrect) {
-      this.elements.feedbackBanner.className = 'guess-feedback-banner correct';
-      this.elements.feedbackBanner.innerHTML = `🎉 <strong>Correct!</strong> It is the Coat of Arms of <strong>${this.currentArm.name}</strong>.`;
+      this.elements.feedbackBanner.className = 'atlas-feedback guess-feedback-banner is-correct';
+      this.elements.feedbackBanner.innerHTML = `${ICONS.check}<span><strong>Correct!</strong> It is the coat of arms of <strong>${this.currentArm.name}</strong>.</span>`;
     } else if (isSkipped) {
-      this.elements.feedbackBanner.className = 'guess-feedback-banner skipped';
-      this.elements.feedbackBanner.innerHTML = `⏭️ <strong>Skipped.</strong> This was the Coat of Arms of <strong>${this.currentArm.name}</strong>.`;
+      this.elements.feedbackBanner.className = 'atlas-feedback guess-feedback-banner is-skipped';
+      this.elements.feedbackBanner.innerHTML = `${ICONS.next}<span><strong>Skipped.</strong> This was the coat of arms of <strong>${this.currentArm.name}</strong>.</span>`;
     } else {
       this.elements.searchInput.classList.add('input-shake');
-      this.elements.feedbackBanner.className = 'guess-feedback-banner wrong';
-      this.elements.feedbackBanner.innerHTML = `❌ <strong>Incorrect!</strong> This was the Coat of Arms of <strong>${this.currentArm.name}</strong>.`;
+      this.elements.feedbackBanner.className = 'atlas-feedback guess-feedback-banner is-wrong';
+      this.elements.feedbackBanner.innerHTML = `${ICONS.x}<span><strong>Incorrect.</strong> This was the coat of arms of <strong>${this.currentArm.name}</strong>.</span>`;
     }
-    this.elements.feedbackBanner.style.display = 'block';
+    this.elements.feedbackBanner.style.display = 'flex';
 
     // Reveal Heraldic Dossier
     this.elements.dossierThumb.src = this.currentArm.image;
     this.elements.dossierName.textContent = this.currentArm.name;
-    this.elements.dossierMeta.textContent = `${this.currentArm.period} • ${this.currentArm.region}`;
+    this.elements.dossierMeta.textContent = `${this.currentArm.period} · ${this.currentArm.region}`;
     this.elements.dossierDesc.textContent = this.currentArm.description;
     this.elements.resultDossier.style.display = 'block';
 
@@ -652,10 +663,10 @@ class CoatOfArmsGame {
 
     if (this.clueRevealed) {
       this.elements.clueRevealBox.innerHTML = `
-        <strong>Era:</strong> ${this.currentArm.period} &nbsp;|&nbsp; 
-        <strong>Region:</strong> ${this.currentArm.region}
+        <span><strong>Era</strong> ${this.currentArm.period}</span>
+        <span><strong>Region</strong> ${this.currentArm.region}</span>
       `;
-      this.elements.clueRevealBox.style.display = 'block';
+      this.elements.clueRevealBox.style.display = 'flex';
       this.elements.cluePreview.textContent = 'Hide';
     } else {
       this.elements.clueRevealBox.style.display = 'none';

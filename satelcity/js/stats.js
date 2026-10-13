@@ -63,14 +63,8 @@ export class StatsManager {
       correct: data.correct,
       accuracy,
       formattedText: `${data.correct} / ${data.played}`,
-      formattedPct: `${accuracy}%`,
-      seenCount: data.seenCityIds.length
+      formattedPct: `${accuracy}%`
     };
-  }
-
-  isCitySeen(mode, cityId) {
-    if (!this.stats[mode]) return false;
-    return this.stats[mode].seenCityIds.includes(cityId);
   }
 
   /**
@@ -86,11 +80,6 @@ export class StatsManager {
     this.stats[mode] = { played: 0, correct: 0, seenCityIds: [] };
     this.saveModeStats(mode);
     return this.getModeStats(mode);
-  }
-
-  resetAll() {
-    this.resetMode('mc');
-    this.resetMode('text');
   }
 }
 

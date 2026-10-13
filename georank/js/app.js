@@ -3,6 +3,15 @@
  * Evaluates geographic spatial intuition and demographic knowledge.
  */
 
+const ICONS = {
+  grip: '<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h.01M9 12h.01M9 18h.01M15 6h.01M15 12h.01M15 18h.01"/></svg>',
+  up: '<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 15 6-6 6 6"/></svg>',
+  down: '<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>',
+  check: '<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',
+  cross: '<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>',
+  close: '<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/></svg>'
+};
+
 class GeoRankGame {
   constructor() {
     this.allCountries = [];
@@ -106,15 +115,19 @@ class GeoRankGame {
     this.currentMetric = metric;
 
     if (metric === 'area') {
-      this.elements.btnModeArea.classList.add('active');
-      this.elements.btnModePop.classList.remove('active');
+      this.elements.btnModeArea.classList.add('is-active');
+      this.elements.btnModePop.classList.remove('is-active');
+      this.elements.btnModeArea.setAttribute('aria-pressed', 'true');
+      this.elements.btnModePop.setAttribute('aria-pressed', 'false');
       this.elements.instructionsText.innerHTML = 
-        'Drag & drop or use arrow buttons to order these 10 countries by <strong>Land Area</strong> from <strong>1st (Largest)</strong> to <strong>10th (Smallest)</strong>.';
+        'Drag &amp; drop or use the arrow buttons to order these 10 countries by <strong>Land Area</strong> from <strong>1st (Largest)</strong> to <strong>10th (Smallest)</strong>.';
     } else {
-      this.elements.btnModePop.classList.add('active');
-      this.elements.btnModeArea.classList.remove('active');
+      this.elements.btnModePop.classList.add('is-active');
+      this.elements.btnModeArea.classList.remove('is-active');
+      this.elements.btnModePop.setAttribute('aria-pressed', 'true');
+      this.elements.btnModeArea.setAttribute('aria-pressed', 'false');
       this.elements.instructionsText.innerHTML = 
-        'Drag & drop or use arrow buttons to order these 10 countries by <strong>Population</strong> from <strong>1st (Most Populous)</strong> to <strong>10th (Least Populous)</strong>.';
+        'Drag &amp; drop or use the arrow buttons to order these 10 countries by <strong>Population</strong> from <strong>1st (Most Populous)</strong> to <strong>10th (Least Populous)</strong>.';
     }
 
     this.startNewRound();
@@ -165,35 +178,37 @@ class GeoRankGame {
 
       // Status check if submitted
       let statusClass = '';
-      let rankText = `#${index + 1}`;
+      let statusHtml = '';
       if (this.isSubmitted) {
         const trueRank = trueSorted.findIndex(c => c.name.common === country.name.common) + 1;
         const diff = Math.abs((index + 1) - trueRank);
         if (diff === 0) {
           statusClass = 'status-correct';
-          rankText = `✓ #${index + 1}`;
+          statusHtml = `${ICONS.check}<span>Correct</span>`;
         } else if (diff === 1) {
           statusClass = 'status-close';
-          rankText = `~ #${index + 1} (True #${trueRank})`;
+          statusHtml = `${ICONS.close}<span>Close · true #${trueRank}</span>`;
         } else {
           statusClass = 'status-wrong';
-          rankText = `✗ #${index + 1} (True #${trueRank})`;
+          statusHtml = `${ICONS.cross}<span>True #${trueRank}</span>`;
         }
         card.classList.add(statusClass);
       }
 
       card.innerHTML = `
         <div class="rank-slot-number">${index + 1}</div>
-        <div class="rank-drag-handle" title="Drag to reorder">⋮⋮</div>
-        <img class="rank-flag" src="${flagUrl}" alt="${countryName} Flag" loading="lazy">
-        <span class="rank-name">${countryName}</span>
-        <span class="rank-metrics-tag" style="display: ${this.isSubmitted ? 'inline-block' : 'none'};">${formattedVal}</span>
-        ${!this.isSubmitted ? `
+        <div class="rank-drag-handle" title="Drag to reorder">${this.isSubmitted ? '' : ICONS.grip}</div>
+        <img class="rank-flag" src="${flagUrl}" alt="${countryName} flag" loading="lazy">
+        <div class="rank-info">
+          <span class="rank-name">${countryName}</span>
+          ${this.isSubmitted ? `<span class="rank-metrics-tag">${formattedVal}</span>` : ''}
+        </div>
+        ${this.isSubmitted ? `<span class="rank-status">${statusHtml}</span>` : `
           <div class="rank-controls">
-            <button class="btn-shift btn-shift-up" title="Move Up" ${index === 0 ? 'disabled' : ''}>▲</button>
-            <button class="btn-shift btn-shift-down" title="Move Down" ${index === 9 ? 'disabled' : ''}>▼</button>
+            <button class="btn-shift btn-shift-up" title="Move up" aria-label="Move ${countryName} up" ${index === 0 ? 'disabled' : ''}>${ICONS.up}</button>
+            <button class="btn-shift btn-shift-down" title="Move down" aria-label="Move ${countryName} down" ${index === 9 ? 'disabled' : ''}>${ICONS.down}</button>
           </div>
-        ` : ''}
+        `}
       `;
 
       // Accessible Shift Buttons
@@ -306,13 +321,13 @@ class GeoRankGame {
     this.elements.resultBadgeScore.textContent = `${correctCount} / 10 Correct`;
 
     if (correctCount >= 8) {
-      this.elements.resultTitle.textContent = '🌟 Master Geographer!';
+      this.elements.resultTitle.textContent = 'Master Geographer!';
       this.elements.resultSummary.textContent = 'Incredible spatial perception and global knowledge!';
     } else if (correctCount >= 5) {
-      this.elements.resultTitle.textContent = '👍 Good Effort!';
+      this.elements.resultTitle.textContent = 'Good Effort!';
       this.elements.resultSummary.textContent = 'You got more than half right. With a little more practice, you will master it!';
     } else {
-      this.elements.resultTitle.textContent = '📚 Keep Exploring!';
+      this.elements.resultTitle.textContent = 'Keep Exploring!';
       this.elements.resultSummary.textContent = 'Some countries are deceivingly big or dense. Review the actual values below!';
     }
 
@@ -323,9 +338,9 @@ class GeoRankGame {
 
       return `
         <div class="breakdown-row ${item.isExact ? 'correct' : 'wrong'}">
-          <span class="breakdown-rank">${item.isExact ? '✓' : '✗'} #${item.userRank}</span>
-          <span class="breakdown-name">${item.country.flags?.png ? `<img src="${item.country.flags.png}" style="width:20px; vertical-align:middle; margin-right:6px; border-radius:2px;">` : ''} ${item.country.name.common}</span>
-          <span class="breakdown-val">${metricLabel} (True #${item.trueRank})</span>
+          <span class="breakdown-rank">${item.isExact ? ICONS.check : ICONS.cross}<span>#${item.userRank}</span><span class="visually-hidden">${item.isExact ? 'correct' : 'wrong'}</span></span>
+          <span class="breakdown-name">${item.country.flags?.png ? `<img src="${item.country.flags.png}" alt="">` : ''}<span>${item.country.name.common}</span></span>
+          <span class="breakdown-val"><span>${metricLabel}</span><span class="breakdown-true">True #${item.trueRank}</span></span>
         </div>
       `;
     }).join('');
