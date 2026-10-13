@@ -1415,8 +1415,8 @@ export const CITIES = [
     "geo": "coastal",
     "name": "Rotterdam",
     "nameEn": "Rotterdam",
-    "country": "The Netherlands",
-    "countryEn": "The Netherlands",
+    "country": "Netherlands",
+    "countryEn": "Netherlands",
     "flag": "🇳🇱",
     "continent": "Europe",
     "continentEn": "Europe",
@@ -1424,8 +1424,8 @@ export const CITIES = [
     "lng": 4.4792,
     "zoom": 13,
     "population": "~868 Thousand",
-    "hint": "Major city in The Netherlands.",
-    "hintEn": "Major city in The Netherlands."
+    "hint": "Major city in the Netherlands.",
+    "hintEn": "Major city in the Netherlands."
   },
   {
     "id": "moscow_ru",
@@ -8363,8 +8363,8 @@ export const CITIES = [
     "geo": "inland",
     "name": "Utrecht",
     "nameEn": "Utrecht",
-    "country": "The Netherlands",
-    "countryEn": "The Netherlands",
+    "country": "Netherlands",
+    "countryEn": "Netherlands",
     "flag": "🇳🇱",
     "continent": "Europe",
     "continentEn": "Europe",
@@ -8372,8 +8372,8 @@ export const CITIES = [
     "lng": 5.1222,
     "zoom": 13,
     "population": "~376 Thousand",
-    "hint": "Major city in The Netherlands.",
-    "hintEn": "Major city in The Netherlands."
+    "hint": "Major city in the Netherlands.",
+    "hintEn": "Major city in the Netherlands."
   },
   {
     "id": "nakhon_si_thammarat_th",
