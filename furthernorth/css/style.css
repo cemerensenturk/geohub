@@ -1,0 +1,356 @@
+/* ==========================================================================
+   Further North
+   Builds on css/atlas.css (tokens and components). Layout, city cards and the
+   latitude ruler only.
+   ========================================================================== */
+
+.fn-streak .icon {
+  margin-right: 4px;
+  color: var(--accent);
+}
+
+/* ---------- Layout ---------- */
+
+.fn-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: 20px;
+  align-items: start;
+}
+
+.fn-play {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px;
+}
+
+.fn-question {
+  font-size: clamp(28px, 4vw, 38px);
+}
+
+/* ---------- City cards ---------- */
+
+.fn-cities {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: stretch;
+  gap: 12px;
+}
+
+.fn-city {
+  align-items: flex-start;
+  min-height: 132px;
+  padding: 18px;
+}
+
+.fn-city .atlas-option-key {
+  margin-top: 6px;
+}
+
+.fn-city-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.fn-city-name {
+  font-family: var(--font-display);
+  font-size: clamp(24px, 3vw, 32px);
+  font-weight: 600;
+  line-height: 1.1;
+  overflow-wrap: anywhere;
+}
+
+.fn-city-country {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--ink-muted);
+}
+
+.fn-city-lat {
+  margin-top: 6px;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.fn-city.is-correct .fn-city-lat {
+  color: var(--correct);
+}
+
+.fn-city.is-wrong .fn-city-lat {
+  color: var(--wrong);
+}
+
+.fn-or {
+  align-self: center;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 18px;
+  color: var(--ink-muted);
+}
+
+/* ---------- Feedback and actions ---------- */
+
+.fn-feedback {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-weight: 500;
+}
+
+.fn-feedback .icon {
+  margin-top: 3px;
+}
+
+.fn-feedback strong {
+  font-weight: 700;
+}
+
+.fn-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  min-height: 44px;
+}
+
+.fn-hint {
+  font-size: 12px;
+  color: var(--ink-muted);
+}
+
+.fn-actions .atlas-btn {
+  margin-left: auto;
+}
+
+/* ---------- Latitude ruler ---------- */
+
+.fn-ruler-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 18px 18px 16px;
+}
+
+.fn-ruler-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.fn-north {
+  color: var(--accent);
+}
+
+.fn-ruler {
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-md);
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  overflow: visible;
+}
+
+.fn-ruler-caption {
+  font-size: 13px;
+  color: var(--ink-muted);
+}
+
+.fn-axis {
+  stroke: var(--ink-soft);
+  stroke-width: 1.25;
+}
+
+.fn-tick {
+  stroke: var(--ink-soft);
+  stroke-width: 1;
+}
+
+.fn-tick-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  fill: var(--ink-muted);
+}
+
+.fn-parallel {
+  stroke: var(--rule-strong);
+  stroke-width: 1;
+  stroke-dasharray: 3 4;
+}
+
+.fn-equator {
+  stroke: var(--ink-muted);
+  stroke-dasharray: none;
+}
+
+.fn-parallel-label {
+  font-family: var(--font-body);
+  font-size: 10.5px;
+  font-style: italic;
+  fill: var(--ink-muted);
+}
+
+.fn-marker-line {
+  stroke: var(--ink-muted);
+  stroke-width: 1.25;
+}
+
+.fn-marker-dot {
+  fill: var(--paper-raised);
+  stroke: var(--ink-muted);
+  stroke-width: 2;
+}
+
+.fn-marker-name {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 600;
+  fill: var(--ink-soft);
+}
+
+.fn-marker-lat {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  fill: var(--ink-muted);
+}
+
+.fn-marker.is-north .fn-marker-line,
+.fn-marker.is-north .fn-marker-dot {
+  stroke: var(--accent);
+}
+
+.fn-marker.is-north .fn-marker-dot {
+  fill: var(--accent);
+}
+
+.fn-marker.is-north .fn-marker-name,
+.fn-marker.is-north .fn-marker-lat {
+  fill: var(--accent);
+}
+
+/* ---------- Game over modal ---------- */
+
+.fn-over {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+}
+
+.fn-over-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 26px;
+}
+
+.fn-over h2 {
+  font-size: 30px;
+}
+
+.fn-over-sub {
+  color: var(--ink-soft);
+}
+
+.fn-over-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  width: 100%;
+  margin-top: 4px;
+}
+
+.fn-over-stats > div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 12px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--rule);
+  background: var(--paper);
+}
+
+.fn-over-num {
+  font-size: 26px;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.fn-over-label {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+
+.fn-over-pair {
+  font-size: 15px;
+  color: var(--ink-soft);
+}
+
+.fn-over-pair .mono {
+  font-size: 13px;
+  color: var(--ink-muted);
+}
+
+.fn-over-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+/* ---------- Small screens ---------- */
+
+@media (max-width: 860px) {
+  .fn-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .fn-ruler-panel {
+    max-width: 420px;
+    width: 100%;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 560px) {
+  .fn-play {
+    padding: 18px;
+  }
+
+  .fn-cities {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 8px;
+  }
+
+  .fn-city {
+    min-height: 88px;
+  }
+
+  .fn-or {
+    justify-self: center;
+  }
+
+  .fn-actions .atlas-btn {
+    width: 100%;
+  }
+}
+
+@media (hover: none) {
+  .fn-hint {
+    display: none;
+  }
+}

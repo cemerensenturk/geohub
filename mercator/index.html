@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mercator's Lie — Which Country Is Really Larger?</title>
+  <link rel="icon" type="image/svg+xml" href="../favicons/mercator.svg">
+  <link rel="icon" type="image/png" sizes="180x180" href="../favicons/mercator-180.png">
+  <link rel="apple-touch-icon" href="../favicons/mercator-180.png">
+  <meta name="description" content="Two countries, drawn as they appear on a Mercator map. Which one is really larger? Spot the projection's lie, then watch both shapes shrink to their true size.">
+
+  <!-- OpenGraph / WhatsApp Meta Tags -->
+  <meta property="og:site_name" content="Mercator's Lie — GeoHub">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Mercator's Lie — Which Country Is Really Larger?">
+  <meta property="og:description" content="Maps lie about size. Can you tell which country is really larger?">
+  <meta property="og:url" content="https://cemeren.dev/geohub/mercator/">
+  <meta property="og:image" content="https://cemeren.dev/geohub/og/mercator.png">
+  <meta property="og:image:type" content="image/png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Mercator's Lie — Which Country Is Really Larger?">
+  <meta name="twitter:description" content="Maps lie about size. Can you tell which country is really larger?">
+  <meta name="twitter:image" content="https://cemeren.dev/geohub/og/mercator.png">
+
+  <!-- Google Fonts: Atlas (Newsreader, Public Sans, IBM Plex Mono) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500;6..72,600&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../css/atlas.css?v=1">
+  <link rel="stylesheet" href="css/style.css?v=1">
+</head>
+<body data-game="mercator">
+
+  <div class="atlas-page">
+
+    <header class="atlas-topbar">
+      <a href="../" class="atlas-back">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        GeoHub
+      </a>
+      <a href="./" class="atlas-title">Mercator's Lie</a>
+    </header>
+
+    <main class="mc-main">
+
+      <section class="atlas-stats" aria-label="Stats">
+        <span class="atlas-stat"><span class="atlas-stat-label">Round</span><span class="atlas-stat-value" id="stat-round">1 / 10</span></span>
+        <span class="atlas-stat"><span class="atlas-stat-label">Score</span><span class="atlas-stat-value" id="stat-score">0</span></span>
+        <span class="atlas-stat"><span class="atlas-stat-label">Streak</span><span class="atlas-stat-value" id="stat-streak">0</span></span>
+        <span class="atlas-stat"><span class="atlas-stat-label">Best</span><span class="atlas-stat-value" id="stat-best">–</span></span>
+      </section>
+
+      <section class="mc-board atlas-panel" aria-live="polite">
+        <div class="mc-board-head">
+          <h1 class="mc-question" id="question">Which country is really larger?</h1>
+          <div class="atlas-segmented mc-view-toggle" id="view-toggle" role="group" aria-label="Map view" hidden>
+            <button type="button" data-view="mercator" aria-pressed="false">Mercator</button>
+            <button type="button" data-view="true" aria-pressed="true">True size</button>
+          </div>
+        </div>
+        <p class="mc-sub" id="view-caption">Both shapes are drawn at the same scale, as they appear on a Mercator map.</p>
+
+        <div class="mc-pair">
+          <figure class="mc-country" id="country-0">
+            <button type="button" class="mc-shape-btn" data-side="0" aria-label="Choose left country">
+              <svg class="mc-svg" viewBox="0 0 400 400" aria-hidden="true">
+                <rect class="mc-grid" width="400" height="400" fill="url(#mc-graticule)"/>
+                <g class="mc-shape"><path class="mc-path"/></g>
+              </svg>
+            </button>
+            <figcaption class="mc-caption">
+              <img class="mc-flag" alt="" width="28" height="19">
+              <span class="mc-name"></span>
+              <span class="mc-area mono" hidden></span>
+            </figcaption>
+          </figure>
+
+          <figure class="mc-country" id="country-1">
+            <button type="button" class="mc-shape-btn" data-side="1" aria-label="Choose right country">
+              <svg class="mc-svg" viewBox="0 0 400 400" aria-hidden="true">
+                <rect class="mc-grid" width="400" height="400" fill="url(#mc-graticule)"/>
+                <g class="mc-shape"><path class="mc-path"/></g>
+              </svg>
+            </button>
+            <figcaption class="mc-caption">
+              <img class="mc-flag" alt="" width="28" height="19">
+              <span class="mc-name"></span>
+              <span class="mc-area mono" hidden></span>
+            </figcaption>
+          </figure>
+        </div>
+
+        <div class="mc-answers" id="answers">
+          <button type="button" class="atlas-option" data-side="0"><span class="atlas-option-key">A</span><span class="mc-answer-label"></span></button>
+          <button type="button" class="atlas-option" data-side="1"><span class="atlas-option-key">B</span><span class="mc-answer-label"></span></button>
+        </div>
+
+        <div class="mc-reveal" id="reveal" hidden>
+          <div class="atlas-feedback" id="feedback"></div>
+          <p class="mc-explain" id="explain"></p>
+          <div class="mc-reveal-actions">
+            <span class="mc-hint mono">Keys A / B or ← / → · Enter for next</span>
+            <button type="button" class="atlas-btn atlas-btn--primary" id="btn-next">
+              <span id="btn-next-label">Next pair</span>
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </button>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Shared graticule pattern -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <defs>
+      <pattern id="mc-graticule" width="50" height="50" patternUnits="userSpaceOnUse">
+        <path d="M50 0H0V50" fill="none" stroke="#D9D0BF" stroke-width="1"/>
+      </pattern>
+    </defs>
+  </svg>
+
+  <!-- Session summary -->
+  <div class="atlas-modal-backdrop" id="summary" hidden>
+    <div class="atlas-modal mc-summary" role="dialog" aria-modal="true" aria-labelledby="summary-title">
+      <p class="atlas-eyebrow">Session complete</p>
+      <h2 id="summary-title" class="mc-summary-title">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"/></svg>
+        <span id="summary-score">0 / 10</span>
+      </h2>
+      <p class="mc-summary-best mono" id="summary-best"></p>
+      <ol class="mc-summary-list" id="summary-list"></ol>
+      <button type="button" class="atlas-btn atlas-btn--primary mc-summary-btn" id="btn-again">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"/></svg>
+        Play again
+      </button>
+    </div>
+  </div>
+
+  <script src="../data/countries.js?v=2"></script>
+  <script src="js/app.js?v=1"></script>
+</body>
+</html>

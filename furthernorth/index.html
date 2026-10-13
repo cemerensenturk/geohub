@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Further North — Which City Is Closer to the Pole?</title>
+  <link rel="icon" type="image/svg+xml" href="../favicons/furthernorth.svg">
+  <link rel="icon" type="image/png" sizes="180x180" href="../favicons/furthernorth-180.png">
+  <link rel="apple-touch-icon" href="../favicons/furthernorth-180.png">
+  <meta name="description" content="Two cities, one question: which is further north? A fast streak game where intuition often gets latitude wrong.">
+
+  <!-- OpenGraph / WhatsApp Meta Tags -->
+  <meta property="og:site_name" content="Further North — GeoHub">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://cemeren.dev/geohub/furthernorth/">
+  <meta property="og:title" content="Further North — Which City Is Closer to the Pole?">
+  <meta property="og:description" content="Rome or New York? Pick the city that lies further north and keep your streak alive.">
+  <meta property="og:image" content="https://cemeren.dev/geohub/og/furthernorth.png">
+  <meta property="og:image:type" content="image/png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Further North — Which City Is Closer to the Pole?">
+  <meta name="twitter:description" content="Rome or New York? Pick the city that lies further north and keep your streak alive.">
+  <meta name="twitter:image" content="https://cemeren.dev/geohub/og/furthernorth.png">
+
+  <!-- Google Fonts: Atlas (Newsreader, Public Sans, IBM Plex Mono) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500;6..72,600&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../css/atlas.css?v=1">
+  <link rel="stylesheet" href="css/style.css?v=1">
+</head>
+<body data-game="furthernorth">
+
+  <div class="atlas-page">
+
+    <header class="atlas-topbar">
+      <a href="../" class="atlas-back">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        <span>GeoHub</span>
+      </a>
+      <a href="./" class="atlas-title">Further North</a>
+    </header>
+
+    <section class="atlas-stats" aria-label="Stats">
+      <span class="atlas-stat">
+        <span class="atlas-stat-label">Streak</span>
+        <span class="atlas-stat-value fn-streak">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3c1 3.5 5 5.5 5 10a5 5 0 0 1-10 0c0-2.5 1.5-4 2.5-5 .3 1.6 1.2 2.6 2.5 3 0-3-1.5-5.5 0-8z"/></svg>
+          <span id="stat-streak">0</span>
+        </span>
+      </span>
+      <span class="atlas-stat">
+        <span class="atlas-stat-label">Best</span>
+        <span class="atlas-stat-value" id="stat-best">0</span>
+      </span>
+      <span class="atlas-stat">
+        <span class="atlas-stat-label">Answered</span>
+        <span class="atlas-stat-value" id="stat-answered">0</span>
+      </span>
+    </section>
+
+    <main class="fn-layout">
+
+      <section class="atlas-panel fn-play" aria-labelledby="fn-question">
+        <p class="atlas-eyebrow">Round <span id="round-number">1</span></p>
+        <h1 class="fn-question" id="fn-question">Which is further north?</h1>
+
+        <div class="fn-cities">
+          <button type="button" class="atlas-option fn-city" id="city-a" data-side="0">
+            <span class="atlas-option-key">A</span>
+            <span class="fn-city-text">
+              <span class="fn-city-name" id="city-a-name">…</span>
+              <span class="fn-city-country" id="city-a-country"></span>
+              <span class="fn-city-lat mono" id="city-a-lat" hidden></span>
+            </span>
+          </button>
+          <span class="fn-or" aria-hidden="true">or</span>
+          <button type="button" class="atlas-option fn-city" id="city-b" data-side="1">
+            <span class="atlas-option-key">B</span>
+            <span class="fn-city-text">
+              <span class="fn-city-name" id="city-b-name">…</span>
+              <span class="fn-city-country" id="city-b-country"></span>
+              <span class="fn-city-lat mono" id="city-b-lat" hidden></span>
+            </span>
+          </button>
+        </div>
+
+        <div class="atlas-feedback fn-feedback" id="feedback" role="status" aria-live="polite" hidden></div>
+
+        <div class="fn-actions">
+          <p class="fn-hint mono" id="key-hint">Keys ← / → or A / B · Enter for next</p>
+          <button type="button" class="atlas-btn atlas-btn--primary" id="btn-next" hidden>
+            <span>Next pair</span>
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
+          <button type="button" class="atlas-btn atlas-btn--primary" id="btn-restart" hidden>
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"/></svg>
+            <span>Play again</span>
+          </button>
+        </div>
+      </section>
+
+      <section class="atlas-panel fn-ruler-panel" aria-label="Latitude ruler">
+        <div class="fn-ruler-head">
+          <span class="atlas-eyebrow">Latitude</span>
+          <svg class="icon fn-north" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+        </div>
+        <svg id="ruler" class="fn-ruler" viewBox="0 0 260 440" role="img" aria-label="Latitude ruler"></svg>
+        <p class="fn-ruler-caption" id="ruler-caption">Latitudes are revealed after you answer.</p>
+      </section>
+
+    </main>
+
+    <!-- Game over -->
+    <div id="modal-over" class="atlas-modal-backdrop" hidden>
+      <div class="atlas-modal fn-over" role="dialog" aria-modal="true" aria-labelledby="over-title">
+        <div class="fn-over-icon" aria-hidden="true">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"/></svg>
+        </div>
+        <h2 id="over-title">Run over</h2>
+        <p class="fn-over-sub" id="over-sub">The streak ends here.</p>
+        <div class="fn-over-stats">
+          <div><span class="fn-over-num mono" id="over-streak">0</span><span class="fn-over-label">Streak</span></div>
+          <div><span class="fn-over-num mono" id="over-best">0</span><span class="fn-over-label">Best</span></div>
+        </div>
+        <p class="fn-over-pair" id="over-pair"></p>
+        <div class="fn-over-actions">
+          <button type="button" class="atlas-btn atlas-btn--ghost" id="btn-close-over">See the ruler</button>
+          <button type="button" class="atlas-btn atlas-btn--primary" id="btn-play-again">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"/></svg>
+            <span>Play again</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script type="module" src="js/app.js?v=1"></script>
+</body>
+</html>

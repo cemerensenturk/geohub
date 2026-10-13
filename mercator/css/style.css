@@ -1,0 +1,281 @@
+/* ==========================================================================
+   Mercator's Lie
+   Builds on css/atlas.css (tokens and shared components).
+   ========================================================================== */
+
+.mc-main {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ---------- Board ---------- */
+
+.mc-board {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: clamp(16px, 3vw, 28px);
+}
+
+.mc-board-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.mc-question {
+  font-size: clamp(24px, 3.2vw, 32px);
+}
+
+.mc-sub {
+  color: var(--ink-soft);
+  font-size: 15px;
+}
+
+/* ---------- Country pair ---------- */
+
+.mc-pair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(10px, 2vw, 20px);
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.mc-country {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+
+.mc-shape-btn {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-md);
+  background: var(--paper);
+  cursor: pointer;
+  overflow: hidden;
+  transition: border-color 0.15s var(--ease);
+}
+
+.mc-shape-btn:hover:not(:disabled) {
+  border-color: var(--accent);
+}
+
+.mc-shape-btn:disabled {
+  cursor: default;
+}
+
+.mc-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1;
+}
+
+.mc-shape {
+  transition: transform 0.9s var(--ease);
+}
+
+.mc-path {
+  fill: var(--accent);
+  fill-opacity: 0.14;
+  fill-rule: evenodd;
+  stroke: var(--accent);
+  stroke-width: 2;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+  transition: fill 0.25s var(--ease), stroke 0.25s var(--ease);
+}
+
+.mc-country.is-correct .mc-shape-btn {
+  border: 2px solid var(--correct);
+}
+
+.mc-country.is-correct .mc-path {
+  fill: var(--correct);
+  stroke: var(--correct);
+}
+
+.mc-country.is-wrong .mc-shape-btn {
+  border: 2px solid var(--wrong);
+}
+
+.mc-country.is-wrong .mc-path {
+  fill: var(--wrong);
+  stroke: var(--wrong);
+}
+
+.mc-caption {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  column-gap: 10px;
+  row-gap: 2px;
+}
+
+.mc-flag {
+  width: 28px;
+  height: 19px;
+  object-fit: cover;
+  border-radius: 2px;
+  box-shadow: 0 0 0 1px var(--rule);
+}
+
+.mc-name {
+  font-family: var(--font-display);
+  font-size: clamp(18px, 2.4vw, 22px);
+  font-weight: 600;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+}
+
+.mc-area {
+  grid-column: 2;
+  display: flex;
+  flex-direction: column;
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+
+/* ---------- Answers ---------- */
+
+.mc-answers {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.mc-answer-label {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+/* ---------- Reveal ---------- */
+
+.mc-reveal {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.mc-reveal .atlas-feedback {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mc-explain {
+  color: var(--ink-soft);
+  font-size: 15px;
+}
+
+.mc-explain strong {
+  color: var(--ink);
+}
+
+.mc-reveal-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.mc-hint {
+  font-size: 12px;
+  color: var(--ink-muted);
+}
+
+/* ---------- Summary modal ---------- */
+
+.mc-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.mc-summary-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 36px;
+  color: var(--accent);
+}
+
+.mc-summary-best {
+  font-size: 13px;
+  color: var(--ink-muted);
+}
+
+.mc-summary-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--rule);
+}
+
+.mc-summary-list li {
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr);
+  gap: 8px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--rule);
+  font-size: 14px;
+}
+
+.mc-summary-list .icon {
+  margin-top: 2px;
+}
+
+.mc-summary-list .is-correct {
+  color: var(--correct);
+}
+
+.mc-summary-list .is-wrong {
+  color: var(--wrong);
+}
+
+.mc-summary-meta {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ink-muted);
+}
+
+.mc-summary-btn {
+  align-self: flex-start;
+}
+
+/* ---------- Small screens ---------- */
+
+@media (max-width: 520px) {
+  .mc-answers {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .mc-hint {
+    display: none;
+  }
+
+  .mc-reveal-actions .atlas-btn {
+    width: 100%;
+  }
+}
+
+@media (hover: none) {
+  .mc-hint {
+    display: none;
+  }
+}

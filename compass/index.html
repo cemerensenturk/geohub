@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Compass — Which Way Is It on the Map?</title>
+  <link rel="icon" type="image/svg+xml" href="../favicons/compass.svg">
+  <link rel="icon" type="image/png" sizes="180x180" href="../favicons/compass-180.png">
+  <link rel="apple-touch-icon" href="../favicons/compass-180.png">
+  <meta name="description" content="Stand in one city and point the compass toward another, the way you'd draw it on a world map. Then see the curved route planes really fly.">
+
+  <!-- OpenGraph / WhatsApp Meta Tags -->
+  <meta property="og:site_name" content="Compass — GeoHub">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://cemeren.dev/satelcity/compass/">
+  <meta property="og:title" content="Compass — Which Way Is It on the Map?">
+  <meta property="og:description" content="You're in Istanbul. Which way is Tokyo on the map? Point the compass, then see the route planes really fly.">
+  <meta property="og:image" content="https://cemeren.dev/satelcity/og/compass.png">
+  <meta property="og:image:type" content="image/png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Compass — Which Way Is It on the Map?">
+  <meta name="twitter:description" content="Point the compass the way you'd draw it on a world map.">
+  <meta name="twitter:image" content="https://cemeren.dev/satelcity/og/compass.png">
+
+  <!-- Google Fonts: Atlas (Newsreader, Public Sans, IBM Plex Mono) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500;6..72,600&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../css/atlas.css?v=1">
+  <link rel="stylesheet" href="css/style.css?v=2">
+</head>
+<body data-game="compass">
+
+  <div class="atlas-page">
+
+    <header class="atlas-topbar">
+      <a href="../" class="atlas-back">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        GeoHub
+      </a>
+      <a href="./" class="atlas-title">Compass</a>
+    </header>
+
+    <main class="cp-main">
+
+      <section class="atlas-stats" aria-label="Stats">
+        <span class="atlas-stat"><span class="atlas-stat-label">Round</span><span class="atlas-stat-value" id="stat-round">1 / 10</span></span>
+        <span class="atlas-stat"><span class="atlas-stat-label">Score</span><span class="atlas-stat-value" id="stat-score">0</span></span>
+        <span class="atlas-stat"><span class="atlas-stat-label">Best</span><span class="atlas-stat-value" id="stat-best">—</span></span>
+        <button type="button" class="atlas-btn atlas-btn--ghost atlas-btn--sm" id="btn-restart">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"/></svg>
+          Restart
+        </button>
+      </section>
+
+      <div class="cp-layout">
+
+        <!-- Question -->
+        <section class="atlas-panel cp-question">
+          <div class="cp-question-head">
+            <span class="atlas-eyebrow" id="round-label">Round 1 of 10</span>
+            <div class="atlas-segmented" role="group" aria-label="Difficulty">
+              <button type="button" data-difficulty="easy" aria-pressed="true">Easy</button>
+              <button type="button" data-difficulty="hard" aria-pressed="false">Hard</button>
+            </div>
+          </div>
+
+          <div class="cp-route">
+            <div class="cp-place">
+              <span class="cp-place-label">You're in</span>
+              <span class="cp-place-name" id="from-name">—</span>
+              <span class="cp-place-country" id="from-country"></span>
+            </div>
+            <div class="cp-place">
+              <span class="cp-place-label">Which way is</span>
+              <span class="cp-place-name cp-place-name--target" id="to-name">—</span>
+              <span class="cp-place-country" id="to-country"></span>
+            </div>
+          </div>
+
+          <p class="cp-prompt">Turn the needle the way you'd draw a straight line on a world map.</p>
+        </section>
+
+        <!-- Dial -->
+        <section class="atlas-panel cp-dial-card">
+          <span class="atlas-eyebrow">Your heading</span>
+          <div class="cp-dial" id="dial" tabindex="0" role="slider"
+               aria-label="Compass heading" aria-valuemin="0" aria-valuemax="359" aria-valuenow="0" aria-valuetext="000 degrees, N">
+            <svg viewBox="0 0 300 300" aria-hidden="true">
+              <circle class="cp-ring" cx="150" cy="150" r="142"/>
+              <circle class="cp-ring cp-ring--inner" cx="150" cy="150" r="104"/>
+              <g id="ticks"></g>
+              <g class="cp-cardinals">
+                <text x="150" y="44" class="cp-cardinal cp-cardinal--north">N</text>
+                <text x="258" y="156" class="cp-cardinal">E</text>
+                <text x="150" y="268" class="cp-cardinal">S</text>
+                <text x="42" y="156" class="cp-cardinal">W</text>
+              </g>
+              <g class="cp-intercardinals">
+                <text x="226" y="78">NE</text>
+                <text x="226" y="230">SE</text>
+                <text x="74" y="230">SW</text>
+                <text x="74" y="78">NW</text>
+              </g>
+              <g class="cp-needle cp-needle--globe" id="needle-globe" hidden>
+                <line x1="150" y1="150" x2="150" y2="52"/>
+              </g>
+              <g class="cp-needle cp-needle--map" id="needle-map" hidden>
+                <path d="M150 46 L157 150 L143 150 Z"/>
+              </g>
+              <g class="cp-needle cp-needle--player" id="needle-player">
+                <path d="M150 46 L157 150 L143 150 Z"/>
+                <path class="cp-needle-tail" d="M143 150 L157 150 L150 214 Z"/>
+              </g>
+              <circle class="cp-hub" cx="150" cy="150" r="7"/>
+            </svg>
+          </div>
+          <div class="cp-readout mono" id="readout">000° N</div>
+          <div class="cp-actions" id="aim-actions">
+            <button type="button" class="atlas-btn atlas-btn--primary" id="btn-lock">
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
+              Lock in heading
+            </button>
+          </div>
+          <p class="cp-hint">Drag the needle, or use <kbd>←</kbd> <kbd>→</kbd> (hold <kbd>Shift</kbd> for 10°). <kbd>Enter</kbd> locks in.</p>
+        </section>
+
+        <!-- Result -->
+        <section class="atlas-panel cp-result" id="result" aria-live="polite" hidden>
+          <div class="cp-metrics">
+            <div class="cp-metric"><span class="atlas-stat-label">Off by</span><span class="cp-metric-value mono" id="res-error">—</span></div>
+            <div class="cp-metric"><span class="atlas-stat-label">Points</span><span class="cp-metric-value mono" id="res-points">—</span></div>
+            <div class="cp-metric"><span class="atlas-stat-label">Km</span><span class="cp-metric-value mono" id="res-distance">—</span></div>
+          </div>
+          <p class="atlas-feedback" id="res-feedback"></p>
+          <ul class="cp-legend">
+            <li><span class="cp-swatch cp-swatch--player" aria-hidden="true"></span>Your heading <span class="mono" id="legend-player"></span></li>
+            <li><span class="cp-swatch cp-swatch--map" aria-hidden="true"></span>On the map (scored) <span class="mono" id="legend-map"></span></li>
+            <li><span class="cp-swatch cp-swatch--globe" aria-hidden="true"></span>Shortest route on the globe (what planes fly) <span class="mono" id="legend-globe"></span></li>
+          </ul>
+          <p class="cp-explain" id="res-explain"></p>
+          <button type="button" class="atlas-btn atlas-btn--primary" id="btn-next">
+            Next round
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
+        </section>
+
+        <!-- Route map -->
+        <section class="atlas-panel cp-map-card" id="map-card" hidden>
+          <div class="cp-map-head">
+            <span class="atlas-eyebrow">The route</span>
+            <ul class="cp-map-legend">
+              <li><span class="cp-swatch cp-swatch--map" aria-hidden="true"></span>Straight line on the map</li>
+              <li><span class="cp-swatch cp-swatch--globe" aria-hidden="true"></span>Shortest route on the globe</li>
+            </ul>
+          </div>
+          <svg class="cp-map" id="map" viewBox="0 0 1000 679" role="img" aria-label="World map with the route">
+            <rect class="cp-map-sea" x="-1000" y="-100" width="3000" height="900"/>
+            <path class="cp-map-land" id="map-land"/>
+            <g id="map-routes"></g>
+            <g id="map-cities"></g>
+          </svg>
+        </section>
+
+      </div>
+    </main>
+
+    <!-- Session summary -->
+    <div class="atlas-modal-backdrop" id="summary" hidden>
+      <div class="atlas-modal cp-summary" role="dialog" aria-modal="true" aria-labelledby="summary-title">
+        <span class="atlas-eyebrow">Session complete</span>
+        <h2 id="summary-title"><span class="mono" id="summary-total">0</span> <span class="cp-summary-of">/ 1000</span></h2>
+        <p class="cp-summary-best" id="summary-best"></p>
+        <ol class="cp-summary-list" id="summary-list"></ol>
+        <button type="button" class="atlas-btn atlas-btn--primary" id="btn-again">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"/></svg>
+          Play again
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <script type="module" src="js/app.js?v=2"></script>
+</body>
+</html>

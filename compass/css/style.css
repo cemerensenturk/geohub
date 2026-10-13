@@ -1,0 +1,475 @@
+/* ==========================================================================
+   Compass - game styles (builds on css/atlas.css)
+   ========================================================================== */
+
+.cp-main {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.cp-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    "dial question"
+    "dial result"
+    "map map";
+  gap: 20px;
+  align-items: start;
+}
+
+.cp-question { grid-area: question; }
+.cp-dial-card { grid-area: dial; }
+.cp-result { grid-area: result; }
+.cp-map-card { grid-area: map; }
+
+@media (max-width: 820px) {
+  .cp-layout {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: none;
+    grid-template-areas:
+      "question"
+      "dial"
+      "result"
+      "map";
+  }
+}
+
+/* ---------- Question panel ---------- */
+
+.cp-question {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 24px;
+}
+
+.cp-question-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.cp-route {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  padding: 16px 0;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+}
+
+.cp-place {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.cp-place-label {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+
+.cp-place-name {
+  font-family: var(--font-display);
+  font-size: clamp(26px, 3.4vw, 34px);
+  font-weight: 600;
+  line-height: 1.1;
+  overflow-wrap: anywhere;
+}
+
+.cp-place-name--target {
+  color: var(--accent);
+}
+
+.cp-place-country {
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+
+.cp-prompt {
+  color: var(--ink-soft);
+}
+
+.cp-actions {
+  align-self: stretch;
+}
+
+.cp-actions .atlas-btn,
+.cp-result > .atlas-btn {
+  width: 100%;
+}
+
+/* ---------- Result ---------- */
+
+.cp-result {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 24px;
+}
+
+.cp-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.cp-metric {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px 12px;
+  border-radius: var(--radius-md);
+  background: var(--paper-sunken);
+}
+
+.cp-metric-value {
+  font-size: 20px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.cp-explain {
+  font-size: 15px;
+  color: var(--ink-soft);
+}
+
+.cp-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+
+.cp-legend li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cp-legend .mono {
+  margin-left: auto;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+.cp-swatch {
+  width: 22px;
+  height: 0;
+  flex-shrink: 0;
+  border-top: 3px solid var(--ink);
+}
+
+.cp-swatch--map { border-top-color: var(--accent); }
+.cp-swatch--globe { border-top: 2px dashed var(--ink); }
+
+/* ---------- Dial ---------- */
+
+.cp-dial-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 24px;
+}
+
+.cp-dial-card > .atlas-eyebrow {
+  align-self: flex-start;
+}
+
+.cp-dial {
+  width: min(100%, 360px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.cp-dial.is-dragging { cursor: grabbing; }
+.cp-dial.is-locked { cursor: default; }
+
+.cp-dial:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+.cp-dial svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.cp-ring {
+  fill: #FFFFFF;
+  stroke: var(--rule-strong);
+  stroke-width: 1.5;
+}
+
+.cp-ring--inner {
+  fill: var(--paper-raised);
+  stroke: var(--rule);
+  stroke-width: 1;
+}
+
+.cp-tick {
+  stroke: var(--rule-strong);
+  stroke-width: 1;
+}
+
+.cp-tick--mid {
+  stroke: var(--ink-muted);
+}
+
+.cp-tick--major {
+  stroke: var(--ink);
+  stroke-width: 2;
+}
+
+.cp-cardinal {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 600;
+  fill: var(--ink);
+  text-anchor: middle;
+}
+
+.cp-cardinal--north {
+  fill: var(--accent);
+}
+
+.cp-intercardinals text {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  fill: var(--ink-muted);
+  text-anchor: middle;
+  dominant-baseline: middle;
+}
+
+.cp-needle {
+  transform-box: view-box;
+  transform-origin: 150px 150px;
+  transition: transform 0.6s var(--ease);
+}
+
+.cp-needle--player {
+  transition: none;
+}
+
+.cp-needle--player path {
+  fill: var(--ink);
+}
+
+.cp-needle--player .cp-needle-tail {
+  fill: var(--rule-strong);
+}
+
+.cp-needle--map path {
+  fill: var(--accent);
+  fill-opacity: 0.9;
+}
+
+.cp-needle--globe line {
+  stroke: var(--ink);
+  stroke-width: 2.5;
+  stroke-dasharray: 6 5;
+  stroke-linecap: round;
+}
+
+.cp-needle.no-anim {
+  transition: none;
+}
+
+.cp-hub {
+  fill: var(--ink);
+  stroke: #FFFFFF;
+  stroke-width: 2;
+}
+
+.cp-readout {
+  font-size: 28px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+.cp-hint {
+  font-size: 13px;
+  color: var(--ink-muted);
+  text-align: center;
+}
+
+kbd {
+  display: inline-block;
+  min-width: 1.6em;
+  padding: 0 4px;
+  border: 1px solid var(--rule-strong);
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  background: var(--paper-raised);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  text-align: center;
+}
+
+@media (hover: none) {
+  .cp-hint { display: none; }
+}
+
+/* ---------- Route map ---------- */
+
+.cp-map-card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 24px;
+}
+
+.cp-map-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 20px;
+}
+
+.cp-map-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 20px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+
+.cp-map-legend li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cp-map {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1000 / 679;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.cp-map-sea {
+  fill: var(--paper-raised);
+}
+
+.cp-map-land {
+  fill: var(--paper-sunken);
+  stroke: var(--rule-strong);
+  stroke-width: 0.75;
+  vector-effect: non-scaling-stroke;
+}
+
+.cp-map-rhumb {
+  stroke: var(--accent);
+  stroke-width: 3;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.cp-map-globe {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 2;
+  stroke-dasharray: 6 5;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.cp-map-city {
+  fill: var(--paper-raised);
+  stroke: var(--ink);
+}
+
+.cp-map-city.is-to {
+  fill: var(--accent);
+}
+
+.cp-map-label {
+  font-family: var(--font-body);
+  font-weight: 600;
+  fill: var(--ink);
+  stroke: var(--paper-raised);
+  paint-order: stroke;
+  stroke-linejoin: round;
+}
+
+/* ---------- Summary ---------- */
+
+.cp-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.cp-summary h2 {
+  font-size: 44px;
+  color: var(--accent);
+}
+
+.cp-summary h2 .mono {
+  font-weight: 500;
+}
+
+.cp-summary-of {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  color: var(--ink-muted);
+}
+
+.cp-summary-best {
+  color: var(--ink-soft);
+}
+
+.cp-summary-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--rule);
+}
+
+.cp-summary-list li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--rule);
+  font-size: 14px;
+}
+
+.cp-summary-route {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.cp-summary-detail {
+  flex-shrink: 0;
+  color: var(--ink-soft);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cp-needle { transition: none; }
+}
