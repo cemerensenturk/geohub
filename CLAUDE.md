@@ -53,7 +53,8 @@ node -e "const fs=require('fs');fs.writeFileSync('data/countries.js','window.GEO
 ## Conventions
 
 - Commit messages: Conventional Commits with the game as scope, e.g. `fix(coatofarms): ...`, `feat: ...`, `perf(coatofarms): ...`.
-- Deployment is a plain file upload (README shows nginx and `rsync`). There is no git remote configured.
+- Deployment is a plain FTP upload (FileZilla) of the folders listed in README's "Production Deployment" section into `geohub/` on cemeren.dev.
+- Git remote: `origin` = https://github.com/cemerensenturk/geohub (public), default branch `main`.
 
 ## Adding a game
 
