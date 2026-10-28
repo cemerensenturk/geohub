@@ -141,7 +141,7 @@ The site is plain static files, deployed at **`cemeren.dev/geohub/`** with each 
 ### Upload with FTP (e.g. FileZilla)
 Create a `geohub/` folder in the web root and upload into it:
 
-- `index.html`, `css/`, `data/`, `favicons/`, `og/`
+- `index.html`, `manifest.webmanifest`, `sw.js`, `css/`, `data/`, `favicons/`, `og/`
 - every game folder: `satelcity/`, `flagquiz/`, `georank/`, `borderline/`, `coatofarms/`, `compass/`, `mercator/`, `furthernorth/`, `neighbours/`, `pinthecity/`
 
 Not needed on the server: `.git/`, `.DS_Store`, `scripts/`, `README.md`, `CLAUDE.md`, `LICENSE`.

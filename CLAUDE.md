@@ -48,6 +48,8 @@ node -e "const fs=require('fs');fs.writeFileSync('data/countries.js','window.GEO
 
 **Design system (Atlas):** every page loads `css/atlas.css` before its own stylesheet, plus the Newsreader / Public Sans / IBM Plex Mono Google Fonts link (URL in the atlas.css header). It holds the colour and type tokens and the shared components (`atlas-page`, `atlas-topbar`, `atlas-stats`, `atlas-btn`, `atlas-option`, `atlas-input`, `atlas-segmented`, `atlas-feedback`, `atlas-modal`, `atlas-chip`, `.icon`). Each game picks its single accent colour with `<body data-game="…">` (SatelCity sea, Flag Quiz brick, GeoRank ochre, BorderLine plum, Coat of Arms heraldic blue, Compass raspberry, Mercator's Lie rust, Further North indigo, Neighbours olive, Pin the City cerulean). The look is a light paper atlas: no dark themes, glows, gradients or glassmorphism, and no emoji in the UI. Icons are inline stroke SVGs (`<svg class="icon" viewBox="0 0 24 24" aria-hidden="true">`). Change shared styling in atlas.css, not by copying rules into game stylesheets.
 
+**Installable app (PWA):** `manifest.webmanifest` and `sw.js` at the root make the whole site one home-screen app ("GeoHub", standalone, starts at the portal). `sw.js` deliberately caches nothing (the host is a friend's server). Every page carries the PWA head tags (manifest link, `theme-color`, `apple-mobile-web-app-*`, `viewport-fit=cover`, apple-touch-icon = `favicons/geohub-180.png`) and the guarded `navigator.serviceWorker.register` snippet before `</body>`; `css/atlas.css` pads `body` and modal backdrops with `env(safe-area-inset-*)`. The "Install app" button lives only on the portal. `node scripts/check_pwa.js` verifies all of this.
+
 **Coat of Arms images** live in `coatofarms/img/` (43 PNG/SVG files, already compressed with pngquant/oxipng and svgo). Compress any image you add in the same way. The answer list for autocomplete is limited to the 43 entries in `arms.json`.
 
 ## Conventions
@@ -58,7 +60,7 @@ node -e "const fs=require('fs');fs.writeFileSync('data/countries.js','window.GEO
 
 ## Adding a game
 
-1. New folder with `index.html`, `css/style.css`, `js/app.js`; copy the `<head>` pattern from an existing game (fonts, favicons, `../css/atlas.css` first, OG/Twitter tags).
+1. New folder with `index.html`, `css/style.css`, `js/app.js`; copy the `<head>` pattern from an existing game (fonts, favicons, PWA tags, `../css/atlas.css` first, OG/Twitter tags) and the service-worker snippet before `</body>`, add the game to `GAMES` in `scripts/check_pwa.js`, and run it.
 2. Add an accent colour token and a `body[data-game="…"]` rule in `css/atlas.css`.
 3. Add a favicon (`favicons/<game>.svg` + `<game>-180.png`), a 1200×630 `og/<game>.png`, and a row in the portal `index.html` (update the game count in the hero text and meta description).
 4. OG/Twitter image URLs are absolute: `https://cemeren.dev/geohub/og/<game>.png`, and `og:url` is `https://cemeren.dev/geohub/<game>/`.

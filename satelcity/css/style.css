@@ -813,7 +813,7 @@
   z-index: 2000;
   align-items: center;
   justify-content: center;
-  padding: 16px;
+  padding: max(16px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(16px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
   background: rgba(30, 41, 51, 0.6);
 }
 
@@ -826,6 +826,7 @@
   width: 100%;
   max-width: 1080px;
   height: 85vh;
+  max-height: 100%;
   overflow: hidden;
   border-radius: var(--radius-lg);
   border: 1px solid var(--rule-strong);
