@@ -31,7 +31,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500;6..72,600&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="css/atlas.css?v=2">
-  <link rel="stylesheet" href="css/portal.css?v=2">
+  <link rel="stylesheet" href="css/portal.css?v=3">
 </head>
 <body>
 
@@ -44,6 +44,10 @@
       </a>
       <span class="portal-coords mono" aria-hidden="true">45.0703° N · 7.6869° E</span>
       <a href="https://cemeren.dev" target="_blank" rel="noopener noreferrer" class="portal-creator">cemeren.dev ↗</a>
+      <button type="button" class="atlas-btn atlas-btn--sm portal-install" id="install-btn" hidden>
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5"/><path d="M5 20h14"/></svg>
+        Install app
+      </button>
     </header>
 
     <main>
@@ -184,6 +188,28 @@
 
   </div>
 
+  <div class="atlas-modal-backdrop install-sheet" id="install-sheet" hidden>
+    <div class="atlas-modal" role="dialog" aria-modal="true" aria-labelledby="install-sheet-title">
+      <h2 class="install-sheet-title" id="install-sheet-title">Install GeoHub</h2>
+      <p class="install-sheet-lead">Add GeoHub to your Home Screen to play full screen, like an app.</p>
+      <ol class="install-steps">
+        <li>
+          <span class="install-step-num mono">1</span>
+          <span>Tap the Share button
+            <svg class="icon install-share-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M8 7l4-4 4 4"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg>
+            <span class="install-step-hint">On iOS 26 it is inside the <span class="mono">&middot;&middot;&middot;</span> menu.</span>
+          </span>
+        </li>
+        <li>
+          <span class="install-step-num mono">2</span>
+          <span>Choose <strong>Add to Home Screen</strong></span>
+        </li>
+      </ol>
+      <button type="button" class="atlas-btn atlas-btn--primary install-sheet-close" id="install-sheet-close">Got it</button>
+    </div>
+  </div>
+
+  <script src="js/install.js?v=1"></script>
   <script>
     if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
       navigator.serviceWorker.register('sw.js').catch(() => {});

@@ -89,7 +89,12 @@ for (const [page, root] of pages) {
   check(/if \('serviceWorker' in navigator && location\.protocol\.startsWith\('http'\)\)/.test(html) &&
     html.includes(`navigator.serviceWorker.register('${root}sw.js')`), `${page}: missing guarded service worker registration`);
   check(html.includes(`${root}css/atlas.css?v=2`), `${page}: must link css/atlas.css?v=2`);
-  if (page !== 'index.html') check(!html.includes('id="install-btn"'), `${page}: install button belongs on the portal only`);
+  if (page !== 'index.html') {
+    check(!html.includes('id="install-btn"'), `${page}: install button belongs on the portal only`);
+    check(!html.includes('install.js'), `${page}: js/install.js belongs on the portal only`);
+  } else {
+    check(html.includes('<script src="js/install.js?v=1"></script>'), 'index.html: must load js/install.js?v=1');
+  }
 }
 
 if (failures.length) {
