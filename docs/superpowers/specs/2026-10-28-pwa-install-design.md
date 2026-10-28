@@ -28,6 +28,14 @@ Let people put GeoHub on their phone's home screen and open it full screen like 
 - `sw.js` at the site root, registered from every page: no caching, every request goes to the network as usual.
 - Every page links the manifest. The portal gets the button.
 
+- The button appears only on the portal (GeoHub home page), never on game pages (confirmed by the user).
+
+## Notch / Dynamic Island (user asked; will be checked on an iPhone 17)
+- iOS status bar style "default": the system keeps its own bar above the page, so the clock and battery stay dark on light and never overlap the content. ("black-translucent" would draw white status text over the light paper, unreadable.)
+- Every page sets `viewport-fit=cover`, and `css/atlas.css` pads the page with `env(safe-area-inset-*)` on all four sides, so nothing sits under the Dynamic Island, the rounded corners or the home indicator, in portrait and in landscape (where the island is on the side).
+- Fixed overlays (`atlas-modal-backdrop`, the iPhone instructions sheet) also respect the safe areas.
+- Builder can only simulate this; final check is the user's iPhone 17.
+
 ## Left to the builder (my calls, open to change)
 - Colours: `theme_color` and `background_color` = Atlas paper `#F3EEE3`; iOS status bar style "default".
 - Icons: 192 and 512 px PNGs (plus a maskable 512 with safe padding) generated from `favicons/geohub.svg`, stored in `favicons/`.
