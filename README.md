@@ -73,6 +73,9 @@ satellite/
 ├── css/
 │   ├── atlas.css           # Shared "Atlas" design system: tokens + components for every page
 │   └── portal.css          # Portal-only styles
+├── js/install.js           # Portal "Install app" button (home-screen install)
+├── manifest.webmanifest    # Makes the site installable as a home-screen app
+├── sw.js                   # No-op service worker (nothing is cached on purpose)
 ├── og/                     # 1200×630 social preview images, one per page
 ├── data/
 │   ├── countries.json      # Shared country dataset (FlagQuiz, GeoRank, BorderLine, Mercator's Lie)
@@ -141,7 +144,7 @@ The site is plain static files, deployed at **`cemeren.dev/geohub/`** with each 
 ### Upload with FTP (e.g. FileZilla)
 Create a `geohub/` folder in the web root and upload into it:
 
-- `index.html`, `manifest.webmanifest`, `sw.js`, `css/`, `data/`, `favicons/`, `og/`
+- `index.html`, `manifest.webmanifest`, `sw.js`, `css/`, `js/`, `data/`, `favicons/`, `og/`
 - every game folder: `satelcity/`, `flagquiz/`, `georank/`, `borderline/`, `coatofarms/`, `compass/`, `mercator/`, `furthernorth/`, `neighbours/`, `pinthecity/`
 
 Not needed on the server: `.git/`, `.DS_Store`, `scripts/`, `README.md`, `CLAUDE.md`, `LICENSE`.

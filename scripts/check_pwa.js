@@ -97,6 +97,21 @@ for (const [page, root] of pages) {
   }
 }
 
+// ---- README upload list covers every root folder/file the pages load ----
+const readme = read('README.md') || '';
+const uploadSection = (readme.match(/### Upload with FTP[\s\S]*?Not needed on the server/) || [''])[0];
+const portal = read('index.html') || '';
+const rootRefs = new Set();
+for (const [, ref] of portal.matchAll(/(?:href|src)="([^":?#]+)/g)) {
+  if (ref.startsWith('http') || ref.startsWith('//')) continue;
+  const top = ref.split('/')[0];
+  rootRefs.add(ref.includes('/') ? `${top}/` : top);
+}
+for (const ref of rootRefs) {
+  if (ref === './' || ref === '' ) continue;
+  check(uploadSection.includes('`' + ref + '`'), `README upload list is missing \`${ref}\` (loaded by index.html)`);
+}
+
 if (failures.length) {
   console.log(`PWA check: ${failures.length} failed`);
   for (const f of failures) console.log(`  - ${f}`);
